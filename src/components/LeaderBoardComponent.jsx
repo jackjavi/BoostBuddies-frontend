@@ -9,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import React from "react";
+import MobileNavBottom from "./MobileNavBottomLeaderboard";
 
 export default function LeaderboardComponent() {
   const fullRankings = [
@@ -312,29 +313,7 @@ export default function LeaderboardComponent() {
       </main>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="grid grid-cols-4 py-2">
-          <a href="#" className="flex flex-col items-center py-2 text-gray-600">
-            <Home className="w-5 h-5" />
-            <span className="text-xs mt-1">Dashboard</span>
-          </a>
-          <a href="#" className="flex flex-col items-center py-2 text-gray-600">
-            <Package className="w-5 h-5" />
-            <span className="text-xs mt-1">Products</span>
-          </a>
-          <a
-            href="#"
-            className="flex flex-col items-center py-2 text-purple-600"
-          >
-            <BarChart3 className="w-5 h-5" />
-            <span className="text-xs mt-1">Leaderboard</span>
-          </a>
-          <a href="#" className="flex flex-col items-center py-2 text-gray-600">
-            <User className="w-5 h-5" />
-            <span className="text-xs mt-1">Profile</span>
-          </a>
-        </div>
-      </nav>
+      <MobileNavBottom />
 
       {/* Mobile bottom padding to account for fixed nav */}
       <div className="md:hidden h-20"></div>
