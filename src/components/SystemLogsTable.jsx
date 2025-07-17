@@ -146,10 +146,10 @@ const SystemLogsTable = () => {
                             {log.User.role.name}
                           </td>
                           <td className="px-4 py-2">
-                            {log.ActivityLog.action}
+                            {log.activityLog.action}
                           </td>
                           <td className="px-4 py-2">
-                            {log.ActivityLog.description}
+                            {log.activityLog.description}
                           </td>
                         </tr>
                       ))}
@@ -180,11 +180,11 @@ const SystemLogsTable = () => {
                       </p>
                       <p className="text-gray-600 text-sm">
                         <span className="font-bold">Action:</span>{" "}
-                        {log.ActivityLog.action}
+                        {log.activityLog.action}
                       </p>
                       <p className="text-gray-600 text-sm">
                         <span className="font-bold">Description:</span>{" "}
-                        {log.ActivityLog.description}
+                        {log.activityLog.description}
                       </p>
                     </div>
                   ))}
