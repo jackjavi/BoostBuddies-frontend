@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import { FaWindowClose } from "react-icons/fa";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { MdAdminPanelSettings } from "react-icons/md";
-import { TbLogs } from "react-icons/tb";
+import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 
 const Sidebar = ({
@@ -57,7 +56,7 @@ const Sidebar = ({
             <IoIosArrowForward />
           </span>
         </Link>
-        <Link
+        {/* <Link
           to={isAdmin ? "/admin/users" : "#"}
           onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className={`flex items-center text-gray-600 ${
@@ -70,6 +69,19 @@ const Sidebar = ({
             <MdAdminPanelSettings />
           </span>
           Admin Panel
+          <span className="material-icons-outlined ml-auto">
+            <IoIosArrowForward />
+          </span>
+        </Link> */}
+        <Link
+          to="/leaderboard"
+          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
+          className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
+        >
+          <span className="material-icons-outlined mr-2">
+            <MdOutlineLeaderboard />
+          </span>
+          Leaderboard
           <span className="material-icons-outlined ml-auto">
             <IoIosArrowForward />
           </span>
