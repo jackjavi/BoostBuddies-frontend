@@ -8,6 +8,7 @@ import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { TbLogs } from "react-icons/tb";
+import { AiOutlineProduct } from "react-icons/ai";
 
 const Sidebar = ({
   mobileMenuOpen,
@@ -40,18 +41,18 @@ const Sidebar = ({
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4"
         >
           <HiHome className="mr-2" />
-          Home
+          Dashboard
           <IoIosArrowForward className="ml-auto" />
         </Link>
         <Link
-          to="/logs"
+          to="/products"
           onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
         >
           <span className="material-icons-outlined mr-2">
-            <TbLogs />
+            <AiOutlineProduct />
           </span>
-          Logs
+          Products
           <span className="material-icons-outlined ml-auto">
             <IoIosArrowForward />
           </span>

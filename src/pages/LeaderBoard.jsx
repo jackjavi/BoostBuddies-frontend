@@ -9,13 +9,12 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { TbLogs } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import HomePageComponent from "../components/HomePageComponent";
+import LeaderboardComponent from "../components/LeaderBoardComponent";
 import { AiOutlineProduct } from "react-icons/ai";
 
-const Dashboard = () => {
-  const { totalLogs, retrieveLogs } = useContext(LogsContext);
+const LeaderBoard = () => {
+  const { retrieveLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
 
@@ -118,37 +117,11 @@ const Dashboard = () => {
         </aside>
 
         <main className="flex-1 p-4">
-          <div className="flex flex-col lg:flex-row gap-4 mb-6">
-            <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-4xl md:text-5xl text-blue-900 flex gap-2 flex-col">
-                <span>
-                  Welcome <br />
-                </span>
-                <span>
-                  <strong>{user.name}</strong>
-                </span>
-              </h2>
-            </div>
-
-            <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-4xl md:text-5xl text-blue-900">
-                Total Logs <br />
-                <strong>{totalLogs}</strong>
-              </h2>
-              <Link
-                to="/logs"
-                className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
-              >
-                See logs
-              </Link>
-            </div>
-          </div>
-
-          <HomePageComponent />
+          <LeaderboardComponent />
         </main>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default LeaderBoard;

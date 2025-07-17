@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import AdminUsersTable from "./components/AdminUsersTable";
 import ChangePassword from "./pages/ChangePassword";
+import Products from "./pages/Products";
+import LeaderBoard from "./pages/LeaderBoard";
 
 function App() {
   return (
@@ -50,6 +52,12 @@ function App() {
                 </Route>
                 <Route path="/profile/change-password" element={<IsLoggedIn />}>
                   <Route index element={<ChangePassword />} />
+                </Route>
+                <Route path="/products" element={<IsLoggedIn />}>
+                  <Route index element={<Products />} />
+                </Route>
+                <Route path="/leaderboard" element={<IsLoggedIn />}>
+                  <Route index element={<LeaderBoard />} />
                 </Route>
 
                 <Route path="*" element={<h1>Not Found</h1>} />
