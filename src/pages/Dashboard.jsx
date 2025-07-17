@@ -9,7 +9,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { TbLogs } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import HomePageComponent from "../components/HomePageComponent";
 import { AiOutlineProduct } from "react-icons/ai";

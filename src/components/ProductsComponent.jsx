@@ -1,6 +1,5 @@
 import {
   Search,
-  Filter,
   Eye,
   Star,
   ShoppingCart,

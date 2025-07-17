@@ -1,13 +1,4 @@
-import {
-  Trophy,
-  TrendingUp,
-  Users,
-  Eye,
-  Home,
-  Package,
-  BarChart3,
-  User,
-} from "lucide-react";
+import { Trophy, TrendingUp, Users, Eye } from "lucide-react";
 import React from "react";
 import MobileNavBottom from "./MobileNavBottomLeaderboard";
 

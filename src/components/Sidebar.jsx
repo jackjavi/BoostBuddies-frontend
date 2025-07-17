@@ -16,7 +16,7 @@ const Sidebar = ({
   user,
   setMobileMenuOpen,
 }) => {
-  const isAdmin = user && user.role === "admin";
+  // const isAdmin = user && user.role === "admin";
   return (
     <aside
       className={`fixed top-0 left-0 w-[240px] h-full bg-indigo-50 transform ${
