@@ -42,7 +42,7 @@ function SignupPage() {
   const { username, email, password } = formData;
 
   return (
-    <main className="bg-indigo-50">
+    <main className="bg-indigo-50 p-20">
       <form
         className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
         onSubmit={handleSubmit}
