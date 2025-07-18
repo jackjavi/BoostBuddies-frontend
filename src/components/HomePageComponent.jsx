@@ -131,7 +131,7 @@ const HomePageComponent = ({ referralCode }) => {
               </div>
 
               <p className="text-sm text-gray-600 mt-3">
-                Earn $50 for each friend who signs up using your link!
+                Earn 150 KSH for each friend who signs up using your link!
               </p>
             </div>
 
@@ -229,6 +229,29 @@ const HomePageComponent = ({ referralCode }) => {
                 <div className="text-green-600 font-semibold">+$2</div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Badge Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
+            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
+            <div className="font-semibold text-sm sm:text-base">Gold Badge</div>
+            <div className="text-xs sm:text-sm opacity-90">Top 3 position</div>
+          </div>
+          <div className="bg-gradient-to-r from-gray-400 to-gray-500 rounded-xl p-4 sm:p-6 text-center text-white">
+            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
+            <div className="font-semibold text-sm sm:text-base">
+              Silver Badge
+            </div>
+            <div className="text-xs sm:text-sm opacity-90">Top 10 position</div>
+          </div>
+          <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl p-4 sm:p-6 text-center text-white">
+            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
+            <div className="font-semibold text-sm sm:text-base">
+              Bronze Badge
+            </div>
+            <div className="text-xs sm:text-sm opacity-90">Top 25 position</div>
           </div>
         </div>
       </main>
