@@ -7,7 +7,7 @@ function SignupPage() {
     username: "",
     email: "",
     password: "",
-    referredBy: null,
+    referredBy: "", // optional referral code input
   });
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -25,18 +25,12 @@ function SignupPage() {
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/register`,
         formData
       );
-      console.log(response);
       if (response.status === 201) {
-        setTimeout(() => {
-          navigate("/login");
-        }, 200);
+        setTimeout(() => navigate("/login"), 200);
       }
     } catch (error) {
-      console.log(error);
-      setErrorMessage(error.message);
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
+      setErrorMessage(error.response?.data?.message || error.message);
+      setTimeout(() => setErrorMessage(""), 3000);
     }
   }
 
@@ -49,43 +43,41 @@ function SignupPage() {
         onSubmit={handleSubmit}
       >
         <div className="w-full">
-          <label htmlFor="username">Username: </label>
+          <label htmlFor="username">Username:</label>
           <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="text"
             id="username"
             value={username}
             onChange={handleChange}
+            className="input"
           />
         </div>
         <div className="w-full">
-          <label htmlFor="email">Email: </label>
+          <label htmlFor="email">Email:</label>
           <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="email"
             id="email"
+            type="email"
             value={email}
             onChange={handleChange}
+            className="input"
           />
         </div>
         <div className="w-full">
-          <label htmlFor="password">Password: </label>
+          <label htmlFor="password">Password:</label>
           <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="password"
             id="password"
+            type="password"
             value={password}
             onChange={handleChange}
+            className="input"
           />
         </div>
         <div className="w-full">
-          <label htmlFor="referredBy">Referral Code (optional): </label>
+          <label htmlFor="referredBy">Referral Code (optional):</label>
           <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="text"
             id="referredBy"
-            value={formData.referredBy}
+            value={referredBy}
             onChange={handleChange}
+            className="input"
           />
         </div>
 
@@ -93,11 +85,12 @@ function SignupPage() {
 
         <p>
           Already have an account?{" "}
-          <Link to={"/login"}>
+          <Link to="/login">
             <span className="underline">Login.</span>
           </Link>
         </p>
-        <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold ">
+
+        <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold">
           Signup
         </button>
       </form>
