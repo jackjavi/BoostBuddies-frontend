@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { TrendingUp, Users, Eye, Trophy, Share2, Copy } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
 
-const HomePageComponent = () => {
+const HomePageComponent = ({ referralCode }) => {
+  const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(referralCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleShareLink = () => {
+    const url = `${window.location.origin}/register?ref=${referralCode}`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Join BoostBuddies!",
+        text: "Sign up and earn together 🚀",
+        url,
+      });
+    } else {
+      alert("Sharing not supported in this browser.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
@@ -83,22 +106,27 @@ const HomePageComponent = () => {
                 </label>
                 <div className="flex items-center space-x-2">
                   <div className="bg-gray-50 border rounded-lg px-3 py-2 text-gray-900 font-mono text-sm flex-1">
-                    REF123ABC
+                    {referralCode}
                   </div>
-                  <button className="p-2 text-gray-600 hover:text-gray-900 border rounded-lg hover:bg-gray-50">
+                  <button
+                    onClick={handleCopyCode}
+                    className="p-2 text-gray-600 hover:text-gray-900 border rounded-lg hover:bg-gray-50"
+                  >
                     <Copy className="w-4 h-4" />
                   </button>
+                  {copied && (
+                    <span className="text-sm text-green-600 ml-2">Copied!</span>
+                  )}
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <button className="flex-1 bg-gray-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2">
+                <button
+                  onClick={handleShareLink}
+                  className="flex-1 bg-gray-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2"
+                >
                   <Share2 className="w-4 h-4" />
                   <span>Share Link</span>
-                </button>
-                <button className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                  <Copy className="w-4 h-4" />
-                  <span>Copy</span>
                 </button>
               </div>
 

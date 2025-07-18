@@ -16,6 +16,7 @@ const Dashboard = () => {
   const { totalLogs, retrieveLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
+  const referralCode = user?.referralCode || "N/A";
 
   useEffect(() => {
     fetchUsers();
@@ -136,7 +137,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <HomePageComponent />
+          <HomePageComponent referralCode={referralCode} />
         </main>
       </div>
     </div>

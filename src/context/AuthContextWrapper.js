@@ -30,6 +30,7 @@ function AuthContextWrapper({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      console.log(`User authenticated:`, response.data.user);
       setUser(response.data.user);
       setIsLoading(false);
       setIsLoggedIn(true);
