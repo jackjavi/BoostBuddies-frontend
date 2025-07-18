@@ -27,7 +27,7 @@ const HomePageComponent = () => {
               </span>
               <TrendingUp className="w-5 h-5 text-purple-200" />
             </div>
-            <div className="text-2xl font-bold">$2450</div>
+            <div className="text-2xl font-bold">Ksh 2450</div>
           </div>
 
           {/* Referral Earnings */}
@@ -38,7 +38,7 @@ const HomePageComponent = () => {
               </span>
               <Users className="w-5 h-5 text-blue-200" />
             </div>
-            <div className="text-2xl font-bold">$1800</div>
+            <div className="text-2xl font-bold">Ksh 1800</div>
           </div>
 
           {/* View Earnings */}
@@ -49,7 +49,7 @@ const HomePageComponent = () => {
               </span>
               <Eye className="w-5 h-5 text-green-200" />
             </div>
-            <div className="text-2xl font-bold">$650</div>
+            <div className="text-2xl font-bold">Ksh 650</div>
           </div>
 
           {/* Global Rank */}
