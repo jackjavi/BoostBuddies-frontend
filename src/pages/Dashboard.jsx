@@ -2,8 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
-// import LastCard from "./LastCard";
-import { MdAdminPanelSettings } from "react-icons/md";
 import { HiHome } from "react-icons/hi2";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
@@ -12,6 +10,7 @@ import { CiSettings } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import HomePageComponent from "../components/HomePageComponent";
 import { AiOutlineProduct } from "react-icons/ai";
+import { MdOutlineLeaderboard } from "react-icons/md";
 
 const Dashboard = () => {
   const { totalLogs, retrieveLogs } = useContext(LogsContext);
@@ -31,7 +30,7 @@ const Dashboard = () => {
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
-              to="#"
+              to="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -49,25 +48,19 @@ const Dashboard = () => {
               <span className="material-icons-outlined mr-2">
                 <AiOutlineProduct />
               </span>
-              Logs
+              Products
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
             </Link>
             <Link
-              to={user.role === "admin" ? "/admin/users" : "#"}
-              className={`flex items-center text-gray-600 ${
-                user.role === "admin"
-                  ? "hover:text-indigo-800"
-                  : "cursor-not-allowed opacity-50"
-              } py-4 transition-all duration-300 ${
-                user.role === "admin" ? "hover:translate-x-1" : ""
-              }`}
+              to="/leaderboard"
+              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
-                <MdAdminPanelSettings />
+                <MdOutlineLeaderboard />
               </span>
-              Admin Panel
+              Leaderboard
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
