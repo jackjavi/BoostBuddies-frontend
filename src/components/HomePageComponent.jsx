@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { TrendingUp, Users, Eye, Trophy, Share2, Copy } from "lucide-react";
+import {
+  TrendingUp,
+  Users,
+  Eye,
+  Trophy,
+  Share2,
+  Copy,
+  Milestone,
+} from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
 
 const HomePageComponent = ({ user }) => {
@@ -80,18 +88,19 @@ const HomePageComponent = ({ user }) => {
             </div>
           </div>
 
-          {/* Global Rank */}
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+          {/* Registration Earnings */}
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-orange-100 text-sm font-medium">
-                Global Rank
+              <span className="text-green-100 text-sm font-medium">
+                Registration Earnings
               </span>
-              <Trophy className="w-5 h-5 text-orange-200" />
+              <Milestone className="w-5 h-5 text-green-200" />
             </div>
-            <div className="text-2xl font-bold">#3</div>
+            <div className="text-2xl font-bold">
+              Ksh {user.payments.registration.amount}
+            </div>
           </div>
         </div>
-
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
