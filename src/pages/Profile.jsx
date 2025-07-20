@@ -41,10 +41,10 @@ const Profile = () => {
   const showCompleteProfileButton = !profilePicture || !dateOfBirth;
 
   return (
-    <div className="bg-indigo-50 overflow-x-hidden min-h-screen md:h-full ">
-      <div className="pt-16 md:pt-32 pb-8 max-w-7xl flex md:gap-8 mx-auto">
+    <div className="bg-indigo-50 overflow-x-hidden min-h-screen lg:h-full ">
+      <div className="pt-24 md:pt-32 pb-8 max-w-7xl flex md:gap-8 mx-auto">
         <aside
-          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
+          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden lg:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
@@ -132,7 +132,7 @@ const Profile = () => {
               <h2 className="text-3xl font-semibold hidden lg:block text-gray-800">
                 My Profile
               </h2>
-              <p className="mt-2 hidden md:block text-gray-500 text-sm">
+              <p className="mt-2 hidden lg:block text-gray-500 text-sm">
                 Account details and preferences.
               </p>
 
