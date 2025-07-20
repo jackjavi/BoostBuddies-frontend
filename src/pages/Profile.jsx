@@ -44,7 +44,7 @@ const Profile = () => {
     <div className="bg-indigo-50 overflow-x-hidden min-h-screen lg:h-full ">
       <div className="pt-24 md:pt-32 pb-8 max-w-7xl flex md:gap-8 mx-auto">
         <aside
-          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden lg:block`}
+          className={`sidebar fixed md:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] md:h-auto transform  md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto px-4 hidden md:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
@@ -127,16 +127,16 @@ const Profile = () => {
           </div>
         </aside>
         <main className="flex-1 px-4 ">
-          <div className="max-w-4xl mx-auto ">
-            <div className="flex flex-col flex-auto  md:px-12 ">
+          <div className="flex-1 mx-auto ">
+            <div className="flex flex-col flex-auto   ">
               <h2 className="text-3xl font-semibold hidden lg:block text-gray-800">
                 My Profile
               </h2>
-              <p className="mt-2 hidden lg:block text-gray-500 text-sm">
+              <p className="mt-2 hidden md:block text-bold text-gray-900 text-sm">
                 Account details and preferences.
               </p>
 
-              <div className="md:mt-8 bg-white min-h-screen lg:h-full rounded-xl shadow-lg p-8 flex flex-col lg:flex-row gap-12">
+              <div className="md:mt-8 bg-white rounded-xl shadow-lg p-8 flex flex-1 flex-col md:flex-row gap-12">
                 {/* Left Section: Profile Details */}
                 <div className="md:flex-1 space-y-6">
                   <div>
@@ -193,7 +193,7 @@ const Profile = () => {
                 </div>
 
                 {/* Right Section: Profile Picture */}
-                <div className="flex-shrink-0 md:w-48 flex flex-col md:justify-between gap-8 md:gap-0 items-center">
+                <div className="flex-shrink-0 md:w-48 flex flex-col md:justify-between gap-8 items-center h-full">
                   <div className="relative w-32 h-32 rounded-full overflow-hidden shadow-lg">
                     {profilePicture ? (
                       <img
