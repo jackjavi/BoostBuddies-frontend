@@ -23,10 +23,10 @@ const Dashboard = () => {
   }, [fetchUsers, retrieveLogs]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8 px">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  lg:pt-16 pt-8 ">
       <div className="pt-16 max-w-7xl mx-auto flex">
         <aside
-          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
+          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden lg:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
@@ -109,34 +109,36 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="flex-1 p-4 max-w-4xl">
-          <div className="flex flex-col lg:flex-row gap-4 mb-6">
-            <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col">
-                <span>
-                  Welcome <br />
-                </span>
-                <span>
-                  <strong>{user.name}</strong>
-                </span>
-              </h2>
+        <main className="flex-1 p-4">
+          <div className=" flex-1 flex-col">
+            <div className="flex flex-col lg:flex-row gap-4 mb-6  mx-auto">
+              <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
+                <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col">
+                  <span>
+                    Welcome <br />
+                  </span>
+                  <span>
+                    <strong>{user.name}</strong>
+                  </span>
+                </h2>
+              </div>
+
+              <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
+                <h2 className="text-2xl lg:text-3xl text-blue-900">
+                  Total Logs <br />
+                  <strong>{totalLogs}</strong>
+                </h2>
+                <Link
+                  to="/logs"
+                  className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
+                >
+                  See logs
+                </Link>
+              </div>
             </div>
 
-            <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-2xl lg:text-3xl text-blue-900">
-                Total Logs <br />
-                <strong>{totalLogs}</strong>
-              </h2>
-              <Link
-                to="/logs"
-                className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
-              >
-                See logs
-              </Link>
-            </div>
+            <HomePageComponent user={user} />
           </div>
-
-          <HomePageComponent user={user} />
         </main>
       </div>
     </div>

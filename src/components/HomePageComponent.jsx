@@ -36,12 +36,8 @@ const HomePageComponent = ({ user }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
+      <main className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          {/* <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, John Doe! 👋
-          </h1> */}
           <p className="text-gray-600">
             Track your earnings and grow your network
           </p>
@@ -283,7 +279,7 @@ const HomePageComponent = ({ user }) => {
       <MobileNavBottom />
 
       {/* Mobile bottom padding to account for fixed nav */}
-      <div className="md:hidden h-20"></div>
+      <div className="lg:hidden h-20"></div>
     </div>
   );
 };
