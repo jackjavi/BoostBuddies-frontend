@@ -23,7 +23,7 @@ const Dashboard = () => {
   }, [fetchUsers, retrieveLogs]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8 px">
       <div className="pt-16 max-w-7xl mx-auto flex">
         <aside
           className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
@@ -109,10 +109,10 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="flex-1 p-4">
+        <main className="flex-1 p-4 max-w-4xl">
           <div className="flex flex-col lg:flex-row gap-4 mb-6">
             <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-4xl md:text-5xl text-blue-900 flex gap-2 flex-col">
+              <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col">
                 <span>
                   Welcome <br />
                 </span>
@@ -123,7 +123,7 @@ const Dashboard = () => {
             </div>
 
             <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
-              <h2 className="text-4xl md:text-5xl text-blue-900">
+              <h2 className="text-2xl lg:text-3xl text-blue-900">
                 Total Logs <br />
                 <strong>{totalLogs}</strong>
               </h2>

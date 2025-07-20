@@ -13,7 +13,7 @@ const AsideBar = () => {
   const { disconnect } = useContext(AuthContext);
   return (
     <aside
-      className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto px-4 hidden md:block`}
+      className={`sidebar fixed md:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto px-4 hidden md:block`}
     >
       <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
         <Link

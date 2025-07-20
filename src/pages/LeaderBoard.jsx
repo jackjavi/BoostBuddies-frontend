@@ -26,11 +26,11 @@ const LeaderBoard = () => {
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">
       <div className="pt-16 max-w-7xl mx-auto flex">
         <aside
-          className={`sidebar fixed lg:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
+          className={`sidebar fixed md:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] lg:h-auto transform  lg:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             <Link
-              to="#"
+              to="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
