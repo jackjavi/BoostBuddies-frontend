@@ -89,7 +89,7 @@ const HomePageComponent = ({ user }) => {
           </div>
 
           {/* Registration Earnings */}
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-green-100 text-sm font-medium">
                 Registration Earnings
