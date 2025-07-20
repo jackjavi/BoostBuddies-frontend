@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { TrendingUp, Users, Eye, Trophy, Share2, Copy } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
 
-const HomePageComponent = ({ referralCode }) => {
+const HomePageComponent = ({ user }) => {
   const [copied, setCopied] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(referralCode).then(() => {
+    navigator.clipboard.writeText(user.referralCode).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
   const handleShareLink = () => {
-    const url = `${window.location.origin}/register?ref=${referralCode}`;
+    const url = `${window.location.origin}/register?ref=${user.referralCode}`;
     if (navigator.share) {
       navigator.share({
         title: "Join BoostBuddies!",
@@ -50,7 +49,9 @@ const HomePageComponent = ({ referralCode }) => {
               </span>
               <TrendingUp className="w-5 h-5 text-purple-200" />
             </div>
-            <div className="text-2xl font-bold">Ksh 2450</div>
+            <div className="text-2xl font-bold">
+              Ksh {user ? user.payments.totalAmount : 0}
+            </div>
           </div>
 
           {/* Referral Earnings */}
@@ -61,7 +62,9 @@ const HomePageComponent = ({ referralCode }) => {
               </span>
               <Users className="w-5 h-5 text-blue-200" />
             </div>
-            <div className="text-2xl font-bold">Ksh 1800</div>
+            <div className="text-2xl font-bold">
+              Ksh {user.payments.referrals.amount}
+            </div>
           </div>
 
           {/* View Earnings */}
@@ -72,7 +75,9 @@ const HomePageComponent = ({ referralCode }) => {
               </span>
               <Eye className="w-5 h-5 text-green-200" />
             </div>
-            <div className="text-2xl font-bold">Ksh 650</div>
+            <div className="text-2xl font-bold">
+              Ksh {user.payments.views.amount}
+            </div>
           </div>
 
           {/* Global Rank */}
@@ -106,7 +111,7 @@ const HomePageComponent = ({ referralCode }) => {
                 </label>
                 <div className="flex items-center space-x-2">
                   <div className="bg-gray-50 border rounded-lg px-3 py-2 text-gray-900 font-mono text-sm flex-1">
-                    {referralCode}
+                    {user.referralCode}
                   </div>
                   <button
                     onClick={handleCopyCode}
