@@ -49,16 +49,16 @@ const HomePageComponent = ({ user }) => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {/* Total Earnings */}
+          {/* Registration Earnings */}
           <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-purple-100 text-sm font-medium">
-                Total Earnings
+              <span className="text-green-100 text-sm font-medium">
+                Registration Earnings
               </span>
-              <TrendingUp className="w-5 h-5 text-purple-200" />
+              <Milestone className="w-5 h-5 text-green-200" />
             </div>
             <div className="text-2xl font-bold">
-              Ksh {user ? user.payments.totalAmount : 0}
+              Ksh {user.payments.registration.amount}
             </div>
           </div>
 
@@ -88,16 +88,16 @@ const HomePageComponent = ({ user }) => {
             </div>
           </div>
 
-          {/* Registration Earnings */}
+          {/* Total Earnings */}
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-green-100 text-sm font-medium">
-                Registration Earnings
+              <span className="text-purple-100 text-sm font-medium">
+                Total Earnings
               </span>
-              <Milestone className="w-5 h-5 text-green-200" />
+              <TrendingUp className="w-5 h-5 text-purple-200" />
             </div>
             <div className="text-2xl font-bold">
-              Ksh {user.payments.registration.amount}
+              Ksh {user ? user.payments.totalAmount : 0}
             </div>
           </div>
         </div>
