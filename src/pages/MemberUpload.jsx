@@ -66,7 +66,7 @@ function MemberUpload() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
+      className="px-16 md:max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen"
     >
       <div className="w-full">
         <label htmlFor="dateOfBirth">Date of Birth:</label>
