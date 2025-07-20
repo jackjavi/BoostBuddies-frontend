@@ -31,8 +31,8 @@ function LoginPage() {
         await authenticateUser();
       }
     } catch (error) {
-      console.log(error);
-      setErrorMessage(error.message);
+      console.log(error?.response?.data?.error?.message);
+      setErrorMessage(error?.response?.data?.error?.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
