@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function SignupPage() {
     referredBy: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(event) {
@@ -20,6 +22,7 @@ function SignupPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/register`,
@@ -32,11 +35,15 @@ function SignupPage() {
         }, 200);
       }
     } catch (error) {
-      console.log(error?.response?.data?.error?.message);
-      setErrorMessage(error?.response?.data?.error?.message);
+      console.log(
+        `Signup error log ${error?.response?.data?.error?.message} || ${error.message}`
+      );
+      setErrorMessage(error?.response?.data?.error?.message || error.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -84,20 +91,32 @@ function SignupPage() {
             className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
             type="text"
             id="referredBy"
-            value={formData.referredBy}
+            value={referredBy}
             onChange={handleChange}
           />
         </div>
 
-        <p className="error">{errorMessage}</p>
-
-        <p>
-          Already have an account?{" "}
-          <Link to={"/login"}>
-            <span className="underline">Login.</span>
-          </Link>
-        </p>
-        <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold ">
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <>
+            <p className="error">{errorMessage}</p>
+            <p>
+              Already have an account?{" "}
+              <Link to={"/login"}>
+                <span className="underline">Login.</span>
+              </Link>
+            </p>
+          </>
+        )}
+        <button
+          className={`w-full p-2 rounded font-bold transition-colors ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-purple-500"
+          }`}
+          disabled={isLoading}
+        >
           Signup
         </button>
       </form>

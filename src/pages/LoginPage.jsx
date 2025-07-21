@@ -2,16 +2,16 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const { storeToken, authenticateUser } = useContext(AuthContext);
-
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(event) {
     const value = event.currentTarget.value;
@@ -21,6 +21,7 @@ function LoginPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`,
@@ -31,11 +32,15 @@ function LoginPage() {
         await authenticateUser();
       }
     } catch (error) {
-      console.log(error?.response?.data?.error?.message);
-      setErrorMessage(error?.response?.data?.error?.message);
+      console.log(
+        `Login error log ${error?.response?.data?.error?.message} || ${error.message}`
+      );
+      setErrorMessage(error?.response?.data?.error?.message || error.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -68,14 +73,27 @@ function LoginPage() {
           />
         </div>
 
-        <p className="error">{errorMessage}</p>
-        <p>
-          You don't have an account ?{" "}
-          <Link to={"/signup"}>
-            <span className="underline">Sign up</span>
-          </Link>
-        </p>
-        <button className="w-full p-2 rounded bg-green-600 hover:bg-purple-500 transition-colors font-bold ">
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div>
+            <p className="error">{errorMessage}</p>
+            <p>
+              You don't have an account ?{" "}
+              <Link to={"/signup"}>
+                <span className="underline">Sign up</span>
+              </Link>
+            </p>
+          </div>
+        )}
+        <button
+          className={`w-full p-2 rounded font-bold transition-colors ${
+            isLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-purple-500"
+          }`}
+          disabled={isLoading}
+        >
           Login
         </button>
       </form>
