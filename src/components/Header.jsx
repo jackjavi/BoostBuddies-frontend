@@ -22,12 +22,14 @@ const Header = () => {
           }`}
           onClick={toggleMobileMenu}
         >
-          <span className="material-icons-outlined text-2xl">menu</span>
+          <span className="material-icons-outlined text-md md:text-2xl">
+            menu
+          </span>
         </button>
         <div className="text-xl font-bold text-blue-900">
           <Link to="/">
             {/* <img src={mmmLogo} alt="logo" className="h-16 w-16 object-cover" /> */}
-            <span className="text-2xl">BoostBuddies</span>
+            <span className="text-md md:text-2xl">BoostBuddies</span>
           </Link>
         </div>
         {isLoggedIn ? (
@@ -62,13 +64,13 @@ const Header = () => {
             )}
           </div>
         ) : (
-          <div className="flex gap-4 items-center justify-center">
+          <div className="flex gap-4 items-center justify-center text-sm md:text-md">
             <Link to="/login" className="text-indigo-800 font-semibold">
               Login
             </Link>
             <Link
               to="/signup"
-              className="bg-indigo-800 text-white font-semibold px-4 py-1 rounded-md"
+              className="bg-indigo-800 text-white font-semibold px-4 py-1 rounded-md "
             >
               Sign Up
             </Link>
