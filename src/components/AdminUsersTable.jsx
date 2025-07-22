@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import dayjs from "dayjs";
 import AsideBar from "./AsideBar";
+import AdminPackagePayments from "./AdminPackagePayments";
 import { UsersContext } from "../context/UsersContextWrapper";
 
 const AdminUsersTable = () => {
@@ -20,12 +21,13 @@ const AdminUsersTable = () => {
   } = useContext(UsersContext);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden md:pt-36 pt-16">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden md:pt-32 pt-16">
       <div className="max-w-7xl mx-auto flex">
         <AsideBar />
 
-        <div className="bg-gray-50 flex-1 p-4 rounded-xl md:h-[75vh] h-screen overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-4 py-2">
+        <div className="bg-gray-50 flex-1 p-4 rounded-xl min-h-screen overflow-y-auto">
+          <AdminPackagePayments />
+          <div className="max-w-7xl mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-2xl font-bold text-indigo-800">
                 Manage Users
