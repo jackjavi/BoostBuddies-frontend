@@ -54,7 +54,7 @@ const Header = () => {
                       : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
                   }
                   alt={user.name}
-                  className="w-4 h-4 md:w-10 md:h-10 rounded-full transition-transform duration-300 hover:scale-110 object-cover"
+                  className="w-6 h-6 md:w-10 md:h-10 rounded-full transition-transform duration-300 hover:scale-110 object-cover"
                 />
               </Link>
             ) : (
