@@ -55,37 +55,77 @@ function AdminPackagePayments() {
           Manage User Payments
         </h1>
       </div>
-      <table className="min-w-full border mt-4">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="px-4 py-2 border">Name</th>
-            <th className="px-4 py-2 border">Email</th>
-            <th className="px-4 py-2 border">Paid?</th>
-            <th className="px-4 py-2 border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id} className="text-center">
-              <td className="px-4 py-2 border">{u.name}</td>
-              <td className="px-4 py-2 border">{u.email}</td>
-              <td className="px-4 py-2 border">{u.hasPaid ? "Yes" : "No"}</td>
-              <td className="px-4 py-2 border">
-                {!u.hasPaid ? (
-                  <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    onClick={() => openPackageModal(u.id)}
-                  >
-                    Confirm Payment
-                  </button>
-                ) : (
-                  <>{u.desiredPackage?.name || "—"}</>
-                )}
-              </td>
+
+      {/* Desktop table view */}
+      <div className="overflow-x-auto bg-white rounded-lg shadow-lg hidden md:block mt-4">
+        <table className="min-w-full border">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-2 border">Name</th>
+              <th className="px-4 py-2 border">Email</th>
+              <th className="px-4 py-2 border">Paid?</th>
+              <th className="px-4 py-2 border">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.id} className="text-center">
+                <td className="px-4 py-2 border">{u.name}</td>
+                <td className="px-4 py-2 border">{u.email}</td>
+                <td className="px-4 py-2 border">{u.hasPaid ? "Yes" : "No"}</td>
+                <td className="px-4 py-2 border">
+                  {!u.hasPaid ? (
+                    <button
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                      onClick={() => openPackageModal(u.id)}
+                    >
+                      Confirm Payment
+                    </button>
+                  ) : (
+                    <>{u.desiredPackage?.name || "—"}</>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Responsive card view for small screens */}
+      <div className="md:hidden space-y-4 mt-4">
+        {users.map((u) => (
+          <div
+            key={u.id}
+            className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2"
+          >
+            <div className="flex justify-between">
+              <span className="font-bold text-indigo-800">Name:</span>
+              <span>{u.name}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-bold text-indigo-800">Email:</span>
+              <span>{u.email}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-bold text-indigo-800">Paid:</span>
+              <span>{u.hasPaid ? "Yes" : "No"}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-indigo-800">Action:</span>
+              {!u.hasPaid ? (
+                <button
+                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                  onClick={() => openPackageModal(u.id)}
+                >
+                  Confirm Payment
+                </button>
+              ) : (
+                <span>{u.desiredPackage?.name || "—"}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Modal */}
       {showModal && (
