@@ -54,7 +54,7 @@ export const fetchUsersWithPaymentStatus = async () => {
 // Confirm package payment manually
 export const confirmPackagePayment = async (userId, packageId) => {
   try {
-    const response = await api.post("/api/v1/purchase", { packageId });
+    const response = await api.post("/api/v1/purchase", { userId, packageId });
     return response.data;
   } catch (error) {
     console.error("Error confirming payment:", error);
