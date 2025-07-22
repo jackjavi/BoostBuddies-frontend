@@ -136,14 +136,14 @@ const Profile = () => {
                 Account details and preferences.
               </p>
 
-              <div className="md:mt-8 bg-white rounded-xl shadow-lg p-8 flex flex-1 flex-col md:flex-row gap-12">
+              <div className="md:mt-8 bg-white md:rounded-xl shadow-lg p-8 flex flex-1 flex-col md:flex-row gap-12">
                 {/* Left Section: Profile Details */}
                 <div className="md:flex-1 space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-500">
                       Full Name
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
+                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
                       {name || "N/A"}
                     </p>
                   </div>
@@ -152,7 +152,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Email
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
+                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
                       {email || "N/A"}
                     </p>
                   </div>
@@ -161,7 +161,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Role
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
+                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
                       {role || "N/A"}
                     </p>
                   </div>
@@ -170,7 +170,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Date of Birth
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-gray-800 font-bold">
+                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
                       {dateOfBirth || "N/A"}
                     </p>
                   </div>
