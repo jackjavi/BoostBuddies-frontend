@@ -50,7 +50,7 @@ function SignupPage() {
   const { username, email, password, referredBy } = formData;
 
   return (
-    <main className="bg-indigo-50 p-20">
+    <main className="bg-indigo-50 p-10">
       <form
         className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
         onSubmit={handleSubmit}

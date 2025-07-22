@@ -47,7 +47,7 @@ function LoginPage() {
   const { password, email } = formData;
 
   return (
-    <main className="bg-indigo-50 p-20">
+    <main className="bg-indigo-50 p-10">
       <form
         onSubmit={handleSubmit}
         className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full "
