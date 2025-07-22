@@ -129,10 +129,10 @@ const Profile = () => {
         <main className="flex-1 px-4 ">
           <div className="flex-1 mx-auto ">
             <div className="flex flex-col flex-auto   ">
-              <h2 className="text-3xl font-semibold hidden lg:block text-gray-800">
+              <h2 className="text-lg md:text-xl font-semibold hidden lg:block text-indigo-800">
                 My Profile
               </h2>
-              <p className="mt-2 hidden md:block text-bold text-gray-900 text-sm">
+              <p className="mt-2 hidden md:block text-bold text-indigo-900 text-sm">
                 Account details and preferences.
               </p>
 
@@ -143,7 +143,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Full Name
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
+                    <p className="mt-1 text-sm md:text-md text-indigo-800 font-bold">
                       {name || "N/A"}
                     </p>
                   </div>
@@ -152,7 +152,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Email
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
+                    <p className="mt-1 text-sm md:text-md text-indigo-800 font-bold">
                       {email || "N/A"}
                     </p>
                   </div>
@@ -161,7 +161,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Role
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
+                    <p className="mt-1 text-sm md:text-md text-indigo-800 font-bold">
                       {role || "N/A"}
                     </p>
                   </div>
@@ -170,7 +170,7 @@ const Profile = () => {
                     <label className="block text-sm font-medium text-gray-500">
                       Date of Birth
                     </label>
-                    <p className="mt-1 text-lg md:text-xl text-indigo-800 font-bold">
+                    <p className="mt-1 text-sm md:text-md text-indigo-800 font-bold">
                       {dateOfBirth || "N/A"}
                     </p>
                   </div>
