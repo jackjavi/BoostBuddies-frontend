@@ -211,7 +211,7 @@ const EditProfile = () => {
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm text-indigo-800"
                 />
               </div>
 
@@ -229,7 +229,7 @@ const EditProfile = () => {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm text-indigo-800"
                 />
               </div>
 
@@ -250,7 +250,7 @@ const EditProfile = () => {
                         id="dateOfBirth"
                         value={formData.dateOfBirth}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm text-indigo-800"
                       />
                     </div>
 
@@ -267,7 +267,7 @@ const EditProfile = () => {
                         name="profilePicture"
                         id="profilePicture"
                         onChange={handleFileChange}
-                        className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-sky-100 file:text-sky-700 hover:file:bg-sky-200"
+                        className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:text-indigo-800 file:font-semibold file:bg-sky-100 hover:file:bg-sky-200"
                       />
                       {formData.profilePicture &&
                         typeof formData.profilePicture === "string" && (
