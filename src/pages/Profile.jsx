@@ -223,11 +223,11 @@ const Profile = () => {
                   {/* Admin Actions */}
                   {isAdmin && (
                     <Link
-                      to="/admin/users"
+                      to="/admin"
                       className="mt-6 flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       <BsShieldLock size={20} />
-                      Manage Users
+                      Admin Dash
                     </Link>
                   )}
                 </div>

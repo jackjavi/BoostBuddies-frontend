@@ -12,10 +12,12 @@ import Dashboard from "./pages/Dashboard";
 import SystemLogsTable from "./components/SystemLogsTable";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
-import AdminUsersTable from "./components/AdminUsersTable";
 import ChangePassword from "./pages/ChangePassword";
 import Products from "./pages/Products";
 import LeaderBoard from "./pages/LeaderBoard";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminUsersTable from "./pages/AdminUsersTable";
+import AdminManagePayments from "./pages/AdminManagePayments";
 
 function App() {
   return (
@@ -47,8 +49,14 @@ function App() {
                 <Route path="/logs" element={<IsLoggedIn />}>
                   <Route index element={<SystemLogsTable />} />
                 </Route>
-                <Route path="/admin/users" element={<IsLoggedIn />}>
+                <Route path="/admin" element={<IsLoggedIn />}>
+                  <Route index element={<AdminDashboard />} />
+                </Route>
+                <Route path="/admin/manage-users" element={<IsLoggedIn />}>
                   <Route index element={<AdminUsersTable />} />
+                </Route>
+                <Route path="/admin/manage-payments" element={<IsLoggedIn />}>
+                  <Route index element={<AdminManagePayments />} />
                 </Route>
                 <Route path="/profile/change-password" element={<IsLoggedIn />}>
                   <Route index element={<ChangePassword />} />
