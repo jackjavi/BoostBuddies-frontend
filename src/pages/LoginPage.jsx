@@ -106,17 +106,25 @@ function LoginPage() {
     }
     try {
       setIsLoading(true);
-      await axios.post(
+      const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/reset-password`,
         { email, otp, newPassword }
       );
-      setSuccessMessage("Password reset successful. You can now log in.");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
+
+      if (res.status === 200) {
+        alert("Password reset successful. You can now log in.");
+        setSuccessMessage("Password reset successful. You can now log in.");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
+      }
       setShowResetModal(false);
     } catch (error) {
-      setResetPassError("Reset failed. Check OTP and try again.");
+      setTimeout(() => {
+        setSuccessMessage("Reset failed. Check OTP and try again.");
+      }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -185,7 +193,7 @@ function LoginPage() {
       {/* Forgot Password Modal */}
       {showForgotModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <form className="bg-white rounded-lg shadow-lg p-6 w-96">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
             <h2 className="text-lg font-bold mb-4">Forgot Password</h2>
             <input
               type="email"
@@ -198,7 +206,7 @@ function LoginPage() {
               <p className="error text-[tomato]">{forgotPassError}</p>
             )}
             {successMessage && (
-              <p className="error text-indigo-600">{successMessage}</p>
+              <p className=" text-green-600">{successMessage}</p>
             )}
             {isLoading ? (
               <Spinner />
@@ -218,7 +226,7 @@ function LoginPage() {
                 </button>
               </>
             )}
-          </form>
+          </div>
         </div>
       )}
 
