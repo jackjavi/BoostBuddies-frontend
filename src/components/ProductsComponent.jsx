@@ -99,7 +99,7 @@ export default function ProductsComponent() {
         );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 rounded-xl">
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8">
         {/* Header Section */}

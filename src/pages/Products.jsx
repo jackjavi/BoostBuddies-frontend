@@ -23,8 +23,8 @@ const Dashboard = () => {
   }, [fetchUsers, retrieveLogs]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">
-      <div className="pt-16 max-w-7xl mx-auto flex">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-32 pt-16 ">
+      <div className="max-w-7xl mx-auto flex">
         <aside
           className={`sidebar fixed md:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] md:h-auto transform  md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
         >
