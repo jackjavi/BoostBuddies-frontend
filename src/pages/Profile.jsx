@@ -41,7 +41,7 @@ const Profile = () => {
   const showCompleteProfileButton = !profilePicture || !dateOfBirth;
 
   return (
-    <div className="bg-indigo-50 overflow-x-hidden min-h-screen lg:h-full ">
+    <div className="bg-indigo-50 overflow-x-hidden min-h-screen lg:h-full">
       <div className="pt-24 md:pt-32 pb-8 max-w-7xl flex md:gap-8 mx-auto">
         <aside
           className={`sidebar fixed md:static w-[240px] bg-indigo-50 h-[calc(100vh-4rem)] md:h-auto transform  md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto px-4 hidden md:block`}
@@ -128,7 +128,7 @@ const Profile = () => {
         </aside>
         <main className="flex-1 px-4 ">
           <div className="flex-1 mx-auto ">
-            <div className="flex flex-col flex-auto   ">
+            <div className="flex flex-col flex-auto">
               <h2 className="text-lg md:text-xl font-semibold hidden lg:block text-indigo-800">
                 My Profile
               </h2>
@@ -136,7 +136,7 @@ const Profile = () => {
                 Account details and preferences.
               </p>
 
-              <div className="md:mt-8 bg-white md:rounded-xl shadow-lg p-8 flex flex-1 flex-col md:flex-row gap-12">
+              <div className="md:mt-8 bg-white-smoke md:rounded-xl shadow-lg p-8 flex flex-1 flex-col md:flex-row gap-12">
                 {/* Left Section: Profile Details */}
                 <div className="md:flex-1 space-y-6">
                   <div>
