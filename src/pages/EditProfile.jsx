@@ -178,7 +178,7 @@ const EditProfile = () => {
         </aside>
         <main className="mx-auto flex-1 flex-col px-4 h-full">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8">
-            <div className="flex-1 justify-between ">
+            <div className="flex-1 flex justify-between ">
               <div className="flex flex-col  ">
                 <h2 className="text-lg font-medium leading-6 text-gray-900">
                   Edit Profile
@@ -211,7 +211,7 @@ const EditProfile = () => {
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm text-indigo-800"
+                  className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 text-md  text-indigo-800"
                 />
               </div>
 
@@ -229,7 +229,7 @@ const EditProfile = () => {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm text-indigo-800"
+                  className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 text-md text-indigo-800"
                 />
               </div>
 
