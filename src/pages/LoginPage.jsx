@@ -16,6 +16,8 @@ function LoginPage() {
 
   const { storeToken, authenticateUser } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
+  const [forgotPassError, setForgotPassError] = useState("");
+  const [resetPassError, setResetPassError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,9 +54,9 @@ function LoginPage() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!forgotEmail || !emailRegex.test(forgotEmail)) {
-      setErrorMessage("Please enter a valid email address.");
+      setForgotPassError("Please enter a valid email address.");
       setTimeout(() => {
-        setErrorMessage("");
+        setForgotPassError("");
         setForgotEmail("");
       }, 3000);
       return;
@@ -72,15 +74,15 @@ function LoginPage() {
       }
       setShowResetModal(true);
     } catch (error) {
-      setErrorMessage("Failed to send email. Check address and try again.");
+      setForgotPassError("Failed to send email. Check address and try again.");
       setTimeout(() => {
-        setErrorMessage("");
+        setForgotPassError("");
         setForgotEmail("");
       }, 3000);
     } finally {
       setIsLoading(false);
       setTimeout(() => {
-        setErrorMessage("");
+        setForgotPassError("");
         setForgotEmail("");
       }, 3000);
     }
@@ -89,16 +91,16 @@ function LoginPage() {
   async function handleResetPassword() {
     const { email, otp, newPassword, confirmPassword } = resetData;
     if (!email || !otp || !newPassword || !confirmPassword) {
-      setErrorMessage("Missing required fields.");
+      setResetPassError("Missing required fields.");
       setTimeout(() => {
-        setErrorMessage("");
+        setResetPassError("");
       }, 3000);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setErrorMessage("Passwords do not match.");
+      setResetPassError("Passwords do not match.");
       setTimeout(() => {
-        setErrorMessage("");
+        setResetPassError("");
       }, 3000);
       return;
     }
@@ -114,7 +116,7 @@ function LoginPage() {
       }, 3000);
       setShowResetModal(false);
     } catch (error) {
-      setErrorMessage("Reset failed. Check OTP and try again.");
+      setResetPassError("Reset failed. Check OTP and try again.");
     }
   }
 
@@ -158,11 +160,11 @@ function LoginPage() {
           <Spinner />
         ) : (
           <div className="text-center">
-            <p className="error text-red-600">{errorMessage}</p>
+            <p className="error text-[tomato]">{errorMessage}</p>
             <p>
               Don’t have an account?{" "}
               <Link to="/signup">
-                <span className="underline text-blue-600">Sign up</span>
+                <span className="underline text-indigo-600">Sign up</span>
               </Link>
             </p>
           </div>
@@ -172,7 +174,7 @@ function LoginPage() {
           className={`w-full p-2 rounded font-bold transition-colors ${
             isLoading
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-purple-500"
+              : "bg-indigo-600 hover:bg-purple-500"
           }`}
           disabled={isLoading}
         >
@@ -192,18 +194,18 @@ function LoginPage() {
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
             />
-            {errorMessage && (
-              <p className="error text-red-600">{errorMessage}</p>
+            {forgotPassError && (
+              <p className="error text-[tomato]">{forgotPassError}</p>
             )}
             {successMessage && (
-              <p className="error text-green-600">{errorMessage}</p>
+              <p className="error text-indigo-600">{successMessage}</p>
             )}
             {isLoading ? (
               <Spinner />
             ) : (
               <>
                 <button
-                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                  className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-blue-700"
                   onClick={handleForgotPassword}
                 >
                   Send OTP
@@ -264,15 +266,15 @@ function LoginPage() {
                 }))
               }
             />
-            {errorMessage && (
-              <p className="error text-red-600">{errorMessage}</p>
+            {resetPassError && (
+              <p className=" text-[tomato]">{resetPassError}</p>
             )}
             {isLoading ? (
               <Spinner />
             ) : (
               <>
                 <button
-                  className="w-full text-md bg-indigo-600 text-white py-2 rounded hover:bg-green-700"
+                  className="w-full text-md bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
                   onClick={handleResetPassword}
                 >
                   Reset Password
