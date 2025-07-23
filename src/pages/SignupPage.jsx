@@ -8,6 +8,7 @@ function SignupPage() {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     referredBy: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,6 +23,14 @@ function SignupPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await axios.post(
@@ -47,7 +56,7 @@ function SignupPage() {
     }
   }
 
-  const { username, email, password, referredBy } = formData;
+  const { username, email, password, confirmPassword, referredBy } = formData;
 
   return (
     <main className="bg-indigo-50 p-10">
@@ -82,6 +91,16 @@ function SignupPage() {
             type="password"
             id="password"
             value={password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="w-full">
+          <label htmlFor="confirmPassword">Confirm Password: </label>
+          <input
+            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
             onChange={handleChange}
           />
         </div>
