@@ -9,8 +9,9 @@ import {
   Milestone,
 } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
+import Spinner from "./Spinner";
 
-const HomePageComponent = ({ user }) => {
+const HomePageComponent = ({ user, paymentSummary }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopyCode = () => {
@@ -53,9 +54,13 @@ const HomePageComponent = ({ user }) => {
               </span>
               <Milestone className="w-5 h-5 text-green-200" />
             </div>
-            <div className="text-2xl font-bold">
-              Ksh {user.payments.registration.amount}
-            </div>
+            {paymentSummary ? (
+              <div className="text-2xl font-bold">
+                Ksh {paymentSummary?.payments?.registration?.amount}
+              </div>
+            ) : (
+              <Spinner />
+            )}
           </div>
 
           {/* Referral Earnings */}
@@ -66,9 +71,13 @@ const HomePageComponent = ({ user }) => {
               </span>
               <Users className="w-5 h-5 text-blue-200" />
             </div>
-            <div className="text-2xl font-bold">
-              Ksh {user.payments.referrals.amount}
-            </div>
+            {paymentSummary ? (
+              <div className="text-2xl font-bold">
+                Ksh {paymentSummary.payments?.referrals?.amount}
+              </div>
+            ) : (
+              <Spinner />
+            )}
           </div>
 
           {/* View Earnings */}
@@ -79,9 +88,13 @@ const HomePageComponent = ({ user }) => {
               </span>
               <Eye className="w-5 h-5 text-green-200" />
             </div>
-            <div className="text-2xl font-bold">
-              Ksh {user.payments.views.amount}
-            </div>
+            {paymentSummary ? (
+              <div className="text-2xl font-bold">
+                Ksh {paymentSummary?.payments?.views?.amount}
+              </div>
+            ) : (
+              <Spinner />
+            )}
           </div>
 
           {/* Total Earnings */}
@@ -92,9 +105,13 @@ const HomePageComponent = ({ user }) => {
               </span>
               <TrendingUp className="w-5 h-5 text-purple-200" />
             </div>
-            <div className="text-2xl font-bold">
-              Ksh {user ? user.payments.totalAmount : 0}
-            </div>
+            {paymentSummary ? (
+              <div className="text-2xl font-bold">
+                Ksh {paymentSummary ? paymentSummary.payments.totalAmount : 0}
+              </div>
+            ) : (
+              <Spinner />
+            )}
           </div>
         </div>
         {/* Bottom Section */}

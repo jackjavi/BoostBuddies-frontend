@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
@@ -11,16 +11,32 @@ import { Link } from "react-router-dom";
 import HomePageComponent from "../components/HomePageComponent";
 import { AiOutlineProduct } from "react-icons/ai";
 import { MdOutlineLeaderboard } from "react-icons/md";
+import { fetchUserPaymentSummary } from "../api/api2";
+import Spinner from "../components/Spinner";
 
 const Dashboard = () => {
-  const { totalLogs, retrieveLogs } = useContext(LogsContext);
+  const { retrieveLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
+  const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
     fetchUsers();
     retrieveLogs();
-  }, [fetchUsers, retrieveLogs]);
+    // Fetch payment summary
+    const loadPaymentSummary = async () => {
+      try {
+        const data = await fetchUserPaymentSummary(user.id);
+        setPaymentSummary(data.user);
+      } catch (err) {
+        console.error("Failed to load payment summary:", err);
+      }
+    };
+
+    if (user?.id) {
+      loadPaymentSummary();
+    }
+  }, [fetchUsers, retrieveLogs, user]);
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  pt-16 md:pt-32">
@@ -113,7 +129,7 @@ const Dashboard = () => {
           <div className=" flex-1 flex-col">
             <div className="flex flex-col lg:flex-row gap-4 mb-6  mx-auto">
               <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-                <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col">
+                <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col ">
                   <span>
                     Welcome <br />
                   </span>
@@ -125,19 +141,23 @@ const Dashboard = () => {
 
               <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
                 <h2 className="text-2xl lg:text-3xl text-blue-900">
-                  Total Logs <br />
-                  <strong>{totalLogs}</strong>
+                  Global Rank <br />
+                  {paymentSummary ? (
+                    <strong>{paymentSummary.globalRank}</strong>
+                  ) : (
+                    <Spinner />
+                  )}
                 </h2>
                 <Link
-                  to="/logs"
+                  to="/leaderboard"
                   className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
                 >
-                  See logs
+                  See your stats
                 </Link>
               </div>
             </div>
 
-            <HomePageComponent user={user} />
+            <HomePageComponent user={user} paymentSummary={paymentSummary} />
           </div>
         </main>
       </div>

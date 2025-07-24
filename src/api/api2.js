@@ -62,4 +62,15 @@ export const confirmPackagePayment = async (userId, packageId) => {
   }
 };
 
+// Fetch user's payment summary
+export const fetchUserPaymentSummary = async (userId) => {
+  try {
+    const response = await api.get(`/api/v1/users/${userId}/payment-summary`);
+    return response?.data;
+  } catch (error) {
+    console.error(`Error fetching payment summary for user ${userId}:`, error);
+    throw error;
+  }
+};
+
 export default api;
