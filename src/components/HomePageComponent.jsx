@@ -171,13 +171,13 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <div className="grid grid-cols-2 gap-8">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600 mb-2">
-                    {user.payments.referrals.count}
+                    {paymentSummary?.payments?.referrals?.count}
                   </div>
                   <div className="text-gray-600">Total Referrals</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600 mb-2">
-                    {user.payments.views.count}
+                    {paymentSummary?.payments?.views?.count}
                   </div>
                   <div className="text-gray-600">Products Viewed</div>
                 </div>
