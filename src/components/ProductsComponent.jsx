@@ -148,10 +148,10 @@ export default function ProductsComponent() {
 
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-1 text-sm text-yellow-600">
-                      <Star className="w-4 h-4" /> 4.8
+                      <Star className="w-4 h-4" /> {product.averageRating}
                     </div>
                     <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Eye className="w-4 h-4" /> 1250
+                      <Eye className="w-4 h-4" /> {product.totalViews}
                     </div>
                   </div>
 
@@ -191,10 +191,11 @@ export default function ProductsComponent() {
                   <p className="text-sm text-gray-600">{product.category}</p>
                   <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500" /> 4.8
+                      <Star className="w-4 h-4 text-yellow-500" /> $
+                      {product.averageRating}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Eye className="w-4 h-4" /> 1250 views
+                      <Eye className="w-4 h-4" /> ${product.totalViews}
                     </div>
                   </div>
                 </div>
