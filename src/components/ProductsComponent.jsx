@@ -2,6 +2,7 @@ import { Eye, Star, Grid3X3, List } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
 import MobileNavBottom from "./MobileNavBottomProducts";
 import { fetchProducts, fetchProductCategories } from "../api/api2";
+import Spinner from "./Spinner";
 
 export default function ProductsComponent() {
   const [viewMode, setViewMode] = useState("grid");
@@ -35,7 +36,11 @@ export default function ProductsComponent() {
   const loadCategories = useCallback(async () => {
     try {
       const fetched = await fetchProductCategories();
-      setCategories([{ id: "all", name: "All" }, ...fetched]);
+      const formatted = fetched.map((cat) => ({
+        id: cat.toLowerCase().replace(/\s+/g, "-"),
+        name: cat,
+      }));
+      setCategories([{ id: "all", name: "All" }, ...formatted]);
     } catch (error) {
       console.error("Failed to load categories:", error);
     }
@@ -108,7 +113,7 @@ export default function ProductsComponent() {
 
         {/* Product Cards */}
         {loading ? (
-          <div className="text-center text-gray-500">Loading products...</div>
+          <Spinner />
         ) : products.length === 0 ? (
           <div className="text-center text-gray-500">No products found.</div>
         ) : viewMode === "grid" ? (
