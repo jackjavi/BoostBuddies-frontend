@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContextWrapper";
 import { Navigate, Outlet } from "react-router-dom";
+import Spinner from "../Spinner";
+
 function IsLoggedOut() {
   const { user, isLoading } = useContext(AuthContext);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
   if (user) {
     return <Navigate to={"/"} />;

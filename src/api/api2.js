@@ -73,4 +73,35 @@ export const fetchUserPaymentSummary = async (userId) => {
   }
 };
 
+// Fetch paginated and filtered products
+export const fetchProducts = async ({
+  page = 1,
+  limit = 10,
+  category = "",
+}) => {
+  try {
+    const params = new URLSearchParams({ page, limit });
+    if (category && category !== "all") {
+      params.append("category", category);
+    }
+
+    const response = await api.get(`/api/v1/products?${params.toString()}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+// Fetch dynamic product categories
+export const fetchProductCategories = async () => {
+  try {
+    const response = await api.get("/api/v1/products/categories");
+    return response.data.categories;
+  } catch (error) {
+    console.error("Error fetching product categories:", error);
+    throw error;
+  }
+};
+
 export default api;
