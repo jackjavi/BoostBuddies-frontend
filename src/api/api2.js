@@ -115,14 +115,9 @@ export const trackProductView = async (productId) => {
   }
 };
 
-// Fetch external link and increment click count
-export const trackProductClick = async (productId) => {
-  try {
-    const { data } = await api.get(`/api/v1/products/click/${productId}`);
-    window.location.href = data.externalLink;
-  } catch (err) {
-    console.error("Click tracking failed", err);
-  }
+// Increment click count
+export const trackProductClick = (productId) => {
+  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}`;
 };
 
 export default api;
