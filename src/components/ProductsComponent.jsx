@@ -1,7 +1,12 @@
 import { Eye, Star, Grid3X3, List } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
 import MobileNavBottom from "./MobileNavBottomProducts";
-import { fetchProducts, fetchProductCategories } from "../api/api2";
+import {
+  fetchProducts,
+  fetchProductCategories,
+  trackProductView,
+  trackProductClick,
+} from "../api/api2";
 import Spinner from "./Spinner";
 
 export default function ProductsComponent() {
@@ -156,7 +161,13 @@ export default function ProductsComponent() {
                         Earn Ksh {product.earningsPerView}
                       </p>
                     </div>
-                    <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                    <button
+                      onClick={async () => {
+                        await trackProductView(product.id);
+                        trackProductClick(product.id);
+                      }}
+                      className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+                    >
                       View
                     </button>
                   </div>
@@ -192,7 +203,13 @@ export default function ProductsComponent() {
                     Earn ${product.earningsPerView}
                   </p>
                 </div>
-                <button className="ml-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                <button
+                  onClick={async () => {
+                    await trackProductView(product.id);
+                    trackProductClick(product.id);
+                  }}
+                  className="ml-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+                >
                   View
                 </button>
               </div>

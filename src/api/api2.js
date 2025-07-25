@@ -104,4 +104,25 @@ export const fetchProductCategories = async () => {
   }
 };
 
+// Track a product view (POST with productId in body)
+export const trackProductView = async (productId) => {
+  try {
+    const response = await api.post("/api/v1/products/view", { productId });
+    return response.data;
+  } catch (error) {
+    console.error("Error tracking product view:", error);
+    throw error;
+  }
+};
+
+// Fetch external link and increment click count
+export const trackProductClick = async (productId) => {
+  try {
+    const { data } = await api.get(`/api/v1/products/click/${productId}`);
+    window.location.href = data.externalLink;
+  } catch (err) {
+    console.error("Click tracking failed", err);
+  }
+};
+
 export default api;
