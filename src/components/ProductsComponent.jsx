@@ -152,9 +152,8 @@ export default function ProductsComponent() {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-xl font-bold text-gray-900">$—</p>
                       <p className="text-sm text-green-600 font-medium">
-                        Earn ${product.earningsPerView}
+                        Earn Ksh {product.earningsPerView}
                       </p>
                     </div>
                     <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
@@ -189,7 +188,6 @@ export default function ProductsComponent() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-bold text-gray-900">$—</p>
                   <p className="text-sm text-green-600">
                     Earn ${product.earningsPerView}
                   </p>
