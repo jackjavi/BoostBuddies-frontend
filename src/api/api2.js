@@ -105,9 +105,12 @@ export const fetchProductCategories = async () => {
 };
 
 // Track a product view (POST with productId in body)
-export const trackProductView = async (productId) => {
+export const trackProductView = async (productId, userId) => {
   try {
-    const response = await api.post("/api/v1/products/view", { productId });
+    const response = await api.post("/api/v1/products/view", {
+      productId,
+      userId,
+    });
     return response.data;
   } catch (error) {
     console.error("Error tracking product view:", error);
@@ -116,8 +119,8 @@ export const trackProductView = async (productId) => {
 };
 
 // Increment click count
-export const trackProductClick = (productId) => {
-  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}`;
+export const trackProductClick = (productId, userId) => {
+  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}?userId=${userId}`;
 };
 
 export default api;

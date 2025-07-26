@@ -1,6 +1,7 @@
 import { Eye, Star, Grid3X3, List } from "lucide-react";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import MobileNavBottom from "./MobileNavBottomProducts";
+import { AuthContext } from "../context/AuthContextWrapper";
 import {
   fetchProducts,
   fetchProductCategories,
@@ -10,6 +11,7 @@ import {
 import Spinner from "./Spinner";
 
 export default function ProductsComponent() {
+  const { user } = useContext(AuthContext);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [products, setProducts] = useState([]);
@@ -163,8 +165,8 @@ export default function ProductsComponent() {
                     </div>
                     <button
                       onClick={async () => {
-                        await trackProductView(product.id);
-                        trackProductClick(product.id);
+                        await trackProductView(product.id, user.id);
+                        trackProductClick(product.id, user.id);
                       }}
                       className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
                     >
@@ -206,8 +208,8 @@ export default function ProductsComponent() {
                 </div>
                 <button
                   onClick={async () => {
-                    await trackProductView(product.id);
-                    trackProductClick(product.id);
+                    await trackProductView(product.id, user.id);
+                    trackProductClick(product.id, user.id);
                   }}
                   className="ml-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
                 >
