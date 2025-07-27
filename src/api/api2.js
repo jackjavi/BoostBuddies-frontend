@@ -119,8 +119,38 @@ export const trackProductView = async (productId, userId) => {
 };
 
 // Increment click count
-export const trackProductClick = (productId, userId) => {
-  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}?userId=${userId}`;
+export const trackProductClick = async (productId, userId) => {
+  try {
+    const response = await api.get(
+      `/api/v1/products/click/${productId}?userId=${userId}`
+    );
+    const redirectUrl = response?.data?.redirectUrl;
+
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      console.warn("No redirect URL returned");
+    }
+  } catch (error) {
+    console.error("Error tracking product click:", error);
+    throw error;
+  }
 };
+
+// Fetch Logged In User Interactions
+export async function fetchUserInteractions(userId) {
+  try {
+    const response = await api.get(`/api/v1/users/${userId}/interactions`);
+    const clean = response?.data?.interactions.map((item) => ({
+      ...item,
+      type: item.type === "click" ? "view" : item.type,
+    }));
+
+    return clean;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
+  }
+}
 
 export default api;

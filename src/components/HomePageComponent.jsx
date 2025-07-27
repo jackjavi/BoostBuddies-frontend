@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TrendingUp,
   Users,
@@ -9,10 +9,13 @@ import {
   Milestone,
 } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
+import { fetchUserInteractions } from "../api/api2";
 import Spinner from "./Spinner";
+import UserInteractions from "./UserInteractions";
 
 const HomePageComponent = ({ user, paymentSummary }) => {
   const [copied, setCopied] = useState(false);
+  const [interactions, setInteractions] = useState([]);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(user.referralCode).then(() => {
@@ -33,6 +36,12 @@ const HomePageComponent = ({ user, paymentSummary }) => {
       alert("Sharing not supported in this browser.");
     }
   };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserInteractions(user.id).then(setInteractions);
+    }
+  }, [user?.id]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -191,71 +200,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               Recent Activity
             </h2>
 
-            <div className="space-y-4">
-              {/* Activity Item 1 */}
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      New user signed up
-                    </div>
-                    <div className="text-sm text-gray-600">2 hours ago</div>
-                  </div>
-                </div>
-                <div className="text-green-600 font-semibold">+$50</div>
-              </div>
-
-              {/* Activity Item 2 */}
-              <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                    <Eye className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      Product viewed: iPhone 15
-                    </div>
-                    <div className="text-sm text-gray-600">5 hours ago</div>
-                  </div>
-                </div>
-                <div className="text-green-600 font-semibold">+$2</div>
-              </div>
-
-              {/* Activity Item 3 */}
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      New user signed up
-                    </div>
-                    <div className="text-sm text-gray-600">1 day ago</div>
-                  </div>
-                </div>
-                <div className="text-green-600 font-semibold">+$50</div>
-              </div>
-
-              {/* Activity Item 4 */}
-              <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                    <Eye className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      Product viewed: MacBook Pro
-                    </div>
-                    <div className="text-sm text-gray-600">1 day ago</div>
-                  </div>
-                </div>
-                <div className="text-green-600 font-semibold">+$2</div>
-              </div>
-            </div>
+            <UserInteractions interactions={interactions} />
           </div>
         </div>
 
