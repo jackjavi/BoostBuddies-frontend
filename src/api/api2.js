@@ -121,10 +121,7 @@ export const trackProductView = async (productId, userId) => {
 // Increment click count
 export const trackProductClick = async (productId, userId) => {
   try {
-    const response = await api.get(
-      `/api/v1/products/click/${productId}?userId=${userId}`
-    );
-    return response.data;
+    await api.get(`/api/v1/products/click/${productId}?userId=${userId}`);
   } catch (error) {
     console.error("Error tracking product click:", error);
     throw error;
