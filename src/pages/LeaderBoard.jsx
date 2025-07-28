@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
 import { HiHome } from "react-icons/hi2";
@@ -13,14 +12,12 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { MdOutlineLeaderboard } from "react-icons/md";
 
 const LeaderBoard = () => {
-  const { retrieveLogs } = useContext(LogsContext);
   const { disconnect } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
 
   useEffect(() => {
     fetchUsers();
-    retrieveLogs();
-  }, [fetchUsers, retrieveLogs]);
+  }, [fetchUsers]);
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  md:pt-16 pt-8">

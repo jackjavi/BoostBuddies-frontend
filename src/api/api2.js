@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Reusable API instance with base URL and token injection
 const api = axios.create({
   baseURL:
     localStorage.getItem("REACT_APP_BACKEND_URL") ||
@@ -15,7 +14,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Fetches system-wide logs
 export const fetchSystemWideLogs = async (page, filters) => {
   try {
     const query = new URLSearchParams({ ...filters, page }).toString();
@@ -27,7 +25,6 @@ export const fetchSystemWideLogs = async (page, filters) => {
   }
 };
 
-// Edits a user's profile
 export const editProfile = async (data) => {
   try {
     const response = await api.put("/api/v1/members/profile-edit", data, {
@@ -40,7 +37,6 @@ export const editProfile = async (data) => {
   }
 };
 
-// Fetch users with their payment status (admin)
 export const fetchUsersWithPaymentStatus = async () => {
   try {
     const response = await api.get("/api/v1/admin/users-with-payment-status");
@@ -51,7 +47,6 @@ export const fetchUsersWithPaymentStatus = async () => {
   }
 };
 
-// Confirm package payment manually
 export const confirmPackagePayment = async (userId, packageId) => {
   try {
     const response = await api.post("/api/v1/purchase", { userId, packageId });
@@ -62,7 +57,6 @@ export const confirmPackagePayment = async (userId, packageId) => {
   }
 };
 
-// Fetch user's payment summary
 export const fetchUserPaymentSummary = async (userId) => {
   try {
     const response = await api.get(`/api/v1/users/${userId}/payment-summary`);
@@ -73,7 +67,6 @@ export const fetchUserPaymentSummary = async (userId) => {
   }
 };
 
-// Fetch paginated and filtered products
 export const fetchProducts = async ({
   page = 1,
   limit = 10,
@@ -93,7 +86,6 @@ export const fetchProducts = async ({
   }
 };
 
-// Fetch dynamic product categories
 export const fetchProductCategories = async () => {
   try {
     const response = await api.get("/api/v1/products/categories");
@@ -104,7 +96,6 @@ export const fetchProductCategories = async () => {
   }
 };
 
-// Track a product view (POST with productId in body)
 export const trackProductView = async (productId, userId) => {
   try {
     const response = await api.post("/api/v1/products/view", {
@@ -118,12 +109,10 @@ export const trackProductView = async (productId, userId) => {
   }
 };
 
-// Increment click count
 export const trackProductClick = (productId, userId) => {
   window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}?userId=${userId}`;
 };
 
-// Fetch Logged In User Interactions
 export async function fetchUserInteractions(userId) {
   try {
     const response = await api.get(`/api/v1/users/${userId}/interactions`);
@@ -138,5 +127,31 @@ export async function fetchUserInteractions(userId) {
     return [];
   }
 }
+
+export const fetchUserData = async () => {
+  try {
+    const response = await api.get("/api/v1/users/verify-token");
+    return response.data.user;
+  } catch (error) {
+    console.error("Error verifying user token:", error);
+    throw error;
+  }
+};
+
+export const apiChangePassword = async (oldPassword, newPassword) => {
+  try {
+    const response = await api.put("/api/v1/users/change-password", {
+      oldPassword,
+      newPassword,
+    });
+
+    if (response.status === 200) {
+      return { success: true, message: "Password changed successfully!" };
+    }
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw new Error(error.response?.data?.error || "Failed to change password");
+  }
+};
 
 export default api;

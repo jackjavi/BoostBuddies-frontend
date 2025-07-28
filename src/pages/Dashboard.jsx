@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LogsContext } from "../context/LogsContextWrapper";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
 import { HiHome } from "react-icons/hi2";
@@ -15,15 +14,12 @@ import { fetchUserPaymentSummary } from "../api/api2";
 import Spinner from "../components/Spinner";
 
 const Dashboard = () => {
-  const { retrieveLogs } = useContext(LogsContext);
   const { disconnect, user } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
     fetchUsers();
-    retrieveLogs();
-    // Fetch payment summary
     const loadPaymentSummary = async () => {
       try {
         const data = await fetchUserPaymentSummary(user.id);
@@ -36,7 +32,7 @@ const Dashboard = () => {
     if (user?.id) {
       loadPaymentSummary();
     }
-  }, [fetchUsers, retrieveLogs, user]);
+  }, [fetchUsers, user]);
 
   return (
     <div className="bg-indigo-50 min-h-screen overflow-x-hidden  pt-16 md:pt-32">

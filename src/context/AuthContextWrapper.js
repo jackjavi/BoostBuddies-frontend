@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import { fetchUserData, apiChangePassword } from "../api/api2";
 
 export const AuthContext = createContext();
 
@@ -24,23 +24,19 @@ function AuthContextWrapper({ children }) {
         setIsLoggedIn(false);
         return;
       }
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/verify-token`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setUser(response.data.user);
-      setIsLoading(false);
+
+      const userData = await fetchUserData();
+      setUser(userData);
       setIsLoggedIn(true);
     } catch (error) {
       setUser(null);
-      setIsLoading(false);
       setIsLoggedIn(false);
-
-      console.log(error);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
+
   function disconnect() {
     removeToken();
     authenticateUser();
@@ -48,23 +44,10 @@ function AuthContextWrapper({ children }) {
 
   const changePassword = async (oldPassword, newPassword) => {
     try {
-      const token = localStorage.getItem("authToken");
-      if (!token) throw new Error("User not authenticated");
-
-      const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/change-password`,
-        { oldPassword, newPassword },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Password changed successfully!");
-      }
+      const result = await apiChangePassword(oldPassword, newPassword);
+      alert(result.message);
     } catch (error) {
-      console.error("Error changing password:", error);
-      alert(error.response?.data?.error || "Failed to change password");
+      alert(error.message);
     }
   };
 
@@ -78,6 +61,7 @@ function AuthContextWrapper({ children }) {
     disconnect,
     changePassword,
   };
+
   return (
     <AuthContext.Provider value={contextValues}>
       {children}

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import { editProfile } from "../api/api";
+import { editProfile } from "../api/api2";
 import { useNavigate, Link } from "react-router-dom";
 import { HiHome } from "react-icons/hi2";
 import { IoIosArrowForward } from "react-icons/io";

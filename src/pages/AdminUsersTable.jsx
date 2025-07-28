@@ -3,6 +3,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import dayjs from "dayjs";
 import AsideBar from "../components/AsideBar";
 import { UsersContext } from "../context/UsersContextWrapper";
+import Spinner from "../components/Spinner";
 
 const AdminUsersTable = () => {
   const {
@@ -109,7 +110,9 @@ const AdminUsersTable = () => {
 
             {/* Table */}
             {isLoading ? (
-              <div className="text-center py-10 text-gray-600">Loading...</div>
+              <div className="text-center py-10">
+                <Spinner />
+              </div>
             ) : error ? (
               <div className="text-center py-10 text-red-600">{error}</div>
             ) : (
