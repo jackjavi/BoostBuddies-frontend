@@ -124,13 +124,7 @@ export const trackProductClick = async (productId, userId) => {
     const response = await api.get(
       `/api/v1/products/click/${productId}?userId=${userId}`
     );
-    const redirectUrl = response?.data?.redirectUrl;
-
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    } else {
-      console.warn("No redirect URL returned");
-    }
+    return response.data;
   } catch (error) {
     console.error("Error tracking product click:", error);
     throw error;
