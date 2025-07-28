@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  TrendingUp,
-  Users,
-  Eye,
-  Trophy,
-  Share2,
-  Copy,
-  Milestone,
-} from "lucide-react";
+import { TrendingUp, Users, Eye, Share2, Copy, Milestone } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
 import { fetchUserInteractions } from "../api/api2";
 import Spinner from "./Spinner";
 import UserInteractions from "./UserInteractions";
+import Packages from "../components/PackagesComponent";
 
 const HomePageComponent = ({ user, paymentSummary }) => {
   const [copied, setCopied] = useState(false);
@@ -210,18 +203,9 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
           </div>
 
-          {/* Right Column - Recent Activity */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Recent Activity
-            </h2>
-
-            <UserInteractions interactions={interactions} />
-          </div>
-        </div>
-
-        {/* Packages Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          {/* Packages Section */}
+          <Packages />
+          {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
             <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
             <div className="font-semibold text-sm sm:text-base">
@@ -249,6 +233,16 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               Comrade Package
             </div>
             <div className="text-xs sm:text-sm opacity-90">Ksh 500</div>
+          </div>
+        </div> */}
+
+          {/* Right Column - Recent Activity */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              Recent Activity
+            </h2>
+
+            <UserInteractions interactions={interactions} />
           </div>
         </div>
       </main>

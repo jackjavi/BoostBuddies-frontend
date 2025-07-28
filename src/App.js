@@ -17,6 +17,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersTable from "./pages/AdminUsersTable";
 import AdminManagePayments from "./pages/AdminManagePayments";
 import Packages from "./pages/Packages";
+import PackageDetails from "./pages/PackageDetails";
+import AdminPaymentVerificationPage from "./pages/Admin/AdminPaymentVerification";
 
 function App() {
   return (
@@ -52,6 +54,16 @@ function App() {
               </Route>
               <Route path="/packages" element={<IsLoggedIn />}>
                 <Route index element={<Packages />} />
+              </Route>
+              <Route path="/packages/:packageId" element={<IsLoggedIn />}>
+                <Route index element={<PackageDetails />} />
+              </Route>
+
+              <Route
+                path="/admin/payment/verification"
+                element={<IsLoggedIn />}
+              >
+                <Route index element={<AdminPaymentVerificationPage />} />
               </Route>
               <Route path="/admin/manage-payments" element={<IsLoggedIn />}>
                 <Route index element={<AdminManagePayments />} />
