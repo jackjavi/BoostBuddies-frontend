@@ -119,13 +119,8 @@ export const trackProductView = async (productId, userId) => {
 };
 
 // Increment click count
-export const trackProductClick = async (productId, userId) => {
-  try {
-    await api.get(`/api/v1/products/click/${productId}?userId=${userId}`);
-  } catch (error) {
-    console.error("Error tracking product click:", error);
-    throw error;
-  }
+export const trackProductClick = (productId, userId) => {
+  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}?userId=${userId}`;
 };
 
 // Fetch Logged In User Interactions
