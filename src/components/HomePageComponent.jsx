@@ -205,38 +205,6 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
           </div>
 
-          {/* Packages old section */}
-          {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
-            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
-            <div className="font-semibold text-sm sm:text-base">
-              Genz Package
-            </div>
-            <div className="text-xs sm:text-sm opacity-90">Ksh 1500</div>
-          </div>
-          <div className="bg-gradient-to-r from-gray-400 to-gray-500 rounded-xl p-4 sm:p-6 text-center text-white">
-            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
-            <div className="font-semibold text-sm sm:text-base">
-              Mbogi Package
-            </div>
-            <div className="text-xs sm:text-sm opacity-90">Ksh 1000</div>
-          </div>
-          <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl p-4 sm:p-6 text-center text-white">
-            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
-            <div className="font-semibold text-sm sm:text-base">
-              Baller Package
-            </div>
-            <div className="text-xs sm:text-sm opacity-90">Ksh 750</div>
-          </div>
-          <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl p-4 sm:p-6 text-center text-white">
-            <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
-            <div className="font-semibold text-sm sm:text-base">
-              Comrade Package
-            </div>
-            <div className="text-xs sm:text-sm opacity-90">Ksh 500</div>
-          </div>
-        </div> */}
-
           {/* Right Column - Recent Activity */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">

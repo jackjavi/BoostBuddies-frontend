@@ -17,8 +17,8 @@ const packages = [
       "Top-tier referral bonuses",
       "Priority in chain payouts",
     ],
-    gradient: "from-yellow-400 to-yellow-500",
-    icon: <Zap className="w-6 h-6 text-yellow-200" />,
+    gradient: "from-purple-500 to-purple-600",
+    icon: <Zap className="w-6 h-6 text-purple-200" />,
   },
   {
     id: "mbogi",
@@ -62,8 +62,8 @@ const packages = [
       "Join referral chain",
       "Upgrade anytime",
     ],
-    gradient: "from-purple-500 to-purple-600",
-    icon: <Trophy className="w-6 h-6 text-purple-200" />,
+    gradient: "from-green-500 to-green-600",
+    icon: <Trophy className="w-6 h-6 text-green-200" />,
   },
 ];
 
