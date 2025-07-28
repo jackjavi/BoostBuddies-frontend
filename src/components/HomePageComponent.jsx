@@ -65,7 +65,11 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
             {paymentSummary ? (
               <div className="text-2xl font-bold">
-                Ksh {paymentSummary?.payments?.registration?.amount}
+                Ksh{" "}
+                {new Intl.NumberFormat("en-KE", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(paymentSummary?.payments?.registration?.amount)}
               </div>
             ) : (
               <Spinner />
@@ -82,7 +86,11 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
             {paymentSummary ? (
               <div className="text-2xl font-bold">
-                Ksh {paymentSummary.payments?.referrals?.amount}
+                Ksh{" "}
+                {new Intl.NumberFormat("en-KE", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(paymentSummary.payments?.referrals?.amount)}
               </div>
             ) : (
               <Spinner />
@@ -99,7 +107,11 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
             {paymentSummary ? (
               <div className="text-2xl font-bold">
-                Ksh {paymentSummary?.payments?.views?.amount}
+                Ksh{" "}
+                {new Intl.NumberFormat("en-KE", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(paymentSummary?.payments?.views?.amount)}
               </div>
             ) : (
               <Spinner />
@@ -116,7 +128,11 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
             {paymentSummary ? (
               <div className="text-2xl font-bold">
-                Ksh {paymentSummary ? paymentSummary.payments.totalAmount : 0}
+                Ksh{" "}
+                {new Intl.NumberFormat("en-KE", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(paymentSummary.payments.totalAmount)}
               </div>
             ) : (
               <Spinner />
@@ -204,7 +220,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
           </div>
         </div>
 
-        {/* Badge Section */}
+        {/* Packages Section */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
             <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
