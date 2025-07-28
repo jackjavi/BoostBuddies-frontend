@@ -34,9 +34,9 @@ const Header = () => {
         </div>
         {isLoggedIn ? (
           <div className="flex items-center space-x-2">
-            <Link to="/logs">
+            <Link to="/packages">
               <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
-                Logs
+                Packages
               </span>
             </Link>
             <Link to="/profile/edit">

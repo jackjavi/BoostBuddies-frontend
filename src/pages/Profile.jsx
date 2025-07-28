@@ -13,6 +13,7 @@ import { CiSettings } from "react-icons/ci";
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContextWrapper";
+import MobileNavBottom from "../components/MobileNavBottomProfile";
 
 const Profile = () => {
   const { user, isLoading } = useContext(AuthContext);
@@ -235,6 +236,7 @@ const Profile = () => {
             </div>
           </div>
         </main>
+        <MobileNavBottom />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ const MobileNavBottom = () => {
         </Link>
         <Link
           to="/products"
-          className="flex flex-col items-center py-2 text-purple-600"
+          className="flex flex-col items-center py-2 text-gray-600"
         >
           <Package className="w-5 h-5" />
           <span className="text-xs mt-1">Products</span>
@@ -33,7 +33,7 @@ const MobileNavBottom = () => {
         </Link>
         <Link
           to="/profile"
-          className="flex flex-col items-center py-2 text-gray-600"
+          className="flex flex-col items-center py-2 text-purple-600"
         >
           <User className="w-5 h-5" />
           <span className="text-xs mt-1">Profile</span>

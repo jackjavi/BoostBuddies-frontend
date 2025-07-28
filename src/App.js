@@ -16,6 +16,7 @@ import LeaderBoard from "./pages/LeaderBoard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersTable from "./pages/AdminUsersTable";
 import AdminManagePayments from "./pages/AdminManagePayments";
+import Packages from "./pages/Packages";
 
 function App() {
   return (
@@ -48,6 +49,9 @@ function App() {
               </Route>
               <Route path="/admin/manage-users" element={<IsLoggedIn />}>
                 <Route index element={<AdminUsersTable />} />
+              </Route>
+              <Route path="/packages" element={<IsLoggedIn />}>
+                <Route index element={<Packages />} />
               </Route>
               <Route path="/admin/manage-payments" element={<IsLoggedIn />}>
                 <Route index element={<AdminManagePayments />} />
