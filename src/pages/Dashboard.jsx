@@ -125,7 +125,7 @@ const Dashboard = () => {
           <div className=" flex-1 flex-col">
             <div className="flex flex-col lg:flex-row gap-4 mb-6  mx-auto">
               <div className="flex-1 bg-indigo-100 border border-indigo-200 rounded-xl p-6 animate-fade-in">
-                <h2 className="text-2xl lg:text-3xl text-blue-900 flex gap-2 flex-col ">
+                <h2 className="text-2xl md:text-3xl text-blue-900 flex gap-2 flex-col text-center">
                   <span>
                     Welcome <br />
                   </span>
@@ -136,7 +136,7 @@ const Dashboard = () => {
               </div>
 
               <div className="flex-1 bg-blue-100 border border-blue-200 rounded-xl p-6 animate-fade-in">
-                <h2 className="text-2xl lg:text-3xl text-blue-900">
+                <h2 className="text-2xl lg:text-3xl text-blue-900 text-center">
                   Global Rank <br />
                   {paymentSummary ? (
                     <strong>{paymentSummary.globalRank}</strong>
@@ -144,12 +144,14 @@ const Dashboard = () => {
                     <Spinner />
                   )}
                 </h2>
-                <Link
-                  to="/leaderboard"
-                  className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
-                >
-                  See your stats
-                </Link>
+                {/* <h2 className="text-center">
+                  <Link
+                    to="/leaderboard"
+                    className="inline-block mt-8 px-8 py-2 rounded-full text-xl font-bold text-white bg-blue-800 hover:bg-blue-900 transition-transform duration-300 hover:scale-105"
+                  >
+                    See your stats
+                  </Link>
+                </h2> */}
               </div>
             </div>
 

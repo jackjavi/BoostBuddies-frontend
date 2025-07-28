@@ -41,7 +41,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
       {/* Main Content */}
       <main className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-center">
             Track your earnings and grow your network
           </p>
         </div>
@@ -132,6 +132,8 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             )}
           </div>
         </div>
+        {/* Packages Section */}
+        <Packages />
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
@@ -203,8 +205,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             </div>
           </div>
 
-          {/* Packages Section */}
-          <Packages />
+          {/* Packages old section */}
           {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
             <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
