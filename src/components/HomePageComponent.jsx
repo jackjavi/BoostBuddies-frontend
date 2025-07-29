@@ -39,8 +39,8 @@ const HomePageComponent = ({ user, paymentSummary }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
-      <main className=" mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+      <main className=" mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="">
           <p className="text-gray-600 text-center">
             Track your earnings and grow your network
           </p>

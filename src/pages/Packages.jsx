@@ -69,7 +69,7 @@ const packages = [
 
 const Packages = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 md:pt-32">
+    <div className="min-h-screen bg-gray-50 py-24">
       <main className="mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="mb-8">
           <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
@@ -80,7 +80,7 @@ const Packages = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-6 px-8">
           {packages.map((pkg) => (
             <div
               key={pkg.name}

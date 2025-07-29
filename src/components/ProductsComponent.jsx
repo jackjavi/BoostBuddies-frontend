@@ -70,8 +70,10 @@ export default function ProductsComponent() {
     <div className="min-h-screen bg-gray-50 rounded-xl">
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Products</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
+            Products
+          </h1>
+          <p className="text-gray-600 text-center">
             Browse and promote products to earn commissions
           </p>
         </div>
