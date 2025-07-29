@@ -75,7 +75,7 @@ const Packages = () => {
           <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
             Choose Your Package
           </h1>
-          <p className="text-gray-600 text-center">
+          <p className="text-gray-600 text-center max-w-[75vw] mx-auto">
             Select the perfect package to maximize your earnings
           </p>
         </div>
