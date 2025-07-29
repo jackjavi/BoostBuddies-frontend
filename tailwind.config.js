@@ -7,6 +7,8 @@ module.exports = {
         lato: ["IBM Plex Sans", "sans-serif"],
         lilita: ["Lilita One", "sans-serif"],
         nunito: ["Nunito", "sans-serif"],
+        monumentRegular: ["MonumentRegular", "san-serif"],
+        monumentBold: ["MonumentUltraBold", "san-serif"],
       },
     },
   },

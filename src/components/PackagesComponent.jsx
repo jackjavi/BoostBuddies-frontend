@@ -72,7 +72,7 @@ const Packages = () => {
     <div className="min-h-screen mt-8 ">
       <main className="mx-auto">
         <div className="py-4">
-          <h1 className="text-xl text-center font-bold text-gray-900 ">
+          <h1 className="text-xl text-center font-monumentRegular text-gray-900">
             Choose Your Package
           </h1>
           <p className="text-gray-600 text-center max-w-[75vw] mx-auto">
@@ -125,7 +125,7 @@ const Packages = () => {
               {/* CTA Button - Updated to use Link */}
               <Link
                 to={`/packages/${pkg.id}`}
-                className="w-full bg-white text-gray-900 px-4 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm mt-auto text-center block"
+                className="w-full bg-white text-gray-900 px-4 py-3 rounded-lg font-monumentBold hover:bg-gray-100 transition-colors text-sm mt-auto text-center block"
               >
                 Make Payment
               </Link>
@@ -135,7 +135,7 @@ const Packages = () => {
 
         {/* Additional Info Section */}
         <div className="mt-12 bg-white rounded-xl p-6 shadow-sm border">
-          <h2 className="text-xl text-center font-semibold text-gray-900 mb-4">
+          <h2 className="text-xl text-center font-monumentRegular text-gray-900 mb-4">
             Why Choose BoostBuddies?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">

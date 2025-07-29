@@ -41,7 +41,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
       {/* Main Content */}
       <main className=" mx-auto ">
         <div className="p-6">
-          <p className="text-gray-600 text-center text-xl font-semibold max-w-[75vw] mx-auto">
+          <p className="text-gray-600 text-center text-xl font-monumentRegular max-w-[75vw] mx-auto">
             Track your earnings and grow your network
           </p>
         </div>
@@ -141,7 +141,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center space-x-2 mb-4">
                 <Share2 className="w-5 h-5 text-gray-600" />
-                <h2 className="text-xl text-center font-semibold text-gray-900">
+                <h2 className="text-xl text-center font-monumentRegular text-gray-900">
                   Your Referral Link
                 </h2>
               </div>
@@ -206,7 +206,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
 
           {/* Right Column - Recent Activity */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="text-xl text-center font-semibold text-gray-900 mb-6">
+            <h2 className="text-xl text-center  text-gray-900 mb-6 font-monumentRegular">
               Recent Activity
             </h2>
 

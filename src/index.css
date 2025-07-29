@@ -5,6 +5,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "MonumentRegular";
+  src: url("../static/fonts/MonumentExtended-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "MonumentUltraBold";
+  src: url("../static/fonts/MonumentExtended-Ultrabold.otf") format("opentype");
+}
+
 @layer base {
   html {
     font-family: "Nunito", system-ui, sans-serif;

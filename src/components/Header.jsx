@@ -47,7 +47,7 @@ const BoostBuddiesLogo = ({ size = "normal" }) => {
       {/* Logo Text */}
       <div className="flex flex-col">
         <span
-          className={`${isSmall ? "text-lg" : "text-xl md:text-2xl"} font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent`}
+          className={`${isSmall ? "text-lg" : "text-xl md:text-2xl"} font-monumentBold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent`}
         >
           BoostBuddies
         </span>
