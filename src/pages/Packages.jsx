@@ -72,7 +72,7 @@ const Packages = () => {
     <div className="min-h-screen bg-gray-50 py-24">
       <main className="mx-auto max-w-7xl">
         <div className="mb-8">
-          <h1 className="text-3xl text-center font-monumentRegular text-gray-900 mb-2">
+          <h1 className="text-3xl text-center font-lilita text-gray-900 mb-2">
             Choose Your Package
           </h1>
           <p className="text-gray-600 text-center max-w-[75vw] mx-auto">
