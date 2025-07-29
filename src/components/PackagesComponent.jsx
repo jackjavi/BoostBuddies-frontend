@@ -69,18 +69,18 @@ const packages = [
 
 const Packages = () => {
   return (
-    <div className="min-h-screen bg-gray-50 mt-8 ">
+    <div className="min-h-screen mt-8 ">
       <main className="mx-auto">
-        <div className="p-4">
+        <div className="py-4">
           <h1 className="text-xl text-center font-bold text-gray-900 p-2">
             Choose Your Package
           </h1>
-          <p className="text-gray-600 text-center p-2">
+          <p className="text-gray-600 text-center p-2 max-w-[75vw] mx-auto">
             Select the perfect package to maximize your earnings
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-6 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-6">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
