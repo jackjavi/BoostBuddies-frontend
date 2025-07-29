@@ -165,7 +165,7 @@ const Dashboard = () => {
 
         <main className="flex-1 p-4">
           <div className="flex-1 flex-col">
-            <div className="flex flex-col lg:flex-row gap-6 mb-8 mx-auto">
+            <div className="flex flex-col lg:flex-row gap-6 mb-4 mx-auto">
               {/* Welcome Card */}
               <div className="flex-1 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in">
                 <div className="flex items-center justify-between mb-4">

@@ -141,7 +141,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center space-x-2 mb-4">
                 <Share2 className="w-5 h-5 text-gray-600" />
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl text-center font-semibold text-gray-900">
                   Your Referral Link
                 </h2>
               </div>

@@ -72,10 +72,10 @@ const Packages = () => {
     <div className="min-h-screen mt-8 ">
       <main className="mx-auto">
         <div className="py-4">
-          <h1 className="text-xl text-center font-bold text-gray-900 p-2">
+          <h1 className="text-xl text-center font-bold text-gray-900 ">
             Choose Your Package
           </h1>
-          <p className="text-gray-600 text-center p-2 max-w-[75vw] mx-auto">
+          <p className="text-gray-600 text-center max-w-[75vw] mx-auto">
             Select the perfect package to maximize your earnings
           </p>
         </div>
