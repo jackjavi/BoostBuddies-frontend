@@ -40,16 +40,16 @@ const HomePageComponent = ({ user, paymentSummary }) => {
     <div className="min-h-screen">
       {/* Main Content */}
       <main className=" mx-auto ">
-        <div className="p-2">
+        <div className="p-6">
           <p className="text-gray-600 text-center text-xl font-semibold max-w-[75vw] mx-auto">
             Track your earnings and grow your network
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
           {/* Registration Earnings */}
-          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-green-100 text-sm font-medium">
                 Registration Earnings
@@ -57,7 +57,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <Milestone className="w-5 h-5 text-green-200" />
             </div>
             {paymentSummary ? (
-              <div className="text-2xl font-bold">
+              <div className="text-xl font-bold">
                 Ksh{" "}
                 {new Intl.NumberFormat("en-KE", {
                   minimumFractionDigits: 2,
@@ -70,7 +70,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
           </div>
 
           {/* Referral Earnings */}
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-blue-100 text-sm font-medium">
                 Referral Earnings
@@ -78,7 +78,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <Users className="w-5 h-5 text-blue-200" />
             </div>
             {paymentSummary ? (
-              <div className="text-2xl font-bold">
+              <div className="text-xl font-bold">
                 Ksh{" "}
                 {new Intl.NumberFormat("en-KE", {
                   minimumFractionDigits: 2,
@@ -91,7 +91,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
           </div>
 
           {/* View Earnings */}
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-green-100 text-sm font-medium">
                 View Earnings
@@ -99,7 +99,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <Eye className="w-5 h-5 text-green-200" />
             </div>
             {paymentSummary ? (
-              <div className="text-2xl font-bold">
+              <div className="text-xl font-bold">
                 Ksh{" "}
                 {new Intl.NumberFormat("en-KE", {
                   minimumFractionDigits: 2,
@@ -112,7 +112,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
           </div>
 
           {/* Total Earnings */}
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-purple-100 text-sm font-medium">
                 Total Earnings
@@ -120,7 +120,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <TrendingUp className="w-5 h-5 text-purple-200" />
             </div>
             {paymentSummary ? (
-              <div className="text-2xl font-bold">
+              <div className="text-xl font-bold">
                 Ksh{" "}
                 {new Intl.NumberFormat("en-KE", {
                   minimumFractionDigits: 2,
