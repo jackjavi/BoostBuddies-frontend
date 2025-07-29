@@ -72,7 +72,7 @@ const Packages = () => {
     <div className="min-h-screen mt-8 ">
       <main className="mx-auto">
         <div className="py-4">
-          <h1 className="text-xl text-center font-monumentRegular text-gray-900">
+          <h1 className="text-xl text-center font-lilita text-gray-900">
             Choose Your Package
           </h1>
           <p className="text-gray-600 text-center max-w-[75vw] mx-auto">
@@ -135,7 +135,7 @@ const Packages = () => {
 
         {/* Additional Info Section */}
         <div className="mt-12 bg-white rounded-xl p-6 shadow-sm border">
-          <h2 className="text-xl text-center font-monumentRegular text-gray-900 mb-4">
+          <h2 className="text-xl text-center font-lilita text-gray-900 mb-4">
             Why Choose BoostBuddies?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">

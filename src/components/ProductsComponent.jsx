@@ -67,10 +67,10 @@ export default function ProductsComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 rounded-xl">
-      <main className="max-w-5xl mx-auto px-4 py-8">
+    <div className="min-h-screen  rounded-xl">
+      <main className="max-w-5xl mx-auto px-4">
         <div className="mb-8">
-          <h1 className="text-3xl text-center font-monumentRegular text-gray-900 mb-2">
+          <h1 className="text-3xl text-center font-lilita text-gray-900 mb-2">
             Products
           </h1>
           <p className="text-gray-600 text-center">
@@ -84,7 +84,7 @@ export default function ProductsComponent() {
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-lilita transition ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 selectedCategory === category.id
                   ? "bg-purple-600 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"

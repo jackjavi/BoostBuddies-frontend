@@ -131,10 +131,10 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="bg-indigo-50 p-10">
+    <main className="bg-indigo-50 p-10 pt-24 h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
+        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center w-full"
       >
         <div className="w-full">
           <label htmlFor="email">Email:</label>
@@ -179,7 +179,7 @@ function LoginPage() {
         )}
 
         <button
-          className={`w-full p-2 rounded font-bold transition-colors ${
+          className={`w-full p-2 rounded font-lilita transition-colors ${
             isLoading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-indigo-600 hover:bg-purple-500"

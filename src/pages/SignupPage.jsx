@@ -59,9 +59,9 @@ function SignupPage() {
   const { username, email, password, confirmPassword, referredBy } = formData;
 
   return (
-    <main className="bg-indigo-50 p-10">
+    <main className="bg-indigo-50 p-10 pt-24 h-screen flex items-center justify-center">
       <form
-        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center h-screen w-full"
+        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center  w-full"
         onSubmit={handleSubmit}
       >
         <div className="w-full">
@@ -129,7 +129,7 @@ function SignupPage() {
           </>
         )}
         <button
-          className={`w-full p-2 rounded font-bold transition-colors ${
+          className={`w-full p-2 rounded font-lilita transition-colors ${
             isLoading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-purple-500"
