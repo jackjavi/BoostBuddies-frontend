@@ -84,7 +84,7 @@ export default function ProductsComponent() {
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+              className={`px-4 py-2 rounded-lg text-sm font-lilita transition ${
                 selectedCategory === category.id
                   ? "bg-purple-600 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
