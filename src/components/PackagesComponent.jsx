@@ -69,13 +69,13 @@ const packages = [
 
 const Packages = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-8 ">
+    <div className="min-h-screen bg-gray-50 mt-8 ">
       <main className="mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
+        <div className="p-4">
+          <h1 className="text-xl text-center font-bold text-gray-900 p-2">
             Choose Your Package
           </h1>
-          <p className="text-gray-600 text-center">
+          <p className="text-gray-600 text-center p-2">
             Select the perfect package to maximize your earnings
           </p>
         </div>

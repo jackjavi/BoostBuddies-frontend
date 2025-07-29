@@ -37,11 +37,11 @@ const HomePageComponent = ({ user, paymentSummary }) => {
   }, [user?.id]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Main Content */}
-      <main className=" mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="">
-          <p className="text-gray-600 text-center">
+      <main className=" mx-auto ">
+        <div className="p-2">
+          <p className="text-gray-600 text-center text-xl font-semibold max-w-[75vw] mx-auto">
             Track your earnings and grow your network
           </p>
         </div>
@@ -206,7 +206,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
 
           {/* Right Column - Recent Activity */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            <h2 className="text-xl text-center font-semibold text-gray-900 mb-6">
               Recent Activity
             </h2>
 
@@ -219,9 +219,6 @@ const HomePageComponent = ({ user, paymentSummary }) => {
 
       {/* Mobile Navigation */}
       <MobileNavBottom />
-
-      {/* Mobile bottom padding to account for fixed nav */}
-      <div className="lg:hidden h-20"></div>
     </div>
   );
 };
