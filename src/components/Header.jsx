@@ -1,97 +1,139 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import Sidebar from "./Sidebar.jsx";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
-// import mmmLogo from "../assets/images/MMM-Logo.png";
+import { Zap, Users, TrendingUp, Coins } from "lucide-react";
 
-const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, isLoggedIn, disconnect } = useContext(AuthContext);
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+// Creative Logo Component for BoostBuddies
+const BoostBuddiesLogo = ({ size = "normal" }) => {
+  const isSmall = size === "small";
 
   return (
-    <header className="fixed w-full bg-white text-indigo-800 z-50 shadow-lg animate-slide-down">
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between h-16">
-        <button
-          className={`mobile-menu-button p-2 md:hidden ${
-            mobileMenuOpen ? "text-indigo-800" : ""
-          }`}
-          onClick={toggleMobileMenu}
+    <div className="flex items-center space-x-2">
+      {/* Logo Icon with animated elements */}
+      <div className="relative">
+        <div
+          className={`${isSmall ? "w-8 h-8" : "w-10 h-10"} bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg`}
         >
-          <span className="material-icons-outlined text-md md:text-2xl">
-            menu
+          <Zap
+            className={`${isSmall ? "w-4 h-4" : "w-5 h-5"} text-yellow-300 fill-current`}
+          />
+        </div>
+
+        {/* Floating coins animation */}
+        <div className="absolute -top-1 -right-1">
+          <Coins
+            className="w-3 h-3 text-yellow-500 animate-bounce"
+            style={{ animationDelay: "0.5s" }}
+          />
+        </div>
+
+        {/* Connecting dots */}
+        <div className="absolute -bottom-1 -left-1">
+          <div className="flex space-x-0.5">
+            <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
+            <div
+              className="w-1 h-1 bg-blue-400 rounded-full animate-pulse"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+            <div
+              className="w-1 h-1 bg-purple-400 rounded-full animate-pulse"
+              style={{ animationDelay: "0.4s" }}
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Logo Text */}
+      <div className="flex flex-col">
+        <span
+          className={`${isSmall ? "text-lg" : "text-xl md:text-2xl"} font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent`}
+        >
+          BoostBuddies
+        </span>
+        {!isSmall && (
+          <span className="text-xs text-gray-500 font-medium -mt-1 hidden sm:block">
+            Earn • Refer • Grow
           </span>
-        </button>
-        <div className="text-xl font-bold text-blue-900">
-          <Link to="/">
-            {/* <img src={mmmLogo} alt="logo" className="h-16 w-16 object-cover" /> */}
-            <span className="text-md md:text-2xl">BoostBuddies</span>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Header = () => {
+  const { user, isLoggedIn } = useContext(AuthContext);
+
+  return (
+    <header className="fixed w-full bg-white/95 backdrop-blur-sm text-indigo-800 z-50 shadow-lg border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between h-16">
+        {/* Logo - now takes full left space on mobile */}
+        <div className="flex-shrink-0">
+          <Link to="/" className="block">
+            <BoostBuddiesLogo size="small" />
           </Link>
         </div>
+
+        {/* Right side content */}
         {isLoggedIn ? (
           <div className="flex items-center space-x-2">
-            <Link to="/packages">
-              <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
-                Packages
-              </span>
-            </Link>
-            <Link to="/profile/edit">
-              <span className="material-icons-outlined p-2 text-2xl cursor-pointer hover:text-indigo-800 transition-transform duration-300 hover:scale-110 hidden md:block">
-                Settings
-              </span>
+            {/* Desktop Navigation Links */}
+            <Link
+              to="/packages"
+              className="hidden md:flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200"
+            >
+              <TrendingUp className="w-4 h-4" />
+              <span>Packages</span>
             </Link>
 
-            {user.profilePicture ? (
-              <Link to="/profile">
-                <img
-                  src={
-                    user.profilePicture.includes("githubusercontent.com")
-                      ? user.profilePicture
-                      : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
-                  }
-                  alt={user.name}
-                  className="w-6 h-6 md:w-10 md:h-10 rounded-full transition-transform duration-300 hover:scale-110 object-cover"
-                />
-              </Link>
-            ) : (
-              <Link to="/profile">
-                <CgProfile className="w-6 h-6 md:w-10 md:h-10" />
-              </Link>
-            )}
+            <Link
+              to="/profile/edit"
+              className="hidden md:flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200"
+            >
+              <Users className="w-4 h-4" />
+              <span>Settings</span>
+            </Link>
+
+            {/* Profile Picture/Icon */}
+            <Link to="/profile" className="relative group">
+              {user.profilePicture ? (
+                <div className="relative">
+                  <img
+                    src={
+                      user.profilePicture.includes("githubusercontent.com")
+                        ? user.profilePicture
+                        : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
+                    }
+                    alt={user.name}
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-transparent group-hover:border-indigo-500 transition-all duration-200 object-cover shadow-sm"
+                  />
+                  {/* Online indicator */}
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
+                </div>
+              ) : (
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full border-2 border-transparent group-hover:border-indigo-500 transition-all duration-200 flex items-center justify-center shadow-sm">
+                  <CgProfile className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                </div>
+              )}
+            </Link>
           </div>
         ) : (
-          <div className="flex gap-4 items-center justify-center text-sm md:text-md">
-            <Link to="/login" className="text-indigo-800 font-semibold">
+          <div className="flex gap-3 items-center text-sm md:text-base">
+            <Link
+              to="/login"
+              className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors duration-200"
+            >
               Login
             </Link>
             <Link
               to="/signup"
-              className="bg-indigo-800 text-white font-semibold px-4 py-1 rounded-md "
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 transform hover:-translate-y-0.5"
             >
               Sign Up
             </Link>
           </div>
         )}
       </div>
-
-      {/* Overlay and Sidebar */}
-      {mobileMenuOpen && (
-        <div
-          className="overlay fixed inset-0 bg-indigo-900/50 z-40"
-          onClick={toggleMobileMenu}
-        />
-      )}
-      <Sidebar
-        mobileMenuOpen={mobileMenuOpen}
-        toggleMobileMenu={toggleMobileMenu}
-        disconnect={disconnect}
-        user={user}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
     </header>
   );
 };
