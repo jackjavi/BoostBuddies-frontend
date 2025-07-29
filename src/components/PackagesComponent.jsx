@@ -69,7 +69,7 @@ const packages = [
 
 const Packages = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pb-8 ">
+    <div className="min-h-screen bg-gray-50 pt-8 ">
       <main className="mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">

@@ -132,8 +132,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             )}
           </div>
         </div>
-        {/* Packages Section */}
-        <Packages />
+
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
@@ -214,6 +213,8 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             <UserInteractions interactions={interactions} />
           </div>
         </div>
+        {/* Packages Section */}
+        <Packages />
       </main>
 
       {/* Mobile Navigation */}
