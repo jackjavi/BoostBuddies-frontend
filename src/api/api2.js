@@ -20,8 +20,11 @@ export const fetchSystemWideLogs = async (page, filters) => {
     const response = await api.get(`/api/v1/system-logs?${query}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching system-wide logs:", error);
-    throw error;
+    console.error(
+      "Error fetching system-wide logs:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -32,8 +35,8 @@ export const editProfile = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error editing profile:", error);
-    throw error;
+    console.error("Error editing profile:", error.response.data.error.message);
+    throw error.response.data.error.message;
   }
 };
 
@@ -42,8 +45,11 @@ export const fetchUsersWithPaymentStatus = async () => {
     const response = await api.get("/api/v1/admin/users-with-payment-status");
     return response.data;
   } catch (error) {
-    console.error("Error fetching users with payment status:", error);
-    throw error;
+    console.error(
+      "Error fetching users with payment status:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -52,8 +58,11 @@ export const confirmPackagePayment = async (userId, packageId) => {
     const response = await api.post("/api/v1/purchase", { userId, packageId });
     return response.data;
   } catch (error) {
-    console.error("Error confirming payment:", error);
-    throw error;
+    console.error(
+      "Error confirming payment:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -62,8 +71,11 @@ export const fetchUserPaymentSummary = async (userId) => {
     const response = await api.get(`/api/v1/users/${userId}/payment-summary`);
     return response?.data;
   } catch (error) {
-    console.error(`Error fetching payment summary for user ${userId}:`, error);
-    throw error;
+    console.error(
+      `Error fetching payment summary for user ${userId}:`,
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -81,8 +93,11 @@ export const fetchProducts = async ({
     const response = await api.get(`/api/v1/products?${params.toString()}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching products:", error);
-    throw error;
+    console.error(
+      "Error fetching products:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -91,8 +106,11 @@ export const fetchProductCategories = async () => {
     const response = await api.get("/api/v1/products/categories");
     return response.data.categories;
   } catch (error) {
-    console.error("Error fetching product categories:", error);
-    throw error;
+    console.error(
+      "Error fetching product categories:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -104,8 +122,11 @@ export const trackProductView = async (productId, userId) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error tracking product view:", error);
-    throw error;
+    console.error(
+      "Error tracking product view:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -123,7 +144,7 @@ export async function fetchUserInteractions(userId) {
 
     return clean;
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error("Fetch error:", error.response.data.error.message);
     return [];
   }
 }
@@ -133,8 +154,11 @@ export const fetchUserData = async () => {
     const response = await api.get("/api/v1/users/verify-token");
     return response.data.user;
   } catch (error) {
-    console.error("Error verifying user token:", error);
-    throw error;
+    console.error(
+      "Error verifying user token:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 
@@ -149,8 +173,72 @@ export const apiChangePassword = async (oldPassword, newPassword) => {
       return { success: true, message: "Password changed successfully!" };
     }
   } catch (error) {
-    console.error("Error changing password:", error);
-    throw new Error(error.response?.data?.error || "Failed to change password");
+    console.error(
+      "Error changing password:",
+      error.response.data.error.message
+    );
+    throw new error.response.data.error.message();
+  }
+};
+
+export const submitPackagePayment = async (data) => {
+  try {
+    const response = await api.post(
+      "/api/v1/payments/submit-package-payment",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error submitting package payment:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
+  }
+};
+
+export const getPaymentForVerification = async (paymentId) => {
+  try {
+    const response = await api.get(
+      `/api/v1/payments/verification/${paymentId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error fetching payment details:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
+  }
+};
+
+export const verifyPayment = async (paymentId, data) => {
+  try {
+    const response = await api.put(
+      `/api/v1/payments/verify/${paymentId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error verifying payment:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
+  }
+};
+
+export const getPendingPayments = async (limit = 50, offset = 0) => {
+  try {
+    const params = new URLSearchParams({ limit, offset }).toString();
+    const response = await api.get(`/api/v1/payments/pending?${params}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error fetching pending payments:",
+      error.response.data.error.message
+    );
+    throw error.response.data.error.message;
   }
 };
 

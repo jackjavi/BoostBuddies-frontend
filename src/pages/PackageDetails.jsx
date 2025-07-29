@@ -11,12 +11,15 @@ import {
   CreditCard,
   Phone,
   AlertCircle,
+  CheckCircle,
 } from "lucide-react";
+import { submitPackagePayment } from "../api/api2";
 import MobileNavBottom from "../components/MobileNavBottomPackages";
 
 // Mock package data - to replace later with actual data from props/API
 const packageData = {
   genz: {
+    id: 1,
     name: "Genz Package",
     price: "Ksh 1,500",
     priceValue: 1500,
@@ -56,6 +59,7 @@ const packageData = {
     ],
   },
   mbogi: {
+    id: 2,
     name: "Mbogi Package",
     price: "Ksh 1,000",
     priceValue: 1000,
@@ -95,6 +99,7 @@ const packageData = {
     ],
   },
   baller: {
+    id: 3,
     name: "Baller Package",
     price: "Ksh 750",
     priceValue: 750,
@@ -134,6 +139,7 @@ const packageData = {
     ],
   },
   comrade: {
+    id: 4,
     name: "Comrade Package",
     price: "Ksh 500",
     priceValue: 500,
@@ -178,31 +184,45 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
   const [paymentCode, setPaymentCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [step, setStep] = useState(1); // 1: Instructions, 2: Payment Code Entry
+  const [step, setStep] = useState(1); // 1: Instructions, 2: Payment Code Entry, 3: Success
+  const [submitError, setSubmitError] = useState("");
+  const [paymentId, setPaymentId] = useState(null);
 
-  const tillNumber = "5872036"; // Your M-Pesa Till Number
+  const tillNumber = "5872036";
 
   const handlePaymentSubmit = async () => {
     if (!paymentCode.trim() || !phoneNumber.trim()) return;
 
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
-      await onPaymentSubmit({
-        packageName: packageInfo.name,
-        amount: packageInfo.priceValue,
+      const result = await onPaymentSubmit({
+        packageId: packageInfo.id,
         paymentCode: paymentCode.trim().toUpperCase(),
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumber.trim(),
         tillNumber: tillNumber,
       });
 
-      // Show success message or close modal
-      onClose();
+      if (result.success) {
+        setPaymentId(result.paymentId);
+        setStep(3); // Move to success step
+      }
     } catch (error) {
       console.error("Payment submission error:", error);
+      setSubmitError(error || "Failed to submit payment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleClose = () => {
+    setStep(1);
+    setPaymentCode("");
+    setPhoneNumber("");
+    setSubmitError("");
+    setPaymentId(null);
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -214,10 +234,10 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
         <div className="p-6 border-b">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
-              Complete Payment
+              {step === 3 ? "Payment Submitted!" : "Complete Payment"}
             </h2>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="p-2 hover:bg-gray-100 rounded-lg"
             >
               <X className="w-5 h-5" />
@@ -299,7 +319,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                 I've Made the Payment
               </button>
             </>
-          ) : (
+          ) : step === 2 ? (
             <>
               {/* Payment Code Entry */}
               <div className="space-y-4">
@@ -334,6 +354,16 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                   </p>
                 </div>
 
+                {submitError && (
+                  <div className="p-3 bg-red-50 rounded-lg border border-red-200 flex items-start">
+                    <AlertCircle className="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-red-800">
+                      <p className="font-medium mb-1">Error:</p>
+                      <p>{submitError}</p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200 flex items-start">
                   <AlertCircle className="w-5 h-5 text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-yellow-800">
@@ -348,7 +378,8 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                 <div className="flex space-x-3">
                   <button
                     onClick={() => setStep(1)}
-                    className="flex-1 border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                    disabled={isSubmitting}
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
                   >
                     Back
                   </button>
@@ -362,6 +393,39 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                     {isSubmitting ? "Submitting..." : "Submit Payment"}
                   </button>
                 </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Success Step */}
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle className="w-10 h-10 text-green-600" />
+                </div>
+
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Payment Submitted Successfully!
+                </h3>
+
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-sm text-gray-600 mb-2">Payment ID:</p>
+                  <p className="font-mono font-bold text-gray-900">
+                    #{paymentId}
+                  </p>
+                </div>
+
+                <div className="text-sm text-gray-600 space-y-2">
+                  <p>Your payment proof has been submitted for verification.</p>
+                  <p>Our agents will verify your payment within 2-4 hours.</p>
+                  <p>You'll receive an email confirmation once approved.</p>
+                </div>
+
+                <button
+                  onClick={handleClose}
+                  className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                >
+                  Done
+                </button>
               </div>
             </>
           )}
@@ -378,22 +442,32 @@ const PackageDetails = () => {
 
   const pkg = packageData[packageId];
 
+  const getCurrentUserId = () => {
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    return userData.id || 1;
+  };
+
   const handlePaymentSubmit = async (paymentData) => {
-    console.log("Payment data:", paymentData);
+    const userId = getCurrentUserId();
 
-    // Example API call:
-    // await fetch('/api/payments/submit', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     userId: currentUser.id,
-    //     ...paymentData
-    //   })
-    // });
+    if (!userId) {
+      throw new Error("Please log in to make a payment");
+    }
 
-    alert(
-      "Payment submitted successfully! You'll receive confirmation within 2-4 hours."
-    );
+    try {
+      const result = await submitPackagePayment({
+        userId: userId,
+        packageId: paymentData.packageId,
+        paymentCode: paymentData.paymentCode,
+        tillNumber: paymentData.tillNumber,
+        phoneNumber: paymentData.phoneNumber,
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Payment submission failed:", error);
+      throw error;
+    }
   };
 
   const handleBackClick = () => {
@@ -423,7 +497,7 @@ const PackageDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 max-w-7xl">
         {/* Back Button */}
         <button
           onClick={handleBackClick}
@@ -554,9 +628,7 @@ const PackageDetails = () => {
 
       {/* Mobile Navigation */}
       <MobileNavBottom />
-
-      {/* Mobile bottom padding */}
-      <div className="lg:hidden h-20"></div>
+      <div className="h-20 md:hidden"></div>
     </div>
   );
 };

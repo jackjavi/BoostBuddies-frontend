@@ -8,48 +8,50 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
+  Search,
 } from "lucide-react";
+import { getPaymentForVerification, verifyPayment } from "../../api/api2";
 
-const AdminPaymentVerificationPage = ({ paymentId }) => {
+const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
+  const [paymentId, setPaymentId] = useState(initialPaymentId || "");
   const [payment, setPayment] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [notes, setNotes] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [actionType, setActionType] = useState(null); // 'approve' | 'reject'
+  const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
-    fetchPaymentDetails();
-  }, [paymentId]);
+    if (initialPaymentId) {
+      fetchPaymentDetails(initialPaymentId);
+    }
+  }, [initialPaymentId]);
 
-  const fetchPaymentDetails = async () => {
+  const fetchPaymentDetails = async (id = paymentId) => {
+    if (!id || !id.toString().trim()) {
+      setError("Please enter a valid payment ID");
+      return;
+    }
+
     try {
-      // Simulated delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      setLoading(true);
+      setError(null);
+      setHasSearched(true);
 
-      // Dummy data
-      const dummyData = {
-        payment: {
-          packageName: "Gold Package",
-          amount: 1500,
-          paymentCode: "MPESA123XYZ",
-          tillNumber: "654321",
-          phoneNumber: "+254712345678",
-          submittedAt: new Date().toISOString(),
-          status: "pending", // "approved" or "rejected" also valid
-          verifiedAt: null,
-          verificationNotes: "",
-          user: {
-            name: "Jane Doe",
-            email: "jane@example.com",
-            referralCode: "REF456",
-          },
-        },
-      };
-
-      setPayment(dummyData.payment);
+      const result = await getPaymentForVerification(id);
+      setPayment(result.payment);
     } catch (error) {
       console.error("Error fetching payment:", error);
+      if (error.response?.status === 404) {
+        setError("Payment not found. Please check the payment ID.");
+      } else if (error) {
+        setError(error);
+      } else {
+        setError(error || "Failed to fetch payment details");
+      }
+      setPayment(null);
     } finally {
       setLoading(false);
     }
@@ -58,29 +60,33 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
   const handleVerification = async (status) => {
     setProcessing(true);
     try {
-      const response = await fetch(`/api/payments/verify/${paymentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          status,
-          agentId: 1, // Replace with actual agent ID from auth
-          notes: notes.trim(),
-        }),
+      const agentId = getCurrentAdminId();
+
+      const result = await verifyPayment(payment.id, {
+        status: status,
+        agentId: agentId,
+        notes: notes.trim() || undefined,
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        setPayment((prev) => ({ ...prev, status, verificationNotes: notes }));
+      if (result.success) {
+        setPayment((prev) => ({
+          ...prev,
+          status,
+          verificationNotes: notes.trim() || null,
+          verifiedAt: new Date().toISOString(),
+        }));
         setShowConfirmModal(false);
         setNotes("");
       } else {
-        alert("Error processing verification");
+        setError("Error processing verification");
       }
     } catch (error) {
       console.error("Verification error:", error);
-      alert("Error processing verification");
+      if (error) {
+        setError(error);
+      } else {
+        setError(error || "Error processing verification");
+      }
     } finally {
       setProcessing(false);
     }
@@ -91,12 +97,117 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
     setShowConfirmModal(true);
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchPaymentDetails();
+  };
+
+  const getCurrentAdminId = () => {
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    return userData.id || 1;
+  };
+
+  const renderSearchSection = () => (
+    <div className="bg-white rounded-xl p-6 shadow-sm border mb-8">
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        Find Payment for Verification
+      </h2>
+      <form onSubmit={handleSearch} className="flex gap-4">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Payment ID
+          </label>
+          <input
+            type="text"
+            value={paymentId}
+            onChange={(e) => setPaymentId(e.target.value)}
+            placeholder="Enter payment ID to verify..."
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div className="flex items-end">
+          <button
+            type="submit"
+            disabled={loading || !paymentId.toString().trim()}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Search className="w-4 h-4 mr-2" />
+            {loading ? "Searching..." : "Search"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+
+  if (!hasSearched) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Payment Verification
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Enter a payment ID to verify M-Pesa payment details
+            </p>
+          </div>
+          {renderSearchSection()}
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading payment details...</p>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Payment Verification
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Searching for payment details...
+            </p>
+          </div>
+          {renderSearchSection()}
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading payment details...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Payment Verification
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Enter a payment ID to verify M-Pesa payment details
+            </p>
+          </div>
+          {renderSearchSection()}
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Error</h2>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <button
+                onClick={() => fetchPaymentDetails()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -104,22 +215,35 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
 
   if (!payment) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Payment Not Found
-          </h2>
-          <p className="text-gray-600">
-            The requested payment could not be found.
-          </p>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Payment Verification
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Enter a payment ID to verify M-Pesa payment details
+            </p>
+          </div>
+          {renderSearchSection()}
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Payment Not Found
+              </h2>
+              <p className="text-gray-600">
+                The requested payment could not be found.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 ">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">
         {/* Header */}
         <div className="mb-8">
@@ -156,6 +280,9 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
           </div>
         </div>
 
+        {/* Search Section */}
+        {renderSearchSection()}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -168,10 +295,19 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Payment ID
+                  </label>
+                  <p className="text-lg font-semibold text-gray-900">
+                    #{payment.id}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Package
                   </label>
                   <p className="text-lg font-semibold text-gray-900">
-                    {payment.packageName}
+                    {payment.packageName || "N/A"}
                   </p>
                 </div>
 
@@ -180,7 +316,7 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                     Amount
                   </label>
                   <p className="text-lg font-semibold text-gray-900">
-                    Ksh {payment.amount.toLocaleString()}
+                    Ksh {payment.amount?.toLocaleString() || "N/A"}
                   </p>
                 </div>
 
@@ -189,7 +325,7 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                     Payment Code
                   </label>
                   <p className="text-lg font-mono font-bold text-blue-600 bg-blue-50 px-3 py-2 rounded-lg">
-                    {payment.paymentCode}
+                    {payment.paymentCode || "N/A"}
                   </p>
                 </div>
 
@@ -198,7 +334,7 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                     Till Number
                   </label>
                   <p className="text-lg font-semibold text-gray-900">
-                    {payment.tillNumber}
+                    {payment.tillNumber || "N/A"}
                   </p>
                 </div>
 
@@ -208,7 +344,7 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                   </label>
                   <p className="text-lg font-semibold text-gray-900 flex items-center">
                     <Phone className="w-4 h-4 mr-2 text-gray-500" />
-                    {payment.phoneNumber}
+                    {payment.phoneNumber || "N/A"}
                   </p>
                 </div>
 
@@ -217,7 +353,9 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                     Submitted At
                   </label>
                   <p className="text-lg font-semibold text-gray-900">
-                    {new Date(payment.submittedAt).toLocaleString()}
+                    {payment.submittedAt
+                      ? new Date(payment.submittedAt).toLocaleString()
+                      : "N/A"}
                   </p>
                 </div>
               </div>
@@ -240,9 +378,6 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                   <p className="text-gray-600">
                     {payment.user?.email || "N/A"}
                   </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Referral Code: {payment.user?.referralCode || "N/A"}
-                  </p>
                 </div>
               </div>
             </div>
@@ -258,19 +393,21 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                   <div className="text-blue-800 space-y-2">
                     <p>
                       1. Check your M-Pesa messages for confirmation with code:{" "}
-                      <strong>{payment.paymentCode}</strong>
+                      <strong>{payment.paymentCode || "N/A"}</strong>
                     </p>
                     <p>
                       2. Verify the amount matches:{" "}
-                      <strong>Ksh {payment.amount.toLocaleString()}</strong>
+                      <strong>
+                        Ksh {payment.amount?.toLocaleString() || "N/A"}
+                      </strong>
                     </p>
                     <p>
                       3. Confirm the sender's phone number:{" "}
-                      <strong>{payment.phoneNumber}</strong>
+                      <strong>{payment.phoneNumber || "N/A"}</strong>
                     </p>
                     <p>
                       4. Ensure payment was made to till:{" "}
-                      <strong>{payment.tillNumber}</strong>
+                      <strong>{payment.tillNumber || "N/A"}</strong>
                     </p>
                   </div>
                 </div>
@@ -303,14 +440,16 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                   <div className="flex space-x-3">
                     <button
                       onClick={() => openConfirmModal("approve")}
-                      className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+                      disabled={processing}
+                      className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Check className="w-5 h-5 mr-2" />
                       Approve
                     </button>
                     <button
                       onClick={() => openConfirmModal("reject")}
-                      className="flex-1 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center justify-center"
+                      disabled={processing}
+                      className="flex-1 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <X className="w-5 h-5 mr-2" />
                       Reject
@@ -338,8 +477,8 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                           : "text-yellow-600"
                     }`}
                   >
-                    {payment.status.charAt(0).toUpperCase() +
-                      payment.status.slice(1)}
+                    {payment.status?.charAt(0).toUpperCase() +
+                      payment.status?.slice(1) || "N/A"}
                   </span>
                 </div>
 
@@ -348,6 +487,15 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                     <span className="text-gray-600">Verified:</span>
                     <span className="text-gray-900">
                       {new Date(payment.verifiedAt).toLocaleString()}
+                    </span>
+                  </div>
+                )}
+
+                {payment.verifier && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Verified By:</span>
+                    <span className="text-gray-900">
+                      {payment.verifier.name}
                     </span>
                   </div>
                 )}
@@ -376,14 +524,15 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
 
             <p className="text-gray-600 mb-6">
               Are you sure you want to {actionType} this payment for{" "}
-              <strong>{payment.packageName}</strong> worth{" "}
-              <strong>Ksh {payment.amount.toLocaleString()}</strong>?
+              <strong>{payment.packageName || "this package"}</strong> worth{" "}
+              <strong>Ksh {payment.amount?.toLocaleString() || "N/A"}</strong>?
             </p>
 
             <div className="flex space-x-3">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                disabled={processing}
+                className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -394,11 +543,11 @@ const AdminPaymentVerificationPage = ({ paymentId }) => {
                   )
                 }
                 disabled={processing}
-                className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
+                className={`flex-1 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                   actionType === "approve"
                     ? "bg-green-600 text-white hover:bg-green-700"
                     : "bg-red-600 text-white hover:bg-red-700"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                }`}
               >
                 {processing
                   ? "Processing..."

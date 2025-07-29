@@ -11,6 +11,10 @@ function AuthContextWrapper({ children }) {
   const storeToken = (token) => localStorage.setItem("authToken", token);
   const removeToken = () => localStorage.removeItem("authToken");
 
+  const storeUserData = (userData) =>
+    localStorage.setItem("userData", JSON.stringify(userData));
+  const removeUserData = () => localStorage.removeItem("userData");
+
   useEffect(() => {
     authenticateUser();
   }, []);
@@ -20,18 +24,20 @@ function AuthContextWrapper({ children }) {
       const token = localStorage.getItem("authToken");
       if (!token) {
         setUser(null);
-        setIsLoading(false);
         setIsLoggedIn(false);
+        removeUserData();
         return;
       }
 
       const userData = await fetchUserData();
       setUser(userData);
       setIsLoggedIn(true);
+      storeUserData(userData);
     } catch (error) {
+      console.error("Authentication error:", error);
       setUser(null);
       setIsLoggedIn(false);
-      console.error(error);
+      removeUserData();
     } finally {
       setIsLoading(false);
     }
@@ -39,6 +45,7 @@ function AuthContextWrapper({ children }) {
 
   function disconnect() {
     removeToken();
+    removeUserData();
     authenticateUser();
   }
 
