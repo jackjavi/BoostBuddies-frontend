@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         lato: ["IBM Plex Sans", "sans-serif"],
+        lilita: ["Lilita One", "sans-serif"],
+        nunito: ["Nunito", "sans-serif"],
       },
     },
   },
