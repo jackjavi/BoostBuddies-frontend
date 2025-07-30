@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Check,
   X,
@@ -13,6 +14,7 @@ import {
 import { getPaymentForVerification, verifyPayment } from "../../api/api2";
 
 const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [paymentId, setPaymentId] = useState(initialPaymentId || "");
   const [payment, setPayment] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,10 +26,17 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
-    if (initialPaymentId) {
+    // Check for paymentId in URL query parameters
+    const urlPaymentId = searchParams.get("paymentId");
+
+    if (urlPaymentId) {
+      setPaymentId(urlPaymentId);
+      // Automatically fetch payment details if paymentId is in URL
+      fetchPaymentDetails(urlPaymentId);
+    } else if (initialPaymentId) {
       fetchPaymentDetails(initialPaymentId);
     }
-  }, [initialPaymentId]);
+  }, [searchParams, initialPaymentId]);
 
   const fetchPaymentDetails = async (id = paymentId) => {
     if (!id || !id.toString().trim()) {
@@ -42,6 +51,11 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
 
       const result = await getPaymentForVerification(id);
       setPayment(result.payment);
+
+      // Update URL with paymentId if it's not already there
+      if (!searchParams.get("paymentId")) {
+        setSearchParams({ paymentId: id });
+      }
     } catch (error) {
       console.error("Error fetching payment:", error);
       if (error.response?.status === 404) {
@@ -102,6 +116,18 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
     fetchPaymentDetails();
   };
 
+  const handlePaymentIdChange = (e) => {
+    const newPaymentId = e.target.value;
+    setPaymentId(newPaymentId);
+
+    // Update URL query parameter as user types
+    if (newPaymentId.trim()) {
+      setSearchParams({ paymentId: newPaymentId });
+    } else {
+      setSearchParams({});
+    }
+  };
+
   const getCurrentAdminId = () => {
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
     return userData.id || 1;
@@ -120,11 +146,16 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
           <input
             type="text"
             value={paymentId}
-            onChange={(e) => setPaymentId(e.target.value)}
+            onChange={handlePaymentIdChange}
             placeholder="Enter payment ID to verify..."
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
+          {searchParams.get("paymentId") && (
+            <p className="text-sm text-blue-600 mt-1">
+              Payment ID loaded from URL
+            </p>
+          )}
         </div>
         <div className="flex items-end">
           <button
@@ -140,7 +171,7 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
     </div>
   );
 
-  if (!hasSearched) {
+  if (!hasSearched && !searchParams.get("paymentId")) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-4 pt-20 md:pt-32 pb-20 md:pb-32">

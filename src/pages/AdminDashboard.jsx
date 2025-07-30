@@ -29,12 +29,22 @@ const AdminDashboard = () => {
                   </div>
                 </Link>
               </div>
-              <div>
+              {/* <div>
                 <Link to="/admin/manage-payments">
                   <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
                     <RiSecurePaymentFill className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
                     <div className="font-semibold text-sm sm:text-base">
                       Manage User Payments
+                    </div>
+                  </div>
+                </Link>
+              </div> */}
+              <div>
+                <Link to="/admin/payment/verification">
+                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl p-4 sm:p-6 text-center text-white">
+                    <RiSecurePaymentFill className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2" />
+                    <div className="font-semibold text-sm sm:text-base">
+                      Payments Verification
                     </div>
                   </div>
                 </Link>

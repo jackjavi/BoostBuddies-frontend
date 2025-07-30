@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
 
 function LoginPage() {
@@ -15,6 +15,11 @@ function LoginPage() {
   });
 
   const { storeToken, authenticateUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+
   const [errorMessage, setErrorMessage] = useState("");
   const [forgotPassError, setForgotPassError] = useState("");
   const [resetPassError, setResetPassError] = useState("");
@@ -40,6 +45,8 @@ function LoginPage() {
       if (response.status === 200) {
         storeToken(response.data.token);
         await authenticateUser();
+
+        navigate(from, { replace: true });
       }
     } catch (error) {
       setErrorMessage(error?.response?.data?.error?.message || error.message);
@@ -170,7 +177,7 @@ function LoginPage() {
           <div className="text-center">
             <p className="error text-[tomato]">{errorMessage}</p>
             <p>
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <Link to="/signup">
                 <span className="underline text-indigo-600">Sign up</span>
               </Link>
