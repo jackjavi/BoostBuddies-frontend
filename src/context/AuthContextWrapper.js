@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import { fetchUserData, apiChangePassword } from "../api/api2";
 
 export const AuthContext = createContext();
@@ -15,11 +15,7 @@ function AuthContextWrapper({ children }) {
     localStorage.setItem("userData", JSON.stringify(userData));
   const removeUserData = () => localStorage.removeItem("userData");
 
-  useEffect(() => {
-    authenticateUser();
-  }, []);
-
-  async function authenticateUser() {
+  const authenticateUser = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -41,7 +37,11 @@ function AuthContextWrapper({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    authenticateUser();
+  }, [authenticateUser]);
 
   function disconnect() {
     removeToken();

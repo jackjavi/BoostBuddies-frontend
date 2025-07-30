@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   Check,
@@ -25,6 +25,41 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
 
+  const fetchPaymentDetails = useCallback(
+    async (id = paymentId) => {
+      if (!id || !id.toString().trim()) {
+        setError("Please enter a valid payment ID");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        setHasSearched(true);
+
+        const result = await getPaymentForVerification(id);
+        setPayment(result.payment);
+
+        if (!searchParams.get("paymentId")) {
+          setSearchParams({ paymentId: id });
+        }
+      } catch (error) {
+        console.error("Error fetching payment:", error);
+        if (error.response?.status === 404) {
+          setError("Payment not found. Please check the payment ID.");
+        } else if (error) {
+          setError(error);
+        } else {
+          setError(error || "Failed to fetch payment details");
+        }
+        setPayment(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [paymentId, searchParams, setSearchParams]
+  );
+
   useEffect(() => {
     // Check for paymentId in URL query parameters
     const urlPaymentId = searchParams.get("paymentId");
@@ -36,40 +71,7 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
     } else if (initialPaymentId) {
       fetchPaymentDetails(initialPaymentId);
     }
-  }, [searchParams, initialPaymentId]);
-
-  const fetchPaymentDetails = async (id = paymentId) => {
-    if (!id || !id.toString().trim()) {
-      setError("Please enter a valid payment ID");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-      setHasSearched(true);
-
-      const result = await getPaymentForVerification(id);
-      setPayment(result.payment);
-
-      // Update URL with paymentId if it's not already there
-      if (!searchParams.get("paymentId")) {
-        setSearchParams({ paymentId: id });
-      }
-    } catch (error) {
-      console.error("Error fetching payment:", error);
-      if (error.response?.status === 404) {
-        setError("Payment not found. Please check the payment ID.");
-      } else if (error) {
-        setError(error);
-      } else {
-        setError(error || "Failed to fetch payment details");
-      }
-      setPayment(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [searchParams, initialPaymentId, fetchPaymentDetails]);
 
   const handleVerification = async (status) => {
     setProcessing(true);
@@ -120,7 +122,6 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
     const newPaymentId = e.target.value;
     setPaymentId(newPaymentId);
 
-    // Update URL query parameter as user types
     if (newPaymentId.trim()) {
       setSearchParams({ paymentId: newPaymentId });
     } else {

@@ -21,7 +21,6 @@ import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContextWrapper";
 import MobileNavBottom from "../components/MobileNavBottomProfile";
-import Spinner from "../components/Spinner";
 
 const Profile = () => {
   const { user, isLoading, disconnect } = useContext(AuthContext);
