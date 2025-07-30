@@ -9,7 +9,7 @@ function SignupPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    referredBy: null,
+    referredBy: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);

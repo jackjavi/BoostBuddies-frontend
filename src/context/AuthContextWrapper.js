@@ -10,7 +10,6 @@ function AuthContextWrapper({ children }) {
 
   const storeToken = (token) => localStorage.setItem("authToken", token);
   const removeToken = () => localStorage.removeItem("authToken");
-
   const storeUserData = (userData) =>
     localStorage.setItem("userData", JSON.stringify(userData));
   const removeUserData = () => localStorage.removeItem("userData");
@@ -18,10 +17,12 @@ function AuthContextWrapper({ children }) {
   const authenticateUser = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken");
+
       if (!token) {
         setUser(null);
         setIsLoggedIn(false);
         removeUserData();
+        setIsLoading(false);
         return;
       }
 
@@ -31,9 +32,18 @@ function AuthContextWrapper({ children }) {
       storeUserData(userData);
     } catch (error) {
       console.error("Authentication error:", error);
+
+      if (
+        error.message?.includes("401") ||
+        error.message?.includes("unauthorized") ||
+        error.response?.status === 401
+      ) {
+        removeToken();
+        removeUserData();
+      }
+
       setUser(null);
       setIsLoggedIn(false);
-      removeUserData();
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +56,9 @@ function AuthContextWrapper({ children }) {
   function disconnect() {
     removeToken();
     removeUserData();
-    authenticateUser();
+    setUser(null);
+    setIsLoggedIn(false);
+    setIsLoading(false);
   }
 
   const changePassword = async (oldPassword, newPassword) => {

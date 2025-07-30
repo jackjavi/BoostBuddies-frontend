@@ -14,17 +14,60 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+export const handleLogin = async (formData) => {
+  try {
+    const response = await api.post(`/api/v1/users/login`, formData);
+    return { authToken: response.data.token, loggedInUser: response.data.user };
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error("Login error:", error.response.data.error.message);
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Login error:", error.message);
+      throw new Error(error.message || "Login failed. Please try again.");
+    }
+  }
+};
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post(`/api/v1/users/forgot-password`, { email });
+    if (response.status !== 200) {
+      throw new Error("Failed to send OTP. Please check your email.");
+    }
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Forgot password error:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Forgot password error:", error.message);
+      throw new Error(error.message || "Failed to send OTP. Please try again.");
+    }
+  }
+};
+
 export const fetchSystemWideLogs = async (page, filters) => {
   try {
     const query = new URLSearchParams({ ...filters, page }).toString();
     const response = await api.get(`/api/v1/system-logs?${query}`);
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching system-wide logs:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching system-wide logs:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error fetching system-wide logs:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch logs. Please try again."
+      );
+    }
   }
 };
 
@@ -35,8 +78,18 @@ export const editProfile = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error editing profile:", error.response.data.error.message);
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error editing profile:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error editing profile:", error.message);
+      throw new Error(
+        error.message || "Failed to edit profile. Please try again."
+      );
+    }
   }
 };
 
@@ -45,11 +98,18 @@ export const fetchUsersWithPaymentStatus = async () => {
     const response = await api.get("/api/v1/admin/users-with-payment-status");
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching users with payment status:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching users with payment status:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error fetching users with payment status:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch users. Please try again."
+      );
+    }
   }
 };
 
@@ -58,11 +118,18 @@ export const confirmPackagePayment = async (userId, packageId) => {
     const response = await api.post("/api/v1/purchase", { userId, packageId });
     return response.data;
   } catch (error) {
-    console.error(
-      "Error confirming payment:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error confirming payment:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error confirming payment:", error.message);
+      throw new Error(
+        error.message || "Failed to confirm payment. Please try again."
+      );
+    }
   }
 };
 
@@ -71,11 +138,21 @@ export const fetchUserPaymentSummary = async (userId) => {
     const response = await api.get(`/api/v1/users/${userId}/payment-summary`);
     return response?.data;
   } catch (error) {
-    console.error(
-      `Error fetching payment summary for user ${userId}:`,
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        `Error fetching payment summary for user ${userId}:`,
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error(
+        `Error fetching payment summary for user ${userId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message || "Failed to fetch payment summary. Please try again."
+      );
+    }
   }
 };
 
@@ -93,11 +170,18 @@ export const fetchProducts = async ({
     const response = await api.get(`/api/v1/products?${params.toString()}`);
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching products:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching products:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error fetching products:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch products. Please try again."
+      );
+    }
   }
 };
 
@@ -106,11 +190,18 @@ export const fetchProductCategories = async () => {
     const response = await api.get("/api/v1/products/categories");
     return response.data.categories;
   } catch (error) {
-    console.error(
-      "Error fetching product categories:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching product categories:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error fetching product categories:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch product categories. Please try again."
+      );
+    }
   }
 };
 
@@ -122,11 +213,18 @@ export const trackProductView = async (productId, userId) => {
     });
     return response.data;
   } catch (error) {
-    console.error(
-      "Error tracking product view:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error tracking product view:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error("Error tracking product view:", error.message);
+      throw new Error(
+        error.message || "Failed to track product view. Please try again."
+      );
+    }
   }
 };
 
@@ -141,11 +239,24 @@ export async function fetchUserInteractions(userId) {
       ...item,
       type: item.type === "click" ? "view" : item.type,
     }));
+    if (!clean || clean.length === 0) {
+      return [];
+    }
 
     return clean;
   } catch (error) {
-    console.error("Fetch error:", error.response.data.error.message);
-    return [];
+    if (error.response && error.response.data) {
+      console.error(
+        "Fetch error:",
+        error.response.data.error.message || error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Fetch error:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch user interactions. Please try again."
+      );
+    }
   }
 }
 
@@ -154,11 +265,18 @@ export const fetchUserData = async () => {
     const response = await api.get("/api/v1/users/verify-token");
     return response.data.user;
   } catch (error) {
-    console.error(
-      "Error verifying user token:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error verifying user token:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error verifying user token:", error.message);
+      throw new Error(
+        error.message || "Failed to verify user token. Please try again."
+      );
+    }
   }
 };
 
@@ -173,11 +291,18 @@ export const apiChangePassword = async (oldPassword, newPassword) => {
       return { success: true, message: "Password changed successfully!" };
     }
   } catch (error) {
-    console.error(
-      "Error changing password:",
-      error.response.data.error.message
-    );
-    throw new error.response.data.error.message();
+    if (error.response && error.response.data) {
+      console.error(
+        "Error changing password:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error changing password:", error.message);
+      throw new Error(
+        error.message || "Failed to change password. Please try again."
+      );
+    }
   }
 };
 
@@ -189,11 +314,18 @@ export const submitPackagePayment = async (data) => {
     );
     return response.data;
   } catch (error) {
-    console.error(
-      "Error submitting package payment:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error submitting package payment:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error submitting package payment:", error.message);
+      throw new Error(
+        error.message || "Failed to submit package payment. Please try again."
+      );
+    }
   }
 };
 
@@ -204,11 +336,18 @@ export const getPaymentForVerification = async (paymentId) => {
     );
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching payment details:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching payment details:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error fetching payment details:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch payment details. Please try again."
+      );
+    }
   }
 };
 
@@ -220,11 +359,18 @@ export const verifyPayment = async (paymentId, data) => {
     );
     return response.data;
   } catch (error) {
-    console.error(
-      "Error verifying payment:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error verifying payment:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error verifying payment:", error.message);
+      throw new Error(
+        error.message || "Failed to verify payment. Please try again."
+      );
+    }
   }
 };
 
@@ -234,11 +380,18 @@ export const getPendingPayments = async (limit = 50, offset = 0) => {
     const response = await api.get(`/api/v1/payments/pending?${params}`);
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching pending payments:",
-      error.response.data.error.message
-    );
-    throw error.response.data.error.message;
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching pending payments:",
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message || error.message);
+    } else {
+      console.error("Error fetching pending payments:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch pending payments. Please try again."
+      );
+    }
   }
 };
 
