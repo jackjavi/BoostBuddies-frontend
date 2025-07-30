@@ -12,7 +12,12 @@ function IsLoggedIn() {
   }
 
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    const from = {
+      pathname: location.pathname,
+      search: location.search,
+    };
+
+    return <Navigate to="/login" state={{ from }} replace />;
   }
 
   return <Outlet />;
