@@ -7,12 +7,18 @@ function AuthContextWrapper({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const storeToken = (token) => localStorage.setItem("authToken", token);
   const removeToken = () => localStorage.removeItem("authToken");
+
   const storeUserData = (userData) =>
     localStorage.setItem("userData", JSON.stringify(userData));
-  const removeUserData = () => JSON.parse(localStorage.removeItem("userData"));
+  const removeUserData = () => localStorage.removeItem("userData");
+
+  const checkAdminStatus = (userData) => {
+    return userData?.role === "admin";
+  };
 
   const authenticateUser = useCallback(async () => {
     try {
@@ -20,6 +26,7 @@ function AuthContextWrapper({ children }) {
       if (!token) {
         setIsLoading(false);
         setIsLoggedIn(false);
+        setIsAdmin(false);
         return;
       }
 
@@ -29,12 +36,18 @@ function AuthContextWrapper({ children }) {
       if (userData) {
         setUser(userData);
         setIsLoggedIn(true);
+        setIsAdmin(checkAdminStatus(userData));
       } else {
         throw new Error("User data not found");
       }
 
-      await fetchUserData();
-      setUser(userData);
+      const freshUserData = await fetchUserData();
+      if (freshUserData) {
+        setUser(freshUserData);
+        setIsAdmin(checkAdminStatus(freshUserData));
+        storeUserData(freshUserData);
+      }
+
       setIsLoading(false);
       setIsLoggedIn(true);
     } catch (error) {
@@ -42,6 +55,7 @@ function AuthContextWrapper({ children }) {
       setUser(null);
       setIsLoading(false);
       setIsLoggedIn(false);
+      setIsAdmin(false);
     }
   }, []);
 
@@ -54,6 +68,7 @@ function AuthContextWrapper({ children }) {
     removeUserData();
     setUser(null);
     setIsLoggedIn(false);
+    setIsAdmin(false);
     setIsLoading(false);
   }
 
@@ -75,6 +90,7 @@ function AuthContextWrapper({ children }) {
     authenticateUser,
     isLoading,
     isLoggedIn,
+    isAdmin,
     disconnect,
     changePassword,
   };
