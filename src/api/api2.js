@@ -335,6 +335,9 @@ export const getPaymentForVerification = async (paymentId) => {
     const response = await api.get(
       `/api/v1/payments/verification/${paymentId}`
     );
+    if (!response.data || !response.data.payment) {
+      throw new Error("Payment not found or invalid payment ID.");
+    }
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {

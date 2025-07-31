@@ -44,14 +44,10 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
           setSearchParams({ paymentId: id });
         }
       } catch (error) {
-        console.error("Error fetching payment:", error);
-        if (error.response?.status === 404) {
-          setError("Payment not found. Please check the payment ID.");
-        } else if (error) {
-          setError(error);
-        } else {
-          setError(error || "Failed to fetch payment details");
-        }
+        console.error("Error fetching payment:", error.message);
+        setError(
+          error?.message || "Error fetching payment details. Please try again."
+        );
         setPayment(null);
       } finally {
         setLoading(false);
@@ -61,12 +57,10 @@ const AdminPaymentVerificationPage = ({ initialPaymentId = null }) => {
   );
 
   useEffect(() => {
-    // Check for paymentId in URL query parameters
     const urlPaymentId = searchParams.get("paymentId");
 
     if (urlPaymentId) {
       setPaymentId(urlPaymentId);
-      // Automatically fetch payment details if paymentId is in URL
       fetchPaymentDetails(urlPaymentId);
     } else if (initialPaymentId) {
       fetchPaymentDetails(initialPaymentId);
