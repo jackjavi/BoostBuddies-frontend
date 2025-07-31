@@ -1,6 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import { handleLogin, forgotPassword } from "../api/api2";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
@@ -15,12 +14,8 @@ function LoginPage() {
     confirmPassword: "",
   });
 
-  const {
-    storeToken,
-    authenticateUser,
-    isLoading: authLoading,
-    isLoggedIn,
-  } = useContext(AuthContext);
+  const { storeToken, storeUserData, authenticateUser } =
+    useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,27 +30,6 @@ function LoginPage() {
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (!authLoading && isLoggedIn) {
-      navigate(from, { replace: true });
-    }
-  }, [isLoggedIn, authLoading, navigate, from]);
-
-  // Show loading while auth is being checked
-  if (authLoading) {
-    return (
-      <main className="bg-indigo-50 p-10 pt-24 h-screen flex items-center justify-center">
-        <Spinner />
-      </main>
-    );
-  }
-
-  // Don't render login form if user is logged in
-  if (isLoggedIn) {
-    return null;
-  }
-
   function handleChange(event) {
     const { id, value } = event.currentTarget;
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -64,21 +38,20 @@ function LoginPage() {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    setErrorMessage(""); // Clear previous errors
-
     try {
-      const { authToken } = await handleLogin(formData);
-      if (!authToken) {
-        setErrorMessage("Login failed. Please check your credentials.");
-        setTimeout(() => setErrorMessage(""), 3000);
-        return;
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`,
+        formData
+      );
+      if (response.status === 200) {
+        storeToken(response.data.token);
+        storeUserData(response.data.user);
+        await authenticateUser();
+
+        navigate(from, { replace: true });
       }
-      storeToken(authToken);
-      await authenticateUser();
-      navigate(from, { replace: true });
     } catch (error) {
-      console.log(`Login error:`, error.message);
-      setErrorMessage(error.message);
+      setErrorMessage(error?.response?.data?.error?.message || error.message);
       setTimeout(() => setErrorMessage(""), 3000);
     } finally {
       setIsLoading(false);
@@ -100,20 +73,27 @@ function LoginPage() {
 
     try {
       setIsLoading(true);
-      setForgotPassError("");
-      await forgotPassword(forgotEmail);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/forgot-password`,
+        { email: forgotEmail }
+      );
       setShowForgotModal(false);
       setResetData((prev) => ({ ...prev, email: forgotEmail }));
+      if (response.status === 200) {
+      }
       setShowResetModal(true);
-      setForgotEmail("");
     } catch (error) {
-      setForgotPassError(error.message);
-      console.error("Error sending OTP:", error);
+      setForgotPassError("Failed to send email. Check address and try again.");
       setTimeout(() => {
         setForgotPassError("");
+        setForgotEmail("");
       }, 3000);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setForgotPassError("");
+        setForgotEmail("");
+      }, 3000);
     }
   }
 
@@ -135,33 +115,22 @@ function LoginPage() {
     }
     try {
       setIsLoading(true);
-      setResetPassError("");
       const res = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/reset-password`,
         { email, otp, newPassword }
       );
 
       if (res.status === 200) {
+        alert("Password reset successful. You can now log in.");
         setSuccessMessage("Password reset successful. You can now log in.");
         setTimeout(() => {
           setSuccessMessage("");
-          setShowResetModal(false);
-
-          setResetData({
-            email: "",
-            otp: "",
-            newPassword: "",
-            confirmPassword: "",
-          });
-        }, 2000);
+        }, 3000);
       }
+      setShowResetModal(false);
     } catch (error) {
-      setResetPassError(
-        error.response?.data?.error?.message ||
-          "Reset failed. Check OTP and try again."
-      );
       setTimeout(() => {
-        setResetPassError("");
+        setSuccessMessage("Reset failed. Check OTP and try again.");
       }, 3000);
     } finally {
       setIsLoading(false);
@@ -184,7 +153,6 @@ function LoginPage() {
             id="email"
             value={email}
             onChange={handleChange}
-            disabled={isLoading}
           />
         </div>
         <div className="w-full">
@@ -195,25 +163,21 @@ function LoginPage() {
             id="password"
             value={password}
             onChange={handleChange}
-            disabled={isLoading}
           />
         </div>
 
         <p
-          onClick={() => !isLoading && setShowForgotModal(true)}
-          className={`text-sm text-blue-600 hover:underline -mt-2 mb-4 self-start ${
-            isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-          }`}
+          onClick={() => setShowForgotModal(true)}
+          className="text-sm text-blue-600 cursor-pointer hover:underline -mt-2 mb-4 self-start"
         >
           Forgot password?
         </p>
 
-        {errorMessage && (
-          <p className="error text-[tomato] text-center">{errorMessage}</p>
-        )}
-
-        {!isLoading && (
+        {isLoading ? (
+          <Spinner />
+        ) : (
           <div className="text-center">
+            <p className="error text-[tomato]">{errorMessage}</p>
             <p>
               Don't have an account?{" "}
               <Link to="/signup">
@@ -223,10 +187,7 @@ function LoginPage() {
           </div>
         )}
 
-        {isLoading && <Spinner />}
-
         <button
-          type="submit"
           className={`w-full p-2 rounded font-lilita transition-colors ${
             isLoading
               ? "bg-gray-400 cursor-not-allowed"
@@ -234,7 +195,7 @@ function LoginPage() {
           }`}
           disabled={isLoading}
         >
-          {isLoading ? "Logging in..." : "Login"}
+          Login
         </button>
       </form>
 
@@ -249,13 +210,12 @@ function LoginPage() {
               className="w-full p-2 border rounded mb-4"
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
-              disabled={isLoading}
             />
             {forgotPassError && (
-              <p className="error text-[tomato] mb-4">{forgotPassError}</p>
+              <p className="error text-[tomato]">{forgotPassError}</p>
             )}
             {successMessage && (
-              <p className="text-green-600 mb-4">{successMessage}</p>
+              <p className=" text-green-600">{successMessage}</p>
             )}
             {isLoading ? (
               <Spinner />
@@ -269,11 +229,7 @@ function LoginPage() {
                 </button>
                 <button
                   className="mt-3 w-full bg-gray-300 hover:bg-gray-400 py-2 rounded"
-                  onClick={() => {
-                    setShowForgotModal(false);
-                    setForgotEmail("");
-                    setForgotPassError("");
-                  }}
+                  onClick={() => setShowForgotModal(false)}
                 >
                   Cancel
                 </button>
@@ -302,7 +258,6 @@ function LoginPage() {
               onChange={(e) =>
                 setResetData((prev) => ({ ...prev, otp: e.target.value }))
               }
-              disabled={isLoading}
             />
             <input
               type="password"
@@ -315,7 +270,6 @@ function LoginPage() {
                   newPassword: e.target.value,
                 }))
               }
-              disabled={isLoading}
             />
             <input
               type="password"
@@ -328,13 +282,9 @@ function LoginPage() {
                   confirmPassword: e.target.value,
                 }))
               }
-              disabled={isLoading}
             />
             {resetPassError && (
-              <p className="text-[tomato]">{resetPassError}</p>
-            )}
-            {successMessage && (
-              <p className="text-green-600">{successMessage}</p>
+              <p className=" text-[tomato]">{resetPassError}</p>
             )}
             {isLoading ? (
               <Spinner />
@@ -348,17 +298,7 @@ function LoginPage() {
                 </button>
                 <button
                   className="mt-3 w-full text-md bg-gray-300 hover:bg-gray-400 py-2 rounded"
-                  onClick={() => {
-                    setShowResetModal(false);
-                    setResetData({
-                      email: "",
-                      otp: "",
-                      newPassword: "",
-                      confirmPassword: "",
-                    });
-                    setResetPassError("");
-                    setSuccessMessage("");
-                  }}
+                  onClick={() => setShowResetModal(false)}
                 >
                   Cancel
                 </button>

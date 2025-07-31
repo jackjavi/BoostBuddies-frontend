@@ -20,7 +20,7 @@ const EditProfile = () => {
     name: user?.name || "",
     email: user?.email || "",
     dateOfBirth: user?.dateOfBirth || "",
-    profilePicture: "",
+    profilePicture: user?.profilePicture || "",
   });
 
   const handleChange = (e) => {

@@ -12,40 +12,36 @@ function AuthContextWrapper({ children }) {
   const removeToken = () => localStorage.removeItem("authToken");
   const storeUserData = (userData) =>
     localStorage.setItem("userData", JSON.stringify(userData));
-  const removeUserData = () => localStorage.removeItem("userData");
+  const removeUserData = () => JSON.parse(localStorage.removeItem("userData"));
 
   const authenticateUser = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken");
-
       if (!token) {
-        setUser(null);
-        setIsLoggedIn(false);
-        removeUserData();
         setIsLoading(false);
+        setIsLoggedIn(false);
         return;
       }
 
-      const userData = await fetchUserData();
-      setUser(userData);
-      setIsLoggedIn(true);
-      storeUserData(userData);
-    } catch (error) {
-      console.error("Authentication error:", error);
+      setIsLoading(true);
+      const userData = JSON.parse(localStorage.getItem("userData"));
 
-      if (
-        error.message?.includes("401") ||
-        error.message?.includes("unauthorized") ||
-        error.response?.status === 401
-      ) {
-        removeToken();
-        removeUserData();
+      if (userData) {
+        setUser(userData);
+        setIsLoggedIn(true);
+      } else {
+        throw new Error("User data not found");
       }
 
-      setUser(null);
-      setIsLoggedIn(false);
-    } finally {
+      await fetchUserData();
+      setUser(userData);
       setIsLoading(false);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Error during authentication:", error);
+      setUser(null);
+      setIsLoading(false);
+      setIsLoggedIn(false);
     }
   }, []);
 
@@ -74,6 +70,8 @@ function AuthContextWrapper({ children }) {
     user,
     storeToken,
     removeToken,
+    storeUserData,
+    removeUserData,
     authenticateUser,
     isLoading,
     isLoggedIn,

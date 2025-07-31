@@ -235,13 +235,14 @@ export const trackProductClick = (productId, userId) => {
 export async function fetchUserInteractions(userId) {
   try {
     const response = await api.get(`/api/v1/users/${userId}/interactions`);
+    console.log("Fetched interactions:", response.data);
+    if (!response.data || !response.data.interactions) {
+      throw new Error("No interactions found for this user.");
+    }
     const clean = response?.data?.interactions.map((item) => ({
       ...item,
       type: item.type === "click" ? "view" : item.type,
     }));
-    if (!clean || clean.length === 0) {
-      return [];
-    }
 
     return clean;
   } catch (error) {
