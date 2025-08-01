@@ -99,11 +99,7 @@ const Header = () => {
               {user.profilePicture ? (
                 <div className="relative">
                   <img
-                    src={
-                      user.profilePicture.includes("githubusercontent.com")
-                        ? user.profilePicture
-                        : `${process.env.REACT_APP_BACKEND_URL}/${user.profilePicture}`
-                    }
+                    src={user.profilePicture}
                     alt={user.name}
                     className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-transparent group-hover:border-indigo-500 transition-all duration-200 object-cover shadow-sm"
                   />

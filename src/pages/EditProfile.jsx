@@ -45,7 +45,7 @@ const EditProfile = () => {
     data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("dateOfBirth", formData.dateOfBirth);
-    data.append("file", formData.profilePicture);
+    data.append("profilePicture", formData.profilePicture);
 
     try {
       await editProfile(data);

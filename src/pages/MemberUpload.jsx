@@ -34,7 +34,7 @@ function MemberUpload() {
     try {
       const data = new FormData();
       data.append("dateOfBirth", formData.dateOfBirth);
-      data.append("file", file);
+      data.append("profilePicture", file);
       data.append("userId", user.id);
 
       const response = await axios.post(
@@ -84,6 +84,7 @@ function MemberUpload() {
           className="mt-1 mb-4 p-2 w-full outline outline-1 outline-slate-800 rounded-md text-gray-700"
           type="file"
           id="profilePicture"
+          name="profilePicture"
           onChange={handleFileChange}
         />
       </div>
