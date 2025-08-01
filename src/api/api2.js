@@ -235,7 +235,6 @@ export const trackProductClick = (productId, userId) => {
 export async function fetchUserInteractions(userId) {
   try {
     const response = await api.get(`/api/v1/users/${userId}/interactions`);
-    console.log("Fetched interactions:", response.data);
     if (!response.data || !response.data.interactions) {
       throw new Error("No interactions found for this user.");
     }
@@ -335,6 +334,7 @@ export const getPaymentForVerification = async (paymentId) => {
     const response = await api.get(
       `/api/v1/payments/verification/${paymentId}`
     );
+
     if (!response.data || !response.data.payment) {
       throw new Error("Payment not found or invalid payment ID.");
     }
@@ -394,6 +394,143 @@ export const getPendingPayments = async (limit = 50, offset = 0) => {
       console.error("Error fetching pending payments:", error.message);
       throw new Error(
         error.message || "Failed to fetch pending payments. Please try again."
+      );
+    }
+  }
+};
+
+export const fetchProductsWithAccessControl = async (params = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params.page) queryParams.append("page", params.page);
+    if (params.limit) queryParams.append("limit", params.limit);
+    if (params.category) queryParams.append("category", params.category);
+
+    const response = await api.get(
+      `/api/v1/products/with-access-control?${queryParams.toString()}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching products with access control:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message ||
+          error.response.data.message ||
+          error.message
+      );
+    } else {
+      console.error(
+        "Error fetching products with access control:",
+        error.message
+      );
+      throw new Error(
+        error.message || "Failed to fetch products. Please try again."
+      );
+    }
+  }
+};
+
+/* export const fetchProductCategories = async () => {
+  try {
+    const response = await api.get("/api/v1/products/categories");
+    return response.data.categories;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching product categories:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message ||
+          error.response.data.message ||
+          error.message
+      );
+    } else {
+      console.error("Error fetching product categories:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch categories. Please try again."
+      );
+    }
+  }
+}; */
+
+export const trackProductViewWithControl = async (productId, userId) => {
+  try {
+    const response = await api.post("/api/v1/products/view-with-control", {
+      productId,
+      userId,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error tracking product view:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message ||
+          error.response.data.message ||
+          error.message
+      );
+    } else {
+      console.error("Error tracking product view:", error.message);
+      throw new Error(
+        error.message || "Failed to track product view. Please try again."
+      );
+    }
+  }
+};
+
+/* export const trackProductClick = async (productId, userId) => {
+  try {
+    // This endpoint redirects, so we don't need to handle response data
+    const response = await api.get(
+      `/api/v1/products/click/${productId}?userId=${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error tracking product click:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message ||
+          error.response.data.message ||
+          error.message
+      );
+    } else {
+      console.error("Error tracking product click:", error.message);
+      throw new Error(
+        error.message || "Failed to track product click. Please try again."
+      );
+    }
+  }
+}; */
+
+export const getUserViewingStats = async (days = 7) => {
+  try {
+    const response = await api.get(`/api/v1/products/user-stats?days=${days}`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching user viewing stats:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message ||
+          error.response.data.message ||
+          error.message
+      );
+    } else {
+      console.error("Error fetching user viewing stats:", error.message);
+      throw new Error(
+        error.message || "Failed to fetch viewing stats. Please try again."
       );
     }
   }
