@@ -270,7 +270,7 @@ const DetailedPaymentSummary = () => {
         {/* Tabs */}
         <div className="bg-white rounded-xl shadow-lg mb-8">
           <div className="border-b border-gray-200">
-            <nav className="flex space-x-8 px-6">
+            <nav className="flex flex-col md:flex-row space-x-8 px-6">
               {[
                 { id: "overview", name: "Overview", icon: TrendingUp },
                 { id: "transactions", name: "Transactions", icon: Activity },
