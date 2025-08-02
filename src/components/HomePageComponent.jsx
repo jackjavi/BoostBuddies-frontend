@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { TrendingUp, Users, Eye, Share2, Copy, Milestone } from "lucide-react";
+import { Share2, Copy } from "lucide-react";
 import MobileNavBottom from "./MobileNavBottomDashboard";
 import { fetchUserInteractions } from "../api/api2";
-import Spinner from "./Spinner";
 import UserInteractions from "./UserInteractions";
 import Packages from "../components/PackagesComponent";
 import EarningsRedirectCard from "../components/earningsRedirectCard";
