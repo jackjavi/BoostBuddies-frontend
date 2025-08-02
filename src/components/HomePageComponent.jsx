@@ -5,6 +5,7 @@ import { fetchUserInteractions } from "../api/api2";
 import Spinner from "./Spinner";
 import UserInteractions from "./UserInteractions";
 import Packages from "../components/PackagesComponent";
+import EarningsRedirectCard from "../components/earningsRedirectCard";
 
 const HomePageComponent = ({ user, paymentSummary }) => {
   const [copied, setCopied] = useState(false);
@@ -46,9 +47,13 @@ const HomePageComponent = ({ user, paymentSummary }) => {
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-          {/* Registration Earnings */}
+        {/* Earnings Redirect Card */}
+        <EarningsRedirectCard paymentSummary={paymentSummary} />
+
+        {/* Earnings Summary Section */}
+
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+          
           <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-green-100 text-sm font-medium">
@@ -69,7 +74,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             )}
           </div>
 
-          {/* Referral Earnings */}
+
           <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-blue-100 text-sm font-medium">
@@ -90,7 +95,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             )}
           </div>
 
-          {/* View Earnings */}
+       
           <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-green-100 text-sm font-medium">
@@ -111,7 +116,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
             )}
           </div>
 
-          {/* Total Earnings */}
+       
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl py-6 px-4 text-white">
             <div className="flex items-center justify-between mb-2">
               <span className="text-purple-100 text-sm font-medium">
@@ -131,7 +136,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               <Spinner />
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

@@ -6,8 +6,8 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { Link } from "react-router-dom";
-import { User, Trophy, Star, Crown } from "lucide-react";
+// import { Link } from "react-router-dom"; // Remove this import since it's not supported in artifacts
+import { User, Trophy, Star, Crown, Wallet } from "lucide-react";
 import HomePageComponent from "../components/HomePageComponent";
 import { AiOutlineProduct } from "react-icons/ai";
 import { MdOutlineLeaderboard } from "react-icons/md";
@@ -83,8 +83,8 @@ const Dashboard = () => {
           className={`sidebar fixed md:static w-[240px] h-[calc(100vh-4rem)] md:h-auto transform md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <Link
-              to="/"
+            <a
+              href="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -94,9 +94,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </Link>
-            <Link
-              to="/products"
+            </a>
+            <a
+              href="/products"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -106,9 +106,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </Link>
-            <Link
-              to="/leaderboard"
+            </a>
+            <a
+              href="/leaderboard"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -118,12 +118,24 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </Link>
+            </a>
+            <a
+              href="/payments"
+              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
+            >
+              <span className="material-icons-outlined mr-2">
+                <Wallet />
+              </span>
+              Payments
+              <span className="material-icons-outlined ml-auto">
+                <IoIosArrowForward />
+              </span>
+            </a>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <Link
-              to="/profile"
+            <a
+              href="/profile"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -133,9 +145,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </Link>
-            <Link
-              to="/profile/edit"
+            </a>
+            <a
+              href="/profile/edit"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -145,9 +157,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </Link>
-            <Link
-              href="#"
+            </a>
+            <a
+              href="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <button onClick={disconnect} className="flex w-full items-center">
@@ -159,7 +171,7 @@ const Dashboard = () => {
                   <IoIosArrowForward />
                 </span>
               </button>
-            </Link>
+            </a>
           </div>
         </aside>
 
@@ -246,7 +258,11 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <HomePageComponent user={user} paymentSummary={paymentSummary} />
+            <HomePageComponent
+              user={user}
+              paymentSummary={paymentSummary}
+              hideEarnings={true}
+            />
           </div>
         </main>
       </div>
