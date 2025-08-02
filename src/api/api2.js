@@ -156,6 +156,32 @@ export const fetchUserPaymentSummary = async (userId) => {
   }
 };
 
+export const fetchDetailedPaymentSummary = async (userId) => {
+  try {
+    const response = await api.get(
+      `/api/v1/users/${userId}/detailed-payment-summary`
+    );
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        `Error fetching detailed payment summary for user ${userId}:`,
+        error.response.data.error.message
+      );
+      throw new Error(error.response.data.error.message);
+    } else {
+      console.error(
+        `Error fetching detailed payment summary for user ${userId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message ||
+          "Failed to fetch detailed payment summary. Please try again."
+      );
+    }
+  }
+};
+
 export const fetchProducts = async ({
   page = 1,
   limit = 10,

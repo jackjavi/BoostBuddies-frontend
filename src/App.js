@@ -21,6 +21,7 @@ import AdminManagePayments from "./pages/AdminManagePayments";
 import Packages from "./pages/Packages";
 import PackageDetails from "./pages/PackageDetails";
 import AdminPaymentVerificationPage from "./pages/Admin/AdminPaymentVerification";
+import DetailedPaymentSummary from "./pages/DetailedPaymentSummary";
 
 function App() {
   return (
@@ -65,6 +66,9 @@ function App() {
               </Route>
               <Route path="/leaderboard" element={<IsLoggedIn />}>
                 <Route index element={<LeaderBoard />} />
+              </Route>
+              <Route path="/payments" element={<IsLoggedIn />}>
+                <Route index element={<DetailedPaymentSummary />} />
               </Route>
 
               {/* Admin-only routes */}
