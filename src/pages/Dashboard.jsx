@@ -6,13 +6,12 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-// import { Link } from "react-router-dom"; // Remove this import since it's not supported in artifacts
 import { User, Trophy, Star, Crown, Wallet } from "lucide-react";
 import HomePageComponent from "../components/HomePageComponent";
 import { AiOutlineProduct } from "react-icons/ai";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { fetchUserPaymentSummary } from "../api/api2";
 import Spinner from "../components/Spinner";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { disconnect, user } = useContext(AuthContext);
@@ -83,8 +82,8 @@ const Dashboard = () => {
           className={`sidebar fixed md:static w-[240px] h-[calc(100vh-4rem)] md:h-auto transform md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
         >
           <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -94,9 +93,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </a>
-            <a
-              href="/products"
+            </Link>
+            <Link
+              to="/products"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -106,21 +105,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </a>
-            <a
-              href="/leaderboard"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <MdOutlineLeaderboard />
-              </span>
-              Leaderboard
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </a>
-            <a
-              href="/payments"
+            </Link>
+            <Link
+              to="/payments"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -130,12 +117,12 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </a>
+            </Link>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <a
-              href="/profile"
+            <Link
+              to="/profile"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -145,9 +132,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </a>
-            <a
-              href="/profile/edit"
+            </Link>
+            <Link
+              to="/profile/edit"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
@@ -157,9 +144,9 @@ const Dashboard = () => {
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
-            </a>
-            <a
-              href="/"
+            </Link>
+            <Link
+              to="/"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <button onClick={disconnect} className="flex w-full items-center">
@@ -171,7 +158,7 @@ const Dashboard = () => {
                   <IoIosArrowForward />
                 </span>
               </button>
-            </a>
+            </Link>
           </div>
         </aside>
 

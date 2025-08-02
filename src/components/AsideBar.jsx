@@ -4,10 +4,10 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContextWrapper";
+import { Wallet } from "lucide-react";
 
 const AsideBar = () => {
   const { disconnect } = useContext(AuthContext);
@@ -36,31 +36,14 @@ const AsideBar = () => {
             <IoIosArrowForward />
           </span>
         </Link>
-        {/* <Link
-          to={isAdmin ? "/admin/users" : "#"}
-          onClick={() => setMobileMenuOpen(!setMobileMenuOpen)}
-          className={`flex items-center text-gray-600 ${
-            isAdmin ? "hover:text-indigo-800" : "cursor-not-allowed opacity-50"
-          } py-4 transition-all duration-300 ${
-            isAdmin ? "hover:translate-x-1" : ""
-          }`}
-        >
-          <span className="material-icons-outlined mr-2">
-            <MdAdminPanelSettings />
-          </span>
-          Admin Panel
-          <span className="material-icons-outlined ml-auto">
-            <IoIosArrowForward />
-          </span>
-        </Link> */}
         <Link
-          to="/leaderboard"
+          to="/payments"
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
         >
           <span className="material-icons-outlined mr-2">
-            <MdOutlineLeaderboard />
+            <Wallet />
           </span>
-          Leaderboard
+          Payments
           <span className="material-icons-outlined ml-auto">
             <IoIosArrowForward />
           </span>
@@ -93,7 +76,7 @@ const AsideBar = () => {
           </span>
         </Link>
         <Link
-          href="#"
+          href=""
           className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
         >
           <button onClick={disconnect} className="flex w-full items-center">

@@ -10,6 +10,7 @@ import {
   LogOut,
   AlertCircle,
   CheckCircle,
+  Wallet,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HiHome } from "react-icons/hi2";
@@ -17,7 +18,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContextWrapper";
 import MobileNavBottom from "../components/MobileNavBottomProfile";
@@ -98,13 +98,13 @@ const Profile = () => {
               </span>
             </Link>
             <Link
-              to="/leaderboard"
+              to="/payments"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
-                <MdOutlineLeaderboard />
+                <Wallet />
               </span>
-              Leaderboard
+              Payments
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>

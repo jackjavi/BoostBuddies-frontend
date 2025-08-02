@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { fetchDetailedPaymentSummary } from "../api/api2";
+import MobileNavBottom from "../components/MobileNavBottomPayments";
 import {
   Wallet,
   TrendingUp,
@@ -664,6 +665,7 @@ const DetailedPaymentSummary = () => {
           </div>
         </div>
       </div>
+      <MobileNavBottom />
     </div>
   );
 };

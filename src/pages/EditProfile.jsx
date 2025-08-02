@@ -7,8 +7,9 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
+import { Wallet } from "lucide-react";
+import MobileNavBottom from "../components/MobileNavBottomEditProfile";
 
 const EditProfile = () => {
   const { disconnect } = useContext(AuthContext);
@@ -122,13 +123,13 @@ const EditProfile = () => {
               </span>
             </Link>
             <Link
-              to="/leaderboard"
+              to="/payments"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
-                <MdOutlineLeaderboard />
+                <Wallet />
               </span>
-              Leaderboard
+              Wallet
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>
@@ -305,6 +306,7 @@ const EditProfile = () => {
           </div>
         </main>
       </div>
+      <MobileNavBottom />
     </div>
   );
 };

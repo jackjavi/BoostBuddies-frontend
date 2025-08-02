@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, Boxes, Package, BarChart3, User } from "lucide-react";
+import { Home, Boxes, Package, User, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const MobileNavBottom = () => {
@@ -28,11 +28,11 @@ const MobileNavBottom = () => {
           <span className="text-xs mt-1">Products</span>
         </Link>
         <Link
-          to="/leaderboard"
+          to="/payments"
           className="flex flex-col items-center py-2 text-gray-600"
         >
-          <BarChart3 className="w-5 h-5" />
-          <span className="text-xs mt-1">Leaderboard</span>
+          <Wallet className="w-5 h-5" />
+          <span className="text-xs mt-1">Payments</span>
         </Link>
         <Link
           to="/profile"

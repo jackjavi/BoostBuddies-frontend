@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 import { FaWindowClose } from "react-icons/fa";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
-import { Package } from "lucide-react";
+import { Package, Wallet } from "lucide-react";
 
 const Sidebar = ({
   mobileMenuOpen,
@@ -64,12 +63,12 @@ const Sidebar = ({
           </Link>
 
           <Link
-            to="/leaderboard"
+            to="/payments"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
           >
-            <MdOutlineLeaderboard className="mr-2 w-5 h-5" />
-            Leaderboard
+            <Wallet className="mr-2 w-5 h-5" />
+            Payments
             <IoIosArrowForward className="ml-auto w-4 h-4" />
           </Link>
         </div>

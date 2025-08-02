@@ -7,9 +7,9 @@ import { MdPowerSettingsNew } from "react-icons/md";
 import { CiFaceSmile } from "react-icons/ci";
 import { CiSettings } from "react-icons/ci";
 import { AiOutlineProduct } from "react-icons/ai";
-import { MdOutlineLeaderboard } from "react-icons/md";
 import { Link } from "react-router-dom";
 import ProductsComponent from "../components/ProductsComponent";
+import { Wallet } from "lucide-react";
 
 const Dashboard = () => {
   const { disconnect } = useContext(AuthContext);
@@ -51,13 +51,13 @@ const Dashboard = () => {
               </span>
             </Link>
             <Link
-              to="/leaderboard"
+              to="/payments"
               className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
             >
               <span className="material-icons-outlined mr-2">
-                <MdOutlineLeaderboard />
+                <Wallet />
               </span>
-              Leaderboard
+              Payments
               <span className="material-icons-outlined ml-auto">
                 <IoIosArrowForward />
               </span>

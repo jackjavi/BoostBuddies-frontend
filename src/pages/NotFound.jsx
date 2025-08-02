@@ -70,10 +70,10 @@ const NotFound = () => {
               </Link>
               <span className="text-gray-300">•</span>
               <Link
-                to="/leaderboard"
+                to="/payments"
                 className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline"
               >
-                Leaderboard
+                Payments
               </Link>
               <span className="text-gray-300">•</span>
               <Link

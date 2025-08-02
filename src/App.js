@@ -14,7 +14,6 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChangePassword";
 import Products from "./pages/Products";
-import LeaderBoard from "./pages/LeaderBoard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersTable from "./pages/AdminUsersTable";
 import AdminManagePayments from "./pages/AdminManagePayments";
@@ -63,9 +62,6 @@ function App() {
               </Route>
               <Route path="/products" element={<IsLoggedIn />}>
                 <Route index element={<Products />} />
-              </Route>
-              <Route path="/leaderboard" element={<IsLoggedIn />}>
-                <Route index element={<LeaderBoard />} />
               </Route>
               <Route path="/payments" element={<IsLoggedIn />}>
                 <Route index element={<DetailedPaymentSummary />} />
