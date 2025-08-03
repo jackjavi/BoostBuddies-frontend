@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
-import { fetchDetailedPaymentSummary } from "../api/api2";
+import {
+  fetchDetailedPaymentSummary,
+  submitWithdrawalRequest,
+  getUserWithdrawals,
+} from "../api/api2";
 import MobileNavBottom from "../components/MobileNavBottomPayments";
+import WithdrawalComponent from "../components/WithdawalComponent";
+import NotificationModal from "../components/NotificationModal";
 import {
   Wallet,
   TrendingUp,
@@ -39,12 +45,34 @@ const DetailedPaymentSummary = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Withdrawal component state
+  const [showWithdrawal, setShowWithdrawal] = useState(false);
+  const [withdrawalHistory, setWithdrawalHistory] = useState([]);
+
+  // Notification modal state
+  const [notification, setNotification] = useState({
+    isVisible: false,
+    type: "info",
+    title: "",
+    message: "",
+    actionButton: null,
+  });
+
   useEffect(() => {
     const loadPaymentData = async () => {
       try {
         setLoading(true);
         const data = await fetchDetailedPaymentSummary(user.id);
         setPaymentData(data);
+
+        // Also load withdrawal history
+        try {
+          const withdrawals = await getUserWithdrawals(user.id);
+          setWithdrawalHistory(withdrawals.withdrawals || []);
+        } catch (withdrawalError) {
+          console.error("Failed to load withdrawal history:", withdrawalError);
+          setWithdrawalHistory([]);
+        }
       } catch (error) {
         console.error("Failed to load detailed payment data:", error);
       } finally {
@@ -56,6 +84,75 @@ const DetailedPaymentSummary = () => {
       loadPaymentData();
     }
   }, [user]);
+
+  // Handle withdrawal request submission
+  const handleWithdrawalRequest = async (withdrawalData) => {
+    try {
+      const response = await submitWithdrawalRequest(withdrawalData);
+
+      // Refresh payment data to reflect any changes
+      if (user?.id) {
+        const updatedData = await fetchDetailedPaymentSummary(user.id);
+        setPaymentData(updatedData);
+
+        // Refresh withdrawal history
+        const updatedWithdrawals = await getUserWithdrawals(user.id);
+        setWithdrawalHistory(updatedWithdrawals.withdrawals || []);
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Withdrawal request failed:", error);
+      throw error;
+    }
+  };
+
+  // Handle withdrawal button click with eligibility check
+  const handleWithdrawalClick = () => {
+    if (!userData.hasPaid) {
+      setNotification({
+        isVisible: true,
+        type: "warning",
+        title: "Payment Required",
+        message:
+          "You need to complete your package payment before you can request withdrawals. Please make a payment first to unlock withdrawal functionality.",
+        actionButton: {
+          text: "Make Payment",
+          onClick: () => {
+            setNotification({ ...notification, isVisible: false });
+            window.location.href = "/packages";
+          },
+        },
+      });
+      return;
+    }
+
+    if (stats.totalEarnings < 500) {
+      setNotification({
+        isVisible: true,
+        type: "info",
+        title: "Insufficient Balance",
+        message: `You need at least KSH 500 to make a withdrawal. Your current balance is ${formatCurrency(stats.totalEarnings)}. Keep earning by referring friends and viewing products to reach the minimum withdrawal amount.`,
+        actionButton: {
+          text: "View Products",
+          onClick: () => {
+            setNotification({ ...notification, isVisible: false });
+            // Navigate to products page - you can add navigation logic here
+            window.location.href = "/products"; // or use your routing method
+          },
+        },
+      });
+      return;
+    }
+
+    // If eligible, show withdrawal modal
+    setShowWithdrawal(true);
+  };
+
+  // Close notification modal
+  const closeNotification = () => {
+    setNotification({ ...notification, isVisible: false });
+  };
 
   const getRankInfo = (rank) => {
     if (rank <= 3) {
@@ -160,27 +257,43 @@ const DetailedPaymentSummary = () => {
   ].filter((item) => item.value > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screenoverflow-x-hidden py-24">
+      <div className="max-w-7xl mx-auto px-4 ">
         {/* Header Section */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+          <div className="flex flex-col md:flex-row items-center md:justify-between px-4 md:px-8">
+            <div className="">
+              <h1 className="text-3xl font-lilita text-gray-900 mb-2 text-center">
                 Payment Summary
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-gray-600 mt-1 text-center">
                 Detailed breakdown of your earnings and transactions
               </p>
             </div>
-            <div
-              className={`${rankInfo.bgColor} ${rankInfo.gradient} rounded-xl p-4 text-white shadow-lg`}
-            >
-              <div className="flex items-center space-x-2">
-                {rankInfo.icon}
-                <div>
-                  <p className="text-sm opacity-90">Global Rank</p>
-                  <p className="text-2xl font-bold">#{userData.globalRank}</p>
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-center md:justify-end py-4 w-full space-x-4">
+              {/* Withdrawal Button */}
+              <div>
+                <button
+                  onClick={handleWithdrawalClick}
+                  className="px-6 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <Wallet className="w-5 h-5" />
+                  <span>Request Withdrawal</span>
+                </button>
+              </div>
+
+              {/* Rank Badge */}
+              <div
+                className={`${rankInfo.bgColor} ${rankInfo.gradient} rounded-xl p-4 text-white shadow-lg`}
+              >
+                <div className="flex items-center space-x-2">
+                  {rankInfo.icon}
+                  <div>
+                    <p className="text-sm opacity-90">Global Rank</p>
+                    <p className="text-2xl font-bold text-md">
+                      #{userData.globalRank}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -277,6 +390,7 @@ const DetailedPaymentSummary = () => {
                 { id: "transactions", name: "Transactions", icon: Activity },
                 { id: "chains", name: "Referral Chains", icon: Users },
                 { id: "pending", name: "Pending Bonuses", icon: Gift },
+                { id: "withdrawals", name: "Withdrawals", icon: Wallet },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -624,6 +738,136 @@ const DetailedPaymentSummary = () => {
                 </div>
               </div>
             )}
+
+            {activeTab === "withdrawals" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Withdrawal History
+                  </h3>
+                  <button
+                    onClick={handleWithdrawalClick}
+                    className="px-4 py-2 rounded-lg font-medium flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <Wallet className="w-4 h-4" />
+                    <span>New Withdrawal</span>
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {withdrawalHistory.map((withdrawal, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg border border-gray-200 p-6"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div
+                            className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                              withdrawal.status === "processed"
+                                ? "bg-green-100"
+                                : withdrawal.status === "approved"
+                                  ? "bg-blue-100"
+                                  : withdrawal.status === "pending"
+                                    ? "bg-yellow-100"
+                                    : "bg-red-100"
+                            }`}
+                          >
+                            <Wallet
+                              className={`w-6 h-6 ${
+                                withdrawal.status === "processed"
+                                  ? "text-green-600"
+                                  : withdrawal.status === "approved"
+                                    ? "text-blue-600"
+                                    : withdrawal.status === "pending"
+                                      ? "text-yellow-600"
+                                      : "text-red-600"
+                              }`}
+                            />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900">
+                              Withdrawal Request #{withdrawal.id}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              Phone: {withdrawal.phoneNumber}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Reason: {withdrawal.reason}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Submitted: {formatDate(withdrawal.submittedAt)}
+                            </p>
+                            {withdrawal.verifiedAt && (
+                              <p className="text-xs text-gray-500">
+                                Verified: {formatDate(withdrawal.verifiedAt)}
+                              </p>
+                            )}
+                            {withdrawal.transactionCode && (
+                              <p className="text-xs text-blue-600 font-medium">
+                                Transaction Code: {withdrawal.transactionCode}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-gray-900">
+                            {formatCurrency(withdrawal.amount)}
+                          </p>
+                          <span
+                            className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                              withdrawal.status === "processed"
+                                ? "bg-green-100 text-green-800"
+                                : withdrawal.status === "approved"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : withdrawal.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {withdrawal.status.charAt(0).toUpperCase() +
+                              withdrawal.status.slice(1)}
+                          </span>
+                          {withdrawal.verificationNotes && (
+                            <p className="text-xs text-gray-600 mt-1">
+                              Note: {withdrawal.verificationNotes}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {withdrawalHistory.length === 0 && (
+                    <div className="text-center py-12">
+                      <Wallet className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No Withdrawal History
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        You haven't made any withdrawal requests yet.
+                      </p>
+                      {userData.hasPaid && stats.totalEarnings >= 500 && (
+                        <button
+                          onClick={handleWithdrawalClick}
+                          className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
+                        >
+                          Make Your First Withdrawal
+                        </button>
+                      )}
+                      {(!userData.hasPaid || stats.totalEarnings < 500) && (
+                        <button
+                          onClick={handleWithdrawalClick}
+                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium"
+                        >
+                          Learn About Withdrawals
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -665,6 +909,26 @@ const DetailedPaymentSummary = () => {
           </div>
         </div>
       </div>
+
+      {/* Withdrawal Component */}
+      <WithdrawalComponent
+        user={userData}
+        stats={stats}
+        onWithdrawalRequest={handleWithdrawalRequest}
+        isVisible={showWithdrawal}
+        onClose={() => setShowWithdrawal(false)}
+      />
+
+      {/* Notification Modal */}
+      <NotificationModal
+        isVisible={notification.isVisible}
+        onClose={closeNotification}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        actionButton={notification.actionButton}
+      />
+
       <MobileNavBottom />
     </div>
   );

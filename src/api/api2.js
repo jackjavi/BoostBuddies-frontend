@@ -562,4 +562,180 @@ export const getUserViewingStats = async (days = 7) => {
   }
 };
 
+/**
+ * Submit withdrawal request
+ */
+export const submitWithdrawalRequest = async (withdrawalData) => {
+  try {
+    const response = await api.post(
+      "/api/v1/withdrawals/submit",
+      withdrawalData
+    );
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error submitting withdrawal request:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error("Error submitting withdrawal request:", error.message);
+      throw new Error(
+        error.message ||
+          "Failed to submit withdrawal request. Please try again."
+      );
+    }
+  }
+};
+
+/**
+ * Get user's withdrawal history
+ */
+export const getUserWithdrawals = async (userId) => {
+  try {
+    const response = await api.get(`/api/v1/withdrawals/user/${userId}`);
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        `Error fetching user withdrawals for user ${userId}:`,
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error(
+        `Error fetching user withdrawals for user ${userId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message || "Failed to fetch withdrawal history. Please try again."
+      );
+    }
+  }
+};
+
+/**
+ * Check withdrawal eligibility
+ */
+export const checkWithdrawalEligibility = async (userId) => {
+  try {
+    const response = await api.get(`/api/v1/withdrawals/eligibility/${userId}`);
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        `Error checking withdrawal eligibility for user ${userId}:`,
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error(
+        `Error checking withdrawal eligibility for user ${userId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message ||
+          "Failed to check withdrawal eligibility. Please try again."
+      );
+    }
+  }
+};
+
+// Admin endpoints
+/**
+ * Get withdrawal for verification (admin)
+ */
+export const getWithdrawalForVerification = async (withdrawalId) => {
+  try {
+    const response = await api.get(
+      `/api/v1/withdrawals/verification/${withdrawalId}`
+    );
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        `Error fetching withdrawal for verification ${withdrawalId}:`,
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error(
+        `Error fetching withdrawal for verification ${withdrawalId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message || "Failed to fetch withdrawal details. Please try again."
+      );
+    }
+  }
+};
+
+/**
+ * Verify withdrawal (admin)
+ */
+export const verifyWithdrawal = async (withdrawalId, verificationData) => {
+  try {
+    const response = await api.put(
+      `/api/v1/withdrawals/verify/${withdrawalId}`,
+      verificationData
+    );
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        `Error verifying withdrawal ${withdrawalId}:`,
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error(
+        `Error verifying withdrawal ${withdrawalId}:`,
+        error.message
+      );
+      throw new Error(
+        error.message || "Failed to verify withdrawal. Please try again."
+      );
+    }
+  }
+};
+
+/**
+ * Get pending withdrawals (admin)
+ */
+export const getPendingWithdrawals = async (limit = 50, offset = 0) => {
+  try {
+    const response = await api.get(
+      `/api/v1/withdrawals/pending?limit=${limit}&offset=${offset}`
+    );
+    return response?.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error(
+        "Error fetching pending withdrawals:",
+        error.response.data.error?.message || error.response.data.message
+      );
+      throw new Error(
+        error.response.data.error?.message || error.response.data.message
+      );
+    } else {
+      console.error("Error fetching pending withdrawals:", error.message);
+      throw new Error(
+        error.message ||
+          "Failed to fetch pending withdrawals. Please try again."
+      );
+    }
+  }
+};
+
 export default api;
