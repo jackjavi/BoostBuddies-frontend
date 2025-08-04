@@ -1,20 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
 import { UsersContext } from "../context/UsersContextWrapper";
-import { HiHome } from "react-icons/hi2";
-import { IoIosArrowForward } from "react-icons/io";
-import { MdPowerSettingsNew } from "react-icons/md";
-import { CiFaceSmile } from "react-icons/ci";
-import { CiSettings } from "react-icons/ci";
-import { User, Trophy, Star, Crown, Wallet } from "lucide-react";
+import { User, Trophy, Star, Crown } from "lucide-react";
 import HomePageComponent from "../components/HomePageComponent";
-import { AiOutlineProduct } from "react-icons/ai";
 import { fetchUserPaymentSummary } from "../api/api2";
 import Spinner from "../components/Spinner";
-import { Link } from "react-router-dom";
+import Aside from "../components/AsideComponent";
 
 const Dashboard = () => {
-  const { disconnect, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { fetchUsers } = useContext(UsersContext);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
@@ -76,91 +70,9 @@ const Dashboard = () => {
     : null;
 
   return (
-    <div className="min-h-screen overflow-x-hidden py-24">
+    <div className="min-h-screen overflow-x-hidden py-24 bg-indigo-50">
       <div className="max-w-7xl mx-auto flex">
-        <aside
-          className={`sidebar fixed md:static w-[240px] h-[calc(100vh-4rem)] md:h-auto transform md:translate-x-0 transition-transform duration-300 z-45 overflow-y-auto p-4 hidden md:block`}
-        >
-          <div className="bg-white rounded-xl shadow-lg mb-6 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <Link
-              to="/"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <HiHome />
-              </span>
-              Home
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </Link>
-            <Link
-              to="/products"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <AiOutlineProduct />
-              </span>
-              Products
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </Link>
-            <Link
-              to="/payments"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <Wallet />
-              </span>
-              Payments
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </Link>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            <Link
-              to="/profile"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <CiFaceSmile />
-              </span>
-              Profile
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </Link>
-            <Link
-              to="/profile/edit"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <span className="material-icons-outlined mr-2">
-                <CiSettings />
-              </span>
-              Settings
-              <span className="material-icons-outlined ml-auto">
-                <IoIosArrowForward />
-              </span>
-            </Link>
-            <Link
-              to="/"
-              className="flex items-center text-gray-600 hover:text-indigo-800 py-4 transition-all duration-300 hover:translate-x-1"
-            >
-              <button onClick={disconnect} className="flex w-full items-center">
-                <span className="material-icons-outlined mr-2">
-                  <MdPowerSettingsNew />
-                </span>
-                Log out
-                <span className="material-icons-outlined ml-auto">
-                  <IoIosArrowForward />
-                </span>
-              </button>
-            </Link>
-          </div>
-        </aside>
+        <Aside activeTab="dashboard" />
 
         <main className="flex-1 p-4">
           <div className="flex-1 flex-col">

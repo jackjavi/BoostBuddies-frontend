@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  Trophy,
-  Zap,
-  Users,
-  TrendingUp,
   ArrowLeft,
   Check,
   X,
@@ -15,170 +11,7 @@ import {
 } from "lucide-react";
 import { submitPackagePayment } from "../api/api2";
 import MobileNavBottom from "../components/MobileNavBottomPackages";
-
-// Mock package data - to replace later with actual data from props/API
-const packageData = {
-  genz: {
-    id: 1,
-    name: "Genz Package",
-    price: "Ksh 1,500",
-    priceValue: 1500,
-    description:
-      "This is the top-tier package for the go-getters. Genz users enjoy access to premium, high-earning products and featured listings daily.",
-    longDescription:
-      "The Genz Package is designed for ambitious individuals who want to maximize their earning potential. With premium access to high-paying products, priority positioning in referral chains, and exclusive features, this package delivers the highest returns on your investment.",
-    benefits: [
-      "View up to 15 products daily",
-      "Earn from high-paying, priority products",
-      "Access to featured & exclusive offers",
-      "Top-tier referral bonuses (Ksh 200 per referral)",
-      "Priority in chain payouts",
-      "Early access to new products",
-      "Premium customer support",
-      "Monthly performance bonuses",
-    ],
-    gradient: "from-yellow-400 to-yellow-500",
-    icon: <Zap className="w-8 h-8 text-yellow-200" />,
-    features: [
-      {
-        title: "Daily Views",
-        value: "15 products",
-        desc: "Maximum daily earning opportunities",
-      },
-      {
-        title: "Referral Bonus",
-        value: "Ksh 200",
-        desc: "Per successful referral",
-      },
-      {
-        title: "Priority Level",
-        value: "Tier 1",
-        desc: "Highest priority in chains",
-      },
-      { title: "Support", value: "Premium", desc: "Dedicated support channel" },
-    ],
-  },
-  mbogi: {
-    id: 2,
-    name: "Mbogi Package",
-    price: "Ksh 1,000",
-    priceValue: 1000,
-    description:
-      "For the squad that hustles together. Mbogi gives you more firepower with boosted earnings and the ability to view more products daily.",
-    longDescription:
-      "The Mbogi Package is perfect for teams and individuals who want to build their network strategically. With enhanced daily view limits and better positioning in referral chains, this package offers excellent value for growing your earning potential.",
-    benefits: [
-      "View up to 10 products daily",
-      "Eligible for higher-paying listings",
-      "Better position in referral chain",
-      "Daily rotation advantage",
-      "Enhanced referral bonuses (Ksh 150 per referral)",
-      "Priority customer support",
-      "Access to group challenges",
-      "Weekly performance tracking",
-    ],
-    gradient: "from-gray-500 to-gray-600",
-    icon: <Users className="w-8 h-8 text-gray-200" />,
-    features: [
-      {
-        title: "Daily Views",
-        value: "10 products",
-        desc: "Solid daily earning opportunities",
-      },
-      {
-        title: "Referral Bonus",
-        value: "Ksh 150",
-        desc: "Per successful referral",
-      },
-      {
-        title: "Priority Level",
-        value: "Tier 2",
-        desc: "High priority in chains",
-      },
-      { title: "Support", value: "Priority", desc: "Enhanced support access" },
-    ],
-  },
-  baller: {
-    id: 3,
-    name: "Baller Package",
-    price: "Ksh 750",
-    priceValue: 750,
-    description:
-      "Step up your game. Baller users get daily earning opportunities from multiple listings and a boost in chain earnings.",
-    longDescription:
-      "The Baller Package is ideal for those testing the waters before going full throttle. With access to medium-tier rewards and decent daily view limits, it's perfect for building momentum and understanding the system.",
-    benefits: [
-      "View up to 7 products daily",
-      "Access to medium-tier rewards",
-      "Referrals earn you more",
-      "Basic featured listing access",
-      "Standard referral bonuses (Ksh 100 per referral)",
-      "Regular customer support",
-      "Weekly earning reports",
-      "Upgrade incentives",
-    ],
-    gradient: "from-orange-500 to-orange-600",
-    icon: <TrendingUp className="w-8 h-8 text-orange-200" />,
-    features: [
-      {
-        title: "Daily Views",
-        value: "7 products",
-        desc: "Good daily earning potential",
-      },
-      {
-        title: "Referral Bonus",
-        value: "Ksh 100",
-        desc: "Per successful referral",
-      },
-      {
-        title: "Priority Level",
-        value: "Tier 3",
-        desc: "Medium priority in chains",
-      },
-      { title: "Support", value: "Standard", desc: "Regular support access" },
-    ],
-  },
-  comrade: {
-    id: 4,
-    name: "Comrade Package",
-    price: "Ksh 500",
-    priceValue: 500,
-    description:
-      "Just getting started? Comrade is your starter pack. You'll get daily view earnings and a chance to build your chain.",
-    longDescription:
-      "The Comrade Package is perfect for students and beginners trying out the system. With entry-level earnings and the flexibility to upgrade anytime, it's the ideal starting point for your earning journey.",
-    benefits: [
-      "View up to 4 products daily",
-      "Entry-level earnings",
-      "Join referral chain",
-      "Upgrade anytime",
-      "Basic referral bonuses (Ksh 50 per referral)",
-      "Community support access",
-      "Learning resources included",
-      "No long-term commitment",
-    ],
-    gradient: "from-purple-500 to-purple-600",
-    icon: <Trophy className="w-8 h-8 text-purple-200" />,
-    features: [
-      {
-        title: "Daily Views",
-        value: "4 products",
-        desc: "Entry-level earning opportunities",
-      },
-      {
-        title: "Referral Bonus",
-        value: "Ksh 50",
-        desc: "Per successful referral",
-      },
-      {
-        title: "Priority Level",
-        value: "Tier 4",
-        desc: "Basic priority in chains",
-      },
-      { title: "Support", value: "Community", desc: "Community support forum" },
-    ],
-  },
-};
+import packagesData from "../lib/packagesData";
 
 const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
   const [paymentCode, setPaymentCode] = useState("");
@@ -255,7 +88,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                   {packageInfo.name}
                 </h3>
                 <p className="text-2xl font-bold text-gray-900">
-                  {packageInfo.price}
+                  Ksh {packageInfo.price}
                 </p>
               </div>
 
@@ -295,7 +128,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                     <div className="flex items-center justify-between">
                       <span className="text-orange-700">Amount:</span>
                       <span className="font-bold text-orange-900">
-                        Ksh {packageInfo.priceValue}
+                        Ksh {packageInfo.price}
                       </span>
                     </div>
                   </div>
@@ -440,7 +273,8 @@ const PackageDetails = () => {
   const navigate = useNavigate();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-  const pkg = packageData[packageId];
+  // Find package by ID from imported data
+  const pkg = packagesData.find((p) => p.id === parseInt(packageId));
 
   const getCurrentUserId = () => {
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -495,6 +329,34 @@ const PackageDetails = () => {
     );
   }
 
+  // Create features array from the new data structure
+  const features = [
+    {
+      title: "Daily Views",
+      value:
+        pkg.benefits.find((b) => b.includes("View up to"))?.match(/\d+/)?.[0] +
+          " products" || "Multiple products",
+      desc: "Daily earning opportunities",
+    },
+    {
+      title: "Package Price",
+      value: `Ksh ${pkg.price}`,
+      desc: pkg.originalPrice ? `Was Ksh ${pkg.originalPrice}` : "Best value",
+    },
+    {
+      title: "Registration Bonus",
+      value: "Ksh 100",
+      desc: "Instant bonus on signup",
+    },
+    {
+      title: "Support Level",
+      value:
+        pkg.benefits.find((b) => b.includes("support"))?.split(" ")[0] ||
+        "Standard",
+      desc: "Customer support included",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 max-w-7xl">
@@ -512,12 +374,30 @@ const PackageDetails = () => {
           className={`bg-gradient-to-br ${pkg.gradient} rounded-xl p-8 text-white mb-8`}
         >
           <div className="flex items-center mb-4">
-            {pkg.icon}
-            <h1 className="text-3xl font-bold ml-4">{pkg.name}</h1>
+            <div className={`${pkg.iconBg} p-2 rounded-lg mr-4`}>
+              <div className={pkg.iconColor}>{pkg.icon}</div>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">{pkg.name}</h1>
+              {pkg.popular && (
+                <span
+                  className={`inline-block ${pkg.badgeColor} text-white text-xs px-2 py-1 rounded-full mt-1`}
+                >
+                  {pkg.badge}
+                </span>
+              )}
+            </div>
           </div>
-          <p className="text-xl opacity-90 mb-6">{pkg.longDescription}</p>
+          <p className="text-xl opacity-90 mb-6">{pkg.description}</p>
           <div className="flex items-center justify-between">
-            <div className="text-4xl font-bold">{pkg.price}</div>
+            <div className="flex items-baseline">
+              <div className="text-4xl font-bold">Ksh {pkg.price}</div>
+              {pkg.originalPrice && (
+                <div className="text-lg opacity-70 line-through ml-3">
+                  Ksh {pkg.originalPrice}
+                </div>
+              )}
+            </div>
             <button
               onClick={() => setIsCheckoutOpen(true)}
               className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center"
@@ -530,7 +410,7 @@ const PackageDetails = () => {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {pkg.features.map((feature, index) => (
+          {features.map((feature, index) => (
             <div
               key={index}
               className="bg-white rounded-xl p-6 shadow-sm border"
@@ -610,7 +490,7 @@ const PackageDetails = () => {
             className="bg-gray-900 text-white px-12 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-colors inline-flex items-center"
           >
             <CreditCard className="w-6 h-6 mr-3" />
-            Get {pkg.name} - {pkg.price}
+            Get {pkg.name} - Ksh {pkg.price}
           </button>
           <p className="text-sm text-gray-600 mt-4">
             Secure payment via M-Pesa • Instant activation • 24/7 support

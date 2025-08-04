@@ -384,13 +384,13 @@ function SignupPage() {
               {/* Terms and Privacy */}
               <div className="text-xs text-gray-600 text-center">
                 By creating an account, you agree to our{" "}
-                <a href="/" className="text-indigo-600 hover:text-indigo-500">
+                <Link to="/" className="text-indigo-600 hover:text-indigo-500">
                   Terms of Service
-                </a>{" "}
+                </Link>{" "}
                 and{" "}
-                <a href="/" className="text-indigo-600 hover:text-indigo-500">
+                <Link to="/" className="text-indigo-600 hover:text-indigo-500">
                   Privacy Policy
-                </a>
+                </Link>
               </div>
 
               {/* Signup Button */}
