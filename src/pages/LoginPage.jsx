@@ -3,6 +3,18 @@ import { AuthContext } from "../context/AuthContextWrapper";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  Sparkles,
+  TrendingUp,
+  Users,
+  Gift,
+  Coins,
+  Award,
+} from "lucide-react";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -13,6 +25,9 @@ function LoginPage() {
     newPassword: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { storeToken, storeUserData, authenticateUser } =
     useContext(AuthContext);
@@ -47,7 +62,6 @@ function LoginPage() {
         storeToken(response.data.token);
         storeUserData(response.data.user);
         await authenticateUser();
-
         navigate(from, { replace: true });
       }
     } catch (error) {
@@ -140,170 +154,416 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="bg-indigo-50 p-10 pt-24 h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md mx-auto space-y-4 flex flex-col items-center justify-center w-full"
-      >
-        <div className="w-full">
-          <label htmlFor="email">Email:</label>
-          <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="w-full">
-          <label htmlFor="password">Password:</label>
-          <input
-            className="mt-1 mb-4 p-2 w-full outline-0 rounded-md text-gray-700"
-            type="password"
-            id="password"
-            value={password}
-            onChange={handleChange}
-          />
+    <main className="min-h-screen flex py-24 max-w-7xl mx-auto relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-24 h-24 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full opacity-15 animate-bounce"></div>
+      </div>
+
+      {/* Left Side - Illustration & Branding (Hidden on mobile) */}
+      <div className="hidden md:flex md:w-1/2 lg:w-3/5 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-32 right-16 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+          <div className="absolute top-1/2 left-10 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
         </div>
 
-        <p
-          onClick={() => setShowForgotModal(true)}
-          className="text-sm text-blue-600 cursor-pointer hover:underline -mt-2 mb-4 self-start"
-        >
-          Forgot password?
-        </p>
-
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="text-center">
-            <p className="error text-[tomato]">{errorMessage}</p>
-            <p>
-              Don't have an account?{" "}
-              <Link to="/signup">
-                <span className="underline text-indigo-600">Sign up</span>
-              </Link>
+        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full">
+          {/* Logo/Brand */}
+          <div className="mb-12 text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-2xl">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-4xl font-lilita mb-4">BoostBuddies</h1>
+            <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
+              Where every view, every referral, and every interaction turns into
+              real earnings
             </p>
           </div>
-        )}
 
-        <button
-          className={`w-full p-2 rounded font-lilita transition-colors ${
-            isLoading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-purple-500"
-          }`}
-          disabled={isLoading}
-        >
-          Login
-        </button>
-      </form>
+          {/* Feature Highlights */}
+          <div className="grid grid-cols-1 gap-6 max-w-md w-full">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center">
+                  <Coins className="w-6 h-6 text-green-300" />
+                </div>
+                <div>
+                  <h3 className="font-lilita text-lg">Earn Daily</h3>
+                  <p className="text-indigo-100 text-sm">
+                    View products and earn KSH for every interaction
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-400/20 rounded-lg flex items-center justify-center">
+                  <Users className="w-6 h-6 text-blue-300" />
+                </div>
+                <div>
+                  <h3 className="font-lilita text-lg">Refer & Grow</h3>
+                  <p className="text-indigo-100 text-sm">
+                    Earn KSH 150 for each friend who joins your network
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-purple-400/20 rounded-lg flex items-center justify-center">
+                  <Award className="w-6 h-6 text-purple-300" />
+                </div>
+                <div>
+                  <h3 className="font-lilita text-lg">Win Rewards</h3>
+                  <p className="text-indigo-100 text-sm">
+                    Unlock bonuses and special packages as you level up
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-12 grid grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-2xl font-bold">1000+</div>
+              <div className="text-sm text-indigo-200">Active Members</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">KSH 50K+</div>
+              <div className="text-sm text-indigo-200">Paid Out</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">4.9★</div>
+              <div className="text-sm text-indigo-200">User Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-6 md:p-12 relative z-10">
+        <div className="w-full max-w-md">
+          {/* Mobile Header (Visible only on mobile) */}
+          <div className="md:hidden text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl mb-4 shadow-lg">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-lilita text-gray-900 mb-2">
+              Welcome Back!
+            </h1>
+            <p className="text-gray-600">
+              Sign in to continue earning and growing your network
+            </p>
+          </div>
+
+          {/* Desktop Header */}
+          <div className="hidden md:block text-center mb-8">
+            <h1 className="text-3xl font-lilita text-gray-900 mb-2">
+              Welcome Back!
+            </h1>
+            <p className="text-gray-600">
+              Sign in to continue your earning journey
+            </p>
+          </div>
+
+          {/* Quick Stats for Mobile */}
+          <div className="md:hidden grid grid-cols-3 gap-3 mb-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-sm text-center">
+              <TrendingUp className="w-5 h-5 text-green-500 mx-auto mb-1" />
+              <div className="text-xs text-gray-600">Earn</div>
+              <div className="text-sm font-bold text-gray-900">Daily</div>
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-sm text-center">
+              <Users className="w-5 h-5 text-blue-500 mx-auto mb-1" />
+              <div className="text-xs text-gray-600">Refer</div>
+              <div className="text-sm font-bold text-gray-900">Friends</div>
+            </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-sm text-center">
+              <Gift className="w-5 h-5 text-purple-500 mx-auto mb-1" />
+              <div className="text-xs text-gray-600">Win</div>
+              <div className="text-sm font-bold text-gray-900">Rewards</div>
+            </div>
+          </div>
+
+          {/* Login Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20"
+          >
+            <div className="space-y-6">
+              {/* Email Field */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Forgot Password Link */}
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(true)}
+                  className="text-sm text-indigo-600 hover:text-indigo-500 font-medium transition-colors duration-200"
+                >
+                  Forgot password?
+                </button>
+              </div>
+
+              {/* Error Message */}
+              {errorMessage && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  <p className="text-sm text-red-600">{errorMessage}</p>
+                </div>
+              )}
+
+              {/* Success Message */}
+              {successMessage && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <p className="text-sm text-green-600">{successMessage}</p>
+                </div>
+              )}
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`w-full py-3 px-4 rounded-xl font-lilita text-lg transition-all duration-200 transform ${
+                  isLoading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                } text-white`}
+              >
+                {isLoading ? <Spinner /> : "Sign In"}
+              </button>
+
+              {/* Sign Up Link */}
+              <div className="text-center pt-4 border-t border-gray-100">
+                <p className="text-gray-600">
+                  Don't have an account?{" "}
+                  <Link
+                    to="/signup"
+                    className="text-indigo-600 hover:text-indigo-500 font-medium transition-colors duration-200"
+                  >
+                    Sign up and start earning
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
       {/* Forgot Password Modal */}
       {showForgotModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <h2 className="text-lg font-bold mb-4">Forgot Password</h2>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full p-2 border rounded mb-4"
-              value={forgotEmail}
-              onChange={(e) => setForgotEmail(e.target.value)}
-            />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md border border-white/20">
+            <h2 className="text-xl font-lilita text-gray-900 mb-2">
+              Reset Password
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Enter your email to receive a reset code
+            </p>
+
+            <div className="relative mb-4">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+            </div>
+
             {forgotPassError && (
-              <p className="error text-[tomato]">{forgotPassError}</p>
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                <p className="text-sm text-red-600">{forgotPassError}</p>
+              </div>
             )}
+
             {successMessage && (
-              <p className=" text-green-600">{successMessage}</p>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                <p className="text-sm text-green-600">{successMessage}</p>
+              </div>
             )}
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                <button
-                  className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-blue-700"
-                  onClick={handleForgotPassword}
-                >
-                  Send OTP
-                </button>
-                <button
-                  className="mt-3 w-full bg-gray-300 hover:bg-gray-400 py-2 rounded"
-                  onClick={() => setShowForgotModal(false)}
-                >
-                  Cancel
-                </button>
-              </>
-            )}
+
+            <div className="flex space-x-3">
+              <button
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-xl font-medium transition-colors duration-200"
+                onClick={() => setShowForgotModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2 px-4 rounded-xl font-medium transition-all duration-200"
+                onClick={handleForgotPassword}
+                disabled={isLoading}
+              >
+                {isLoading ? <Spinner /> : "Send OTP"}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Reset Password Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96 space-y-3">
-            <h2 className="text-md text-indigo-800 font-bold">
-              Reset Password
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md border border-white/20">
+            <h2 className="text-xl font-lilita text-indigo-800 mb-2">
+              Create New Password
             </h2>
-            <span className="text-xs text-indigo-500">
+            <p className="text-sm text-indigo-600 mb-6">
               A One Time Password (OTP) has been sent to your email. Expires
               after 15 minutes.
-            </span>
-            <input
-              type="text"
-              placeholder="OTP"
-              className="w-full text-sm p-2 border rounded"
-              value={resetData.otp}
-              onChange={(e) =>
-                setResetData((prev) => ({ ...prev, otp: e.target.value }))
-              }
-            />
-            <input
-              type="password"
-              placeholder="New Password"
-              className="w-full text-sm p-2 border rounded"
-              value={resetData.newPassword}
-              onChange={(e) =>
-                setResetData((prev) => ({
-                  ...prev,
-                  newPassword: e.target.value,
-                }))
-              }
-            />
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              className="w-full text-sm p-2 border rounded"
-              value={resetData.confirmPassword}
-              onChange={(e) =>
-                setResetData((prev) => ({
-                  ...prev,
-                  confirmPassword: e.target.value,
-                }))
-              }
-            />
+            </p>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                className="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                value={resetData.otp}
+                onChange={(e) =>
+                  setResetData((prev) => ({ ...prev, otp: e.target.value }))
+                }
+              />
+
+              <div className="relative">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  placeholder="New Password"
+                  className="w-full p-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  value={resetData.newPassword}
+                  onChange={(e) =>
+                    setResetData((prev) => ({
+                      ...prev,
+                      newPassword: e.target.value,
+                    }))
+                  }
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
+
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm New Password"
+                  className="w-full p-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  value={resetData.confirmPassword}
+                  onChange={(e) =>
+                    setResetData((prev) => ({
+                      ...prev,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
+            </div>
+
             {resetPassError && (
-              <p className=" text-[tomato]">{resetPassError}</p>
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-4">
+                <p className="text-sm text-red-600">{resetPassError}</p>
+              </div>
             )}
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                <button
-                  className="w-full text-md bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
-                  onClick={handleResetPassword}
-                >
-                  Reset Password
-                </button>
-                <button
-                  className="mt-3 w-full text-md bg-gray-300 hover:bg-gray-400 py-2 rounded"
-                  onClick={() => setShowResetModal(false)}
-                >
-                  Cancel
-                </button>
-              </>
-            )}
+
+            <div className="flex space-x-3 mt-6">
+              <button
+                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-xl font-medium transition-colors duration-200"
+                onClick={() => setShowResetModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2 px-4 rounded-xl font-medium transition-all duration-200"
+                onClick={handleResetPassword}
+                disabled={isLoading}
+              >
+                {isLoading ? <Spinner /> : "Reset Password"}
+              </button>
+            </div>
           </div>
         </div>
       )}
