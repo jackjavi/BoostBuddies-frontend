@@ -46,7 +46,7 @@ const Packages = () => {
                 </div>
               </div>
 
-              <div className="relative z-10 flex items-center justify-between">
+              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -75,7 +75,7 @@ const Packages = () => {
                 </div>
                 <Link
                   to={`/packages/${popularPackage.id}`}
-                  className="ml-4 bg-white text-amber-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors flex items-center space-x-1 group"
+                  className="md: ml-4 mt-4 md:mt-0 bg-white text-amber-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors flex items-center space-x-1 group"
                 >
                   <span>Get Now</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
