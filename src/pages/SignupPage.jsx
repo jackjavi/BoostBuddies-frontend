@@ -6,7 +6,6 @@ import {
   Lock,
   User,
   Gift,
-  Sparkles,
   Users,
   Coins,
   Target,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -100,14 +100,14 @@ function SignupPage() {
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full">
           {/* Logo/Brand */}
           <div className="mb-12 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-2xl">
-              <Sparkles className="w-10 h-10 text-white" />
+            <div className="flex-shrink-0 flex items-center justify-center mb-4">
+              <BoostBuddiesLogo size="small" />
             </div>
-            <h1 className="text-4xl font-lilita mb-4">Join BoostBuddies</h1>
             <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
               Start your earning journey today and build a network that pays you
               back
             </p>
+            <h1 className="text-4xl font-lilita mb-4">Join BoostBuddies</h1>
           </div>
 
           {/* Getting Started Steps */}
@@ -180,15 +180,16 @@ function SignupPage() {
         <div className="w-full max-w-md">
           {/* Mobile Header (Visible only on mobile) */}
           <div className="md:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl mb-4 shadow-lg">
-              <Sparkles className="w-8 h-8 text-white" />
+            <div className="flex-shrink-0 flex items-center justify-center mb-4">
+              <BoostBuddiesLogo size="small" />
             </div>
-            <h1 className="text-3xl font-lilita text-gray-900 mb-2">
-              Start Earning Today!
-            </h1>
-            <p className="text-gray-600">
+
+            <p className="text-gray-600 max-w-[75vw] mx-auto text-md md:text-base">
               Join thousands earning KSH daily through our platform
             </p>
+            <h1 className="text-xl md:text-3xl font-lilita text-gray-900 my-2">
+              Start Earning Today!
+            </h1>
           </div>
 
           {/* Desktop Header */}
@@ -210,7 +211,7 @@ function SignupPage() {
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-sm text-center">
               <Users className="w-5 h-5 text-blue-500 mx-auto mb-1" />
-              <div className="text-xs text-gray-600">KSH 150</div>
+              <div className="text-xs text-gray-600">Up to 40% share</div>
               <div className="text-sm font-bold text-gray-900">
                 Per Referral
               </div>
