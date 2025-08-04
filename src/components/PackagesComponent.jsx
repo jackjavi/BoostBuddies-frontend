@@ -10,7 +10,7 @@ const Packages = () => {
   const topPackages = packagesData.slice(0, 4); // Show top 4 packages
 
   return (
-    <div className="min-h-screen">
+    <div className="h-full mt-4">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 right-10 w-20 h-20 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-15 animate-pulse"></div>
@@ -22,7 +22,7 @@ const Packages = () => {
         <div className="py-6 text-center">
           <div className="flex items-center justify-center space-x-2 mb-2">
             <Zap className="w-6 h-6 text-amber-500" />
-            <h1 className="text-2xl font-lilita text-gray-900">
+            <h1 className="text-xl font-lilita text-gray-900">
               Choose Your Package
             </h1>
           </div>

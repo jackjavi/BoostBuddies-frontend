@@ -40,7 +40,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
     <div className="min-h-screen">
       {/* Main Content */}
       <main className=" mx-auto ">
-        <div className="p-6">
+        <div className="pt-6">
           <p className="text-gray-600 text-center text-xl font-lilita max-w-[75vw] mx-auto">
             Track your earnings and grow your network
           </p>

@@ -7,7 +7,7 @@ const EarningsRedirectCard = ({ paymentSummary }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg px-4 my-12 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div className="bg-white rounded-xl shadow-lg p-4 mb-8 mt-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
