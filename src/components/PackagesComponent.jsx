@@ -17,7 +17,7 @@ const Packages = () => {
         <div className="absolute bottom-20 left-10 w-16 h-16 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full opacity-10 animate-bounce"></div>
       </div>
 
-      <main className="relative z-10 mx-auto px-4">
+      <main className="relative mx-auto px-4">
         {/* Header Section - Compact */}
         <div className="py-6 text-center">
           <div className="flex items-center justify-center space-x-2 mb-2">
@@ -46,7 +46,7 @@ const Packages = () => {
                 </div>
               </div>
 
-              <div className="relative z-10 flex flex-col md:flex-row items-center justify-between">
+              <div className="relative flex flex-col md:flex-row items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -97,7 +97,7 @@ const Packages = () => {
                 className={`absolute inset-0 bg-gradient-to-br ${pkg.bgPattern} opacity-30`}
               ></div>
 
-              <div className="relative z-10 p-5">
+              <div className="relative p-5">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">

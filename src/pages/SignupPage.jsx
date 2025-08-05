@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import {
   Eye,
   EyeOff,
@@ -12,15 +13,14 @@ import {
   Award,
   CheckCircle,
   ArrowRight,
+  AlertCircle,
+  Check,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -31,47 +31,259 @@ function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [validationState, setValidationState] = useState({
+    username: { isValid: false, errors: [] },
+    email: { isValid: false, errors: [] },
+    password: { isValid: false, errors: [] },
+  });
 
-  function handleChange(event) {
+  const validateEmail = (email) => {
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    if (!emailRegex.test(email)) return false;
+    if (email.length > 254) return false;
+    if (email.startsWith(".") || email.endsWith(".")) return false;
+    if (email.includes("..")) return false;
+
+    const [localPart, domain] = email.split("@");
+    if (localPart.length > 64) return false;
+    if (domain.length > 253) return false;
+
+    return true;
+  };
+
+  const validatePassword = (password) => {
+    const errors = [];
+
+    if (password.length < 8) {
+      errors.push("Must be at least 8 characters long");
+    }
+    if (password.length > 128) {
+      errors.push("Must not exceed 128 characters");
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push("Must contain at least one lowercase letter");
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Must contain at least one uppercase letter");
+    }
+    if (!/\d/.test(password)) {
+      errors.push("Must contain at least one number");
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      errors.push("Must contain at least one special character");
+    }
+
+    const commonPatterns = [
+      /(.)\1{2,}/,
+      /123456|654321|abcdef|fedcba/i,
+      /password|123456|qwerty|admin|user|login/i,
+    ];
+
+    for (const pattern of commonPatterns) {
+      if (pattern.test(password)) {
+        errors.push("Contains common weak patterns or sequences");
+        break;
+      }
+    }
+
+    if (password.trim() !== password) {
+      errors.push("Cannot start or end with whitespace");
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors,
+    };
+  };
+
+  const validateUsername = (username) => {
+    const errors = [];
+
+    if (username.length < 3) {
+      errors.push("Must be at least 3 characters long");
+    }
+    if (username.length > 30) {
+      errors.push("Must not exceed 30 characters");
+    }
+    /* if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+      errors.push(
+        "Can only contain letters, numbers, underscores, and hyphens"
+      );
+    } */
+    if (!/^[a-zA-Z0-9]/.test(username)) {
+      errors.push("Must start with a letter or number");
+    }
+    if (/[_-]$/.test(username)) {
+      errors.push("Cannot end with underscore or hyphen");
+    }
+    if (/[_-]{2,}/.test(username)) {
+      errors.push("Cannot contain consecutive underscores or hyphens");
+    }
+
+    const reservedUsernames = [
+      "admin",
+      "administrator",
+      "root",
+      "system",
+      "api",
+      "www",
+      "mail",
+      "email",
+      "support",
+      "help",
+      "info",
+      "contact",
+      "service",
+      "team",
+      "staff",
+      "mod",
+      "moderator",
+      "null",
+      "undefined",
+      "test",
+      "demo",
+      "guest",
+      "anonymous",
+    ];
+
+    if (reservedUsernames.includes(username.toLowerCase())) {
+      errors.push("Username is reserved and cannot be used");
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors,
+    };
+  };
+
+  const handleChange = (event) => {
     const value = event.currentTarget.value;
     const key = event.currentTarget.id;
-    setFormData({ ...formData, [key]: value });
-  }
 
-  async function handleSubmit(event) {
+    setFormData({ ...formData, [key]: value });
+
+    // Clear field-specific errors when user starts typing
+    if (fieldErrors[key]) {
+      setFieldErrors({ ...fieldErrors, [key]: null });
+    }
+
+    // Real-time validation
+    let validation = { isValid: true, errors: [] };
+
+    switch (key) {
+      case "username":
+        if (value.trim()) {
+          validation = validateUsername(value.trim());
+        }
+        break;
+      case "email":
+        if (value.trim()) {
+          validation = {
+            isValid: validateEmail(value.trim().toLowerCase()),
+            errors: validateEmail(value.trim().toLowerCase())
+              ? []
+              : ["Invalid email format"],
+          };
+        }
+        break;
+      case "password":
+        if (value) {
+          validation = validatePassword(value);
+        }
+        break;
+      default:
+        break;
+    }
+
+    setValidationState((prev) => ({
+      ...prev,
+      [key]: validation,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Clear previous errors
+    setErrorMessage("");
+    setFieldErrors({});
+
+    // Validate all fields
+    const usernameValidation = validateUsername(formData.username.trim());
+    const emailValidation = {
+      isValid: validateEmail(formData.email.trim().toLowerCase()),
+      errors: validateEmail(formData.email.trim().toLowerCase())
+        ? []
+        : ["Invalid email format"],
+    };
+    const passwordValidation = validatePassword(formData.password);
+
+    const newFieldErrors = {};
+
+    if (!usernameValidation.isValid) {
+      newFieldErrors.username = usernameValidation.errors;
+    }
+    if (!emailValidation.isValid) {
+      newFieldErrors.email = emailValidation.errors;
+    }
+    if (!passwordValidation.isValid) {
+      newFieldErrors.password = passwordValidation.errors;
+    }
+
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match");
-      setTimeout(() => setErrorMessage(""), 3000);
+      newFieldErrors.confirmPassword = ["Passwords do not match"];
+    }
+
+    if (Object.keys(newFieldErrors).length > 0) {
+      setFieldErrors(newFieldErrors);
       return;
     }
 
     setIsLoading(true);
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/register`,
-        formData
+        {
+          username: formData.username.trim(),
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+          referredBy: formData.referredBy?.toUpperCase() || undefined,
+        }
       );
-      console.log(response);
+
       if (response.status === 201) {
-        setTimeout(() => {
-          navigate("/login");
-        }, 200);
+        // Redirect to login page on successful registration
+        window.location.href = "/login";
+        // Or if using React Router's useNavigate hook:
+        // navigate("/login");
       }
+
+      console.log("User registered successfully!");
     } catch (error) {
       console.log(
-        `Signup error log ${error?.response?.data?.error?.message} || ${error.message}`
+        `Signup error: ${error?.response?.data?.error?.message || error.message}`
       );
       setErrorMessage(error?.response?.data?.error?.message || error.message);
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
+
+  const getFieldValidationIcon = (fieldName) => {
+    const validation = validationState[fieldName];
+    if (!formData[fieldName]) return null;
+
+    return validation.isValid ? (
+      <Check className="h-4 w-4 text-green-500" />
+    ) : (
+      <AlertCircle className="h-4 w-4 text-red-500" />
+    );
+  };
 
   const { username, email, password, confirmPassword, referredBy } = formData;
 
@@ -97,13 +309,13 @@ function SignupPage() {
           {/* Logo/Brand */}
           <div className="mb-12 text-center">
             <div className="flex-shrink-0 flex items-center justify-center mb-4">
-              <BoostBuddiesLogo size="small" />
+              <BoostBuddiesLogo className="w-12 h-12" />
             </div>
+            <h1 className="text-4xl font-bold mb-4">Join BoostBuddies</h1>
             <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
               Start your earning journey today and build a network that pays you
               back
             </p>
-            <h1 className="text-4xl font-lilita mb-4">Join BoostBuddies</h1>
           </div>
 
           {/* Getting Started Steps */}
@@ -114,7 +326,7 @@ function SignupPage() {
                   <CheckCircle className="w-6 h-6 text-green-300" />
                 </div>
                 <div>
-                  <h3 className="font-lilita text-lg">Step 1: Sign Up</h3>
+                  <h3 className="font-bold text-lg">Step 1: Sign Up</h3>
                   <p className="text-indigo-100 text-sm">
                     Create your free account in under 2 minutes
                   </p>
@@ -128,7 +340,7 @@ function SignupPage() {
                   <Target className="w-6 h-6 text-blue-300" />
                 </div>
                 <div>
-                  <h3 className="font-lilita text-lg">Step 2: Start Earning</h3>
+                  <h3 className="font-bold text-lg">Step 2: Start Earning</h3>
                   <p className="text-indigo-100 text-sm">
                     View products and complete tasks to earn KSH daily
                   </p>
@@ -142,9 +354,7 @@ function SignupPage() {
                   <ArrowRight className="w-6 h-6 text-purple-300" />
                 </div>
                 <div>
-                  <h3 className="font-lilita text-lg">
-                    Step 3: Invite Friends
-                  </h3>
+                  <h3 className="font-bold text-lg">Step 3: Invite Friends</h3>
                   <p className="text-indigo-100 text-sm">
                     Earn KSH 100 for each friend who joins your network
                   </p>
@@ -174,23 +384,22 @@ function SignupPage() {
       {/* Right Side - Signup Form */}
       <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-6 md:p-12 relative z-10">
         <div className="w-full max-w-md">
-          {/* Mobile Header (Visible only on mobile) */}
+          {/* Mobile Header */}
           <div className="md:hidden text-center mb-8">
             <div className="flex-shrink-0 flex items-center justify-center mb-4">
-              <BoostBuddiesLogo size="small" />
+              <BoostBuddiesLogo className="w-12 h-12" />
             </div>
-
-            <p className="text-gray-600 max-w-[75vw] mx-auto text-md md:text-base">
-              Join thousands earning KSH daily through our platform
-            </p>
-            <h1 className="text-xl md:text-3xl font-lilita text-gray-900 my-2">
+            <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2">
               Start Earning Today!
             </h1>
+            <p className="text-gray-600 max-w-[75vw] mx-auto text-md">
+              Join thousands earning KSH daily through our platform
+            </p>
           </div>
 
           {/* Desktop Header */}
           <div className="hidden md:block text-center mb-8">
-            <h1 className="text-3xl font-lilita text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Create Your Account
             </h1>
             <p className="text-gray-600">
@@ -220,7 +429,7 @@ function SignupPage() {
           </div>
 
           {/* Signup Form */}
-          <div
+          <form
             onSubmit={handleSubmit}
             className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20"
           >
@@ -238,7 +447,13 @@ function SignupPage() {
                     <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    className={`w-full pl-10 pr-10 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      fieldErrors.username
+                        ? "border-red-300 focus:ring-red-500 focus:border-transparent"
+                        : validationState.username.isValid && username
+                          ? "border-green-300 focus:ring-indigo-500 focus:border-transparent"
+                          : "border-gray-200 focus:ring-indigo-500 focus:border-transparent"
+                    }`}
                     type="text"
                     id="username"
                     placeholder="Choose a username"
@@ -246,7 +461,30 @@ function SignupPage() {
                     onChange={handleChange}
                     required
                   />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                    {getFieldValidationIcon("username")}
+                  </div>
                 </div>
+                {fieldErrors.username && (
+                  <div className="mt-2 text-sm text-red-600">
+                    <ul className="list-disc list-inside space-y-1">
+                      {fieldErrors.username.map((error, index) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {username &&
+                  !fieldErrors.username &&
+                  validationState.username.errors.length > 0 && (
+                    <div className="mt-2 text-sm text-red-600">
+                      <ul className="list-disc list-inside space-y-1">
+                        {validationState.username.errors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
               </div>
 
               {/* Email Field */}
@@ -262,7 +500,13 @@ function SignupPage() {
                     <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    className={`w-full pl-10 pr-10 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      fieldErrors.email
+                        ? "border-red-300 focus:ring-red-500 focus:border-transparent"
+                        : validationState.email.isValid && email
+                          ? "border-green-300 focus:ring-indigo-500 focus:border-transparent"
+                          : "border-gray-200 focus:ring-indigo-500 focus:border-transparent"
+                    }`}
                     type="email"
                     id="email"
                     placeholder="Enter your email"
@@ -270,7 +514,19 @@ function SignupPage() {
                     onChange={handleChange}
                     required
                   />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                    {getFieldValidationIcon("email")}
+                  </div>
                 </div>
+                {fieldErrors.email && (
+                  <div className="mt-2 text-sm text-red-600">
+                    <ul className="list-disc list-inside">
+                      {fieldErrors.email.map((error, index) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               {/* Password Field */}
@@ -286,7 +542,13 @@ function SignupPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    className={`w-full pl-10 pr-12 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      fieldErrors.password
+                        ? "border-red-300 focus:ring-red-500 focus:border-transparent"
+                        : validationState.password.isValid && password
+                          ? "border-green-300 focus:ring-indigo-500 focus:border-transparent"
+                          : "border-gray-200 focus:ring-indigo-500 focus:border-transparent"
+                    }`}
                     type={showPassword ? "text" : "password"}
                     id="password"
                     placeholder="Create a password"
@@ -306,6 +568,79 @@ function SignupPage() {
                     )}
                   </button>
                 </div>
+
+                {/* Password Requirements */}
+                {password && (
+                  <div className="mt-3 space-y-2">
+                    <div className="text-xs text-gray-600 mb-2">
+                      Password Requirements:
+                    </div>
+                    <div className="grid grid-cols-1 gap-1 text-xs">
+                      <div
+                        className={`flex items-center space-x-2 ${password.length >= 8 ? "text-green-600" : "text-gray-500"}`}
+                      >
+                        {password.length >= 8 ? (
+                          <Check className="h-3 w-3" />
+                        ) : (
+                          <div className="h-3 w-3 border border-gray-300 rounded-full"></div>
+                        )}
+                        <span>At least 8 characters</span>
+                      </div>
+                      <div
+                        className={`flex items-center space-x-2 ${/[a-z]/.test(password) ? "text-green-600" : "text-gray-500"}`}
+                      >
+                        {/[a-z]/.test(password) ? (
+                          <Check className="h-3 w-3" />
+                        ) : (
+                          <div className="h-3 w-3 border border-gray-300 rounded-full"></div>
+                        )}
+                        <span>One lowercase letter</span>
+                      </div>
+                      <div
+                        className={`flex items-center space-x-2 ${/[A-Z]/.test(password) ? "text-green-600" : "text-gray-500"}`}
+                      >
+                        {/[A-Z]/.test(password) ? (
+                          <Check className="h-3 w-3" />
+                        ) : (
+                          <div className="h-3 w-3 border border-gray-300 rounded-full"></div>
+                        )}
+                        <span>One uppercase letter</span>
+                      </div>
+                      <div
+                        className={`flex items-center space-x-2 ${/\d/.test(password) ? "text-green-600" : "text-gray-500"}`}
+                      >
+                        {/\d/.test(password) ? (
+                          <Check className="h-3 w-3" />
+                        ) : (
+                          <div className="h-3 w-3 border border-gray-300 rounded-full"></div>
+                        )}
+                        <span>One number</span>
+                      </div>
+                      <div
+                        className={`flex items-center space-x-2 ${/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password) ? "text-green-600" : "text-gray-500"}`}
+                      >
+                        {/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(
+                          password
+                        ) ? (
+                          <Check className="h-3 w-3" />
+                        ) : (
+                          <div className="h-3 w-3 border border-gray-300 rounded-full"></div>
+                        )}
+                        <span>One special character</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {fieldErrors.password && (
+                  <div className="mt-2 text-sm text-red-600">
+                    <ul className="list-disc list-inside space-y-1">
+                      {fieldErrors.password.map((error, index) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               {/* Confirm Password Field */}
@@ -321,7 +656,13 @@ function SignupPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                    className={`w-full pl-10 pr-12 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      fieldErrors.confirmPassword
+                        ? "border-red-300 focus:ring-red-500 focus:border-transparent"
+                        : confirmPassword && confirmPassword === password
+                          ? "border-green-300 focus:ring-indigo-500 focus:border-transparent"
+                          : "border-gray-200 focus:ring-indigo-500 focus:border-transparent"
+                    }`}
                     type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
                     placeholder="Confirm your password"
@@ -341,6 +682,17 @@ function SignupPage() {
                     )}
                   </button>
                 </div>
+                {fieldErrors.confirmPassword && (
+                  <div className="mt-2 text-sm text-red-600">
+                    {fieldErrors.confirmPassword.join(", ")}
+                  </div>
+                )}
+                {confirmPassword && confirmPassword === password && (
+                  <div className="mt-2 text-sm text-green-600 flex items-center space-x-1">
+                    <Check className="h-4 w-4" />
+                    <span>Passwords match</span>
+                  </div>
+                )}
               </div>
 
               {/* Referral Code Field */}
@@ -380,27 +732,39 @@ function SignupPage() {
               {/* Terms and Privacy */}
               <div className="text-xs text-gray-600 text-center">
                 By creating an account, you agree to our{" "}
-                <Link to="/" className="text-indigo-600 hover:text-indigo-500">
+                <Link
+                  to="/terms"
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link to="/" className="text-indigo-600 hover:text-indigo-500">
+                <Link
+                  to="/privacy"
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
                   Privacy Policy
                 </Link>
               </div>
 
               {/* Signup Button */}
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 disabled={isLoading}
-                className={`w-full py-3 px-4 rounded-xl font-lilita text-lg transition-all duration-200 transform ${
+                className={`w-full py-3 px-4 rounded-xl font-bold text-lg transition-all duration-200 transform ${
                   isLoading
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl"
                 } text-white`}
               >
-                {isLoading ? <Spinner /> : "Create Account & Start Earning"}
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Spinner size="sm" />
+                    <span>Creating Account...</span>
+                  </div>
+                ) : (
+                  "Create Account & Start Earning"
+                )}
               </button>
 
               {/* Login Link */}
@@ -416,7 +780,7 @@ function SignupPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </main>
