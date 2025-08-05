@@ -16,8 +16,11 @@ import {
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -39,7 +42,6 @@ function SignupPage() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match");
       setTimeout(() => setErrorMessage(""), 3000);
@@ -48,20 +50,14 @@ function SignupPage() {
 
     setIsLoading(true);
     try {
-      // Mock API call - replace with actual implementation
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            status: 201,
-            data: { message: "User created successfully" },
-          });
-        }, 1000);
-      });
-
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/register`,
+        formData
+      );
+      console.log(response);
       if (response.status === 201) {
         setTimeout(() => {
-          // Navigate to login - replace with actual navigation
-          console.log("Navigating to login...");
+          navigate("/login");
         }, 200);
       }
     } catch (error) {
