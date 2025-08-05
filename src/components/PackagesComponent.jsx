@@ -1,6 +1,6 @@
 import React from "react";
 import { Trophy, Users, TrendingUp, Star, ArrowRight, Zap } from "lucide-react";
-import MobileNavBottom from "./MobileNavBottomPackages";
+import MobileNavBottom from "./MobileNavBottomDashboard";
 import { Link } from "react-router-dom";
 import packagesData from "../lib/packagesData";
 
