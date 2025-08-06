@@ -1,8 +1,12 @@
 import React from "react";
 import { Zap, Coins } from "lucide-react";
 
-const BoostBuddiesLogo = ({ size = "normal" }) => {
+const BoostBuddiesLogo = ({ size = "normal", hideText = false }) => {
   const isSmall = size === "small";
+  console.log(
+    "Rendering BoostBuddiesLogo with size:",
+    hideText ? "hidden text" : "visible text"
+  );
 
   return (
     <div className="flex items-center space-x-2">
@@ -15,7 +19,6 @@ const BoostBuddiesLogo = ({ size = "normal" }) => {
             className={`${isSmall ? "w-4 h-4" : "w-5 h-5"} text-yellow-300 fill-current`}
           />
         </div>
-
         {/* Floating coins animation */}
         <div className="absolute -top-1 -right-1">
           <Coins
@@ -23,7 +26,6 @@ const BoostBuddiesLogo = ({ size = "normal" }) => {
             style={{ animationDelay: "0.5s" }}
           />
         </div>
-
         {/* Connecting dots */}
         <div className="absolute -bottom-1 -left-1">
           <div className="flex space-x-0.5">
@@ -40,19 +42,21 @@ const BoostBuddiesLogo = ({ size = "normal" }) => {
         </div>
       </div>
 
-      {/* Logo Text */}
-      <div className="flex flex-col">
-        <span
-          className={`${isSmall ? "text-md" : "text-lg md:text-xl"} font-monumentBold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent`}
-        >
-          BoostBuddies
-        </span>
-        {!isSmall && (
-          <span className="text-xs text-gray-500 font-medium -mt-1 hidden sm:block">
-            Earn • Refer • Grow
+      {/* Logo Text - conditionally rendered */}
+      {!hideText && (
+        <div className="flex flex-col">
+          <span
+            className={`${isSmall ? "text-md" : "text-lg md:text-xl"} font-monumentBold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-shadow-lg text-shadow-[whitesmoke]`}
+          >
+            BoostBuddies
           </span>
-        )}
-      </div>
+          {!isSmall && (
+            <span className="text-xs text-gray-500 font-medium -mt-1 hidden sm:block">
+              Earn • Refer • Grow
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -175,7 +175,7 @@ function LoginPage() {
           {/* Logo/Brand */}
           <div className="mb-12 text-center">
             <div className="flex-shrink-0 flex items-center justify-center mb-4">
-              <BoostBuddiesLogo size="small" />
+              <BoostBuddiesLogo size="small" hideText={true} />
             </div>
             {/*<h1 className="text-4xl font-lilita mb-4">BoostBuddies</h1>*/}
             <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
@@ -253,7 +253,7 @@ function LoginPage() {
           {/* Mobile Header (Visible only on mobile) */}
           <div className="md:hidden text-center mb-8">
             <div className="flex-shrink-0 flex items-center justify-center mb-4">
-              <BoostBuddiesLogo size="small" />
+              <BoostBuddiesLogo size="small" hideText={false} />
             </div>
             {/*<h1 className="text-xl md:text-3xl font-lilita text-gray-900 mb-2">
               Welcome Back!

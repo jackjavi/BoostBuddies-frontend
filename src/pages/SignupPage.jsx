@@ -384,9 +384,11 @@ function SignupPage() {
             {/* Logo/Brand */}
             <div className="mb-12 text-center">
               <div className="flex-shrink-0 flex items-center justify-center mb-4">
-                <BoostBuddiesLogo className="w-12 h-12" />
+                <BoostBuddiesLogo hideText={true} className="w-12 h-12" />
               </div>
-              <h1 className="text-4xl font-bold mb-4">Join BoostBuddies</h1>
+              <h1 className="text-3xl font-bold mb-4 font-lilita">
+                Join BoostBuddies
+              </h1>
               <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
                 Start your earning journey today and build a network that pays
                 you back
@@ -466,20 +468,20 @@ function SignupPage() {
               <div className="flex-shrink-0 flex items-center justify-center mb-4">
                 <BoostBuddiesLogo className="w-12 h-12" />
               </div>
-              <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2">
-                Start Earning Today!
-              </h1>
               <p className="text-gray-600 max-w-[75vw] mx-auto text-md">
                 Join thousands earning KSH daily through our platform
               </p>
+              <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2 font-lilita">
+                Start Earning Today!
+              </h1>
             </div>
 
             {/* Desktop Header */}
             <div className="hidden md:block text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2 font-lilita">
                 Create Your Account
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 max-w-[75%] text-center mx-auto">
                 Start your earning journey with BoostBuddies
               </p>
             </div>
