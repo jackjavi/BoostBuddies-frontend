@@ -90,6 +90,17 @@ const DetailedPaymentSummary = () => {
     try {
       const response = await submitWithdrawalRequest(withdrawalData);
 
+      // Show success notification
+      setNotification({
+        isVisible: true,
+        type: "success",
+        title: "Withdrawal Request Submitted",
+        message:
+          response.message ||
+          "Your withdrawal request has been submitted successfully and will be reviewed within 3 hours.",
+        actionButton: null,
+      });
+
       // Refresh payment data to reflect any changes
       if (user?.id) {
         const updatedData = await fetchDetailedPaymentSummary(user.id);
@@ -103,48 +114,30 @@ const DetailedPaymentSummary = () => {
       return response;
     } catch (error) {
       console.error("Withdrawal request failed:", error);
+
+      // Show error notification with backend message
+      setNotification({
+        isVisible: true,
+        type: "error",
+        title: "Withdrawal Request Failed",
+        message:
+          error.message ||
+          "An unexpected error occurred while processing your withdrawal request. Please try again.",
+        actionButton: {
+          text: "Try Again",
+          onClick: () => {
+            setNotification({ ...notification, isVisible: false });
+            setShowWithdrawal(true); // Reopen withdrawal modal
+          },
+        },
+      });
+
       throw error;
     }
   };
 
   // Handle withdrawal button click with eligibility check
   const handleWithdrawalClick = () => {
-    if (!userData.hasPaid) {
-      setNotification({
-        isVisible: true,
-        type: "warning",
-        title: "Payment Required",
-        message:
-          "You need to complete your package payment before you can request withdrawals. Please make a payment first to unlock withdrawal functionality.",
-        actionButton: {
-          text: "Make Payment",
-          onClick: () => {
-            setNotification({ ...notification, isVisible: false });
-            window.location.href = "/packages";
-          },
-        },
-      });
-      return;
-    }
-
-    if (stats.totalEarnings < 500) {
-      setNotification({
-        isVisible: true,
-        type: "info",
-        title: "Insufficient Balance",
-        message: `You need at least KSH 500 to make a withdrawal. Your current balance is ${formatCurrency(stats.totalEarnings)}. Keep earning by referring friends and viewing products to reach the minimum withdrawal amount.`,
-        actionButton: {
-          text: "View Products",
-          onClick: () => {
-            setNotification({ ...notification, isVisible: false });
-            // Navigate to products page - you can add navigation logic here
-            window.location.href = "/products"; // or use your routing method
-          },
-        },
-      });
-      return;
-    }
-
     // If eligible, show withdrawal modal
     setShowWithdrawal(true);
   };
@@ -238,6 +231,7 @@ const DetailedPaymentSummary = () => {
     pendingBonuses,
     chainMemberships,
     monthlyEarnings,
+    payments,
   } = paymentData;
   const rankInfo = getRankInfo(userData.globalRank);
 
@@ -913,6 +907,7 @@ const DetailedPaymentSummary = () => {
       {/* Withdrawal Component */}
       <WithdrawalComponent
         user={userData}
+        payments={payments}
         stats={stats}
         onWithdrawalRequest={handleWithdrawalRequest}
         isVisible={showWithdrawal}

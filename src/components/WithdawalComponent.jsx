@@ -9,10 +9,13 @@ import {
   Clock,
   ArrowRight,
   X,
+  Gift,
+  TrendingUp,
 } from "lucide-react";
 
 const WithdrawalComponent = ({
   user,
+  payments,
   stats,
   onWithdrawalRequest,
   isVisible,
@@ -29,19 +32,106 @@ const WithdrawalComponent = ({
 
   const availableBalance = stats.totalEarnings || 0;
   const minWithdrawal = 500;
-  const maxWithdrawal = availableBalance;
-  const canWithdraw = user?.hasPaid && availableBalance >= minWithdrawal;
+
+  // Helper function - moved to top to avoid hoisting issues
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-KE", {
+      style: "currency",
+      currency: "KES",
+    }).format(amount);
+  };
+
+  // Payment validation logic
+  const getPaymentStatus = () => {
+    // First check: Balance must be above 500 regardless of payment status
+    if (availableBalance < minWithdrawal) {
+      return {
+        canWithdraw: false,
+        type: "insufficient_balance",
+        title: "Insufficient Balance",
+        message: `You need at least ${formatCurrency(minWithdrawal)} to make a withdrawal. Your current balance is ${formatCurrency(availableBalance)}. Keep earning by referring friends and viewing products to reach the minimum withdrawal amount.`,
+        actionText: "View Products",
+        actionHint:
+          "Purchase a package to grow faster and unlock more earning opportunities!",
+        iconColor: "text-blue-600",
+        bgColor: "bg-blue-100",
+      };
+    }
+
+    // Find package payment in the payments array
+    const packagePayment = payments?.find(
+      (payment) => payment.type === "package_payment"
+    );
+
+    // Second check: No package payment exists
+    if (!packagePayment) {
+      return {
+        canWithdraw: false,
+        type: "no_package_payment",
+        title: "Package Payment Required",
+        message: `You need to purchase a package before you can request withdrawals. Your balance of ${formatCurrency(availableBalance)} will be available for withdrawal once you complete your package payment.`,
+        actionText: "View Packages",
+        actionHint:
+          "Choose a package that suits your goals and start earning more!",
+        iconColor: "text-orange-600",
+        bgColor: "bg-orange-100",
+      };
+    }
+
+    // Third check: Package payment is pending
+    if (packagePayment.status === "pending") {
+      return {
+        canWithdraw: false,
+        type: "payment_pending",
+        title: "Payment Processing",
+        message: `We are currently processing your package payment. Please wait for the payment to be approved before requesting withdrawals. You'll receive an email confirmation once your payment is processed.`,
+        actionText: "Check Email",
+        actionHint: "Processing usually takes 1-3 hours during business hours.",
+        iconColor: "text-yellow-600",
+        bgColor: "bg-yellow-100",
+      };
+    }
+
+    // Fourth check: Package payment approved - can withdraw
+    if (packagePayment.status === "approved") {
+      return {
+        canWithdraw: true,
+        type: "eligible",
+        title: "Withdrawal Available",
+        message: `Great! You can now request withdrawals. Your available balance is ${formatCurrency(availableBalance)}.`,
+      };
+    }
+
+    // Fifth check: Package payment failed or other status
+    return {
+      canWithdraw: false,
+      type: "payment_failed",
+      title: "Payment Issue",
+      message: `There's an issue with your package payment (Status: ${packagePayment.status}). Please contact support or try making a new payment to unlock withdrawals.`,
+      actionText: "Contact Support",
+      actionHint: "Our support team will help resolve this quickly.",
+      iconColor: "text-red-600",
+      bgColor: "bg-red-100",
+    };
+  };
+
+  const paymentStatus = getPaymentStatus();
+  const canWithdraw = paymentStatus.canWithdraw;
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.amount || isNaN(formData.amount)) {
+    if (
+      !formData.amount ||
+      isNaN(formData.amount) ||
+      parseFloat(formData.amount) <= 0
+    ) {
       newErrors.amount = "Please enter a valid amount";
     } else {
       const amount = parseFloat(formData.amount);
       if (amount < minWithdrawal) {
-        newErrors.amount = `Minimum withdrawal is KSH ${minWithdrawal.toLocaleString()}`;
-      } else if (amount > maxWithdrawal) {
+        newErrors.amount = `Minimum withdrawal is ${formatCurrency(minWithdrawal)}`;
+      } else if (amount > availableBalance) {
         newErrors.amount = `Amount exceeds available balance`;
       }
     }
@@ -93,9 +183,8 @@ const WithdrawalComponent = ({
       });
       setStep(3);
     } catch (error) {
-      setErrors({
-        submit: error.message || "Failed to submit withdrawal request",
-      });
+      // Error will be handled by parent component through NotificationModal
+      console.error("Withdrawal submission failed:", error);
     } finally {
       setLoading(false);
     }
@@ -116,13 +205,62 @@ const WithdrawalComponent = ({
     onClose();
   };
 
+  const handleActionClick = () => {
+    const { type } = paymentStatus;
+
+    switch (type) {
+      case "insufficient_balance":
+        window.location.href = "/products";
+        break;
+      case "no_package_payment":
+        window.location.href = "/packages";
+        break;
+      case "payment_pending":
+        // Maybe open email client or show more info
+        break;
+      case "payment_failed":
+        window.location.href = "/support";
+        break;
+      default:
+        break;
+    }
+
+    onClose();
+  };
+
   if (!isVisible) return null;
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-KE", {
-      style: "currency",
-      currency: "KES",
-    }).format(amount);
+  const getStatusIcon = () => {
+    const { type, iconColor, bgColor } = paymentStatus;
+
+    const iconProps = {
+      className: `w-8 h-8 ${iconColor || "text-red-600"}`,
+    };
+
+    switch (type) {
+      case "insufficient_balance":
+        return {
+          icon: <TrendingUp {...iconProps} />,
+          bgColor: bgColor || "bg-blue-100",
+        };
+      case "no_package_payment":
+        return {
+          icon: <Gift {...iconProps} />,
+          bgColor: bgColor || "bg-orange-100",
+        };
+      case "payment_pending":
+        return {
+          icon: <Clock {...iconProps} />,
+          bgColor: bgColor || "bg-yellow-100",
+        };
+      case "payment_failed":
+        return {
+          icon: <AlertCircle {...iconProps} />,
+          bgColor: bgColor || "bg-red-100",
+        };
+      default:
+        return { icon: <Shield {...iconProps} />, bgColor: "bg-red-100" };
+    }
   };
 
   return (
@@ -138,7 +276,9 @@ const WithdrawalComponent = ({
               <h3 className="text-lg font-semibold text-gray-900">
                 Request Withdrawal
               </h3>
-              <p className="text-sm text-gray-600">Step {step} of 3</p>
+              <p className="text-sm text-gray-600">
+                {canWithdraw ? `Step ${step} of 3` : "Requirements Check"}
+              </p>
             </div>
           </div>
           <button
@@ -149,59 +289,82 @@ const WithdrawalComponent = ({
           </button>
         </div>
 
-        {/* Progress Bar */}
-        <div className="px-6 py-2">
-          <div className="flex space-x-2">
-            {[1, 2, 3].map((stepNum) => (
-              <div
-                key={stepNum}
-                className={`flex-1 h-2 rounded-full ${
-                  stepNum <= step ? "bg-green-500" : "bg-gray-200"
-                }`}
-              />
-            ))}
+        {/* Progress Bar - only show if eligible */}
+        {canWithdraw && (
+          <div className="px-6 py-2">
+            <div className="flex space-x-2">
+              {[1, 2, 3].map((stepNum) => (
+                <div
+                  key={stepNum}
+                  className={`flex-1 h-2 rounded-full ${
+                    stepNum <= step ? "bg-green-500" : "bg-gray-200"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Content */}
         <div className="p-6">
           {!canWithdraw ? (
-            // Ineligible State
+            // Ineligible State with specific messages
             <div className="text-center py-8">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-red-600" />
+              <div
+                className={`w-16 h-16 ${getStatusIcon().bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}
+              >
+                {getStatusIcon().icon}
               </div>
               <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                Withdrawal Not Available
+                {paymentStatus.title}
               </h4>
-              <div className="space-y-2 text-sm text-gray-600">
-                {!user?.hasPaid && (
-                  <p className="flex items-center justify-center space-x-2">
-                    <AlertCircle className="w-4 h-4 text-orange-500" />
-                    <span>Please complete package payment first</span>
-                  </p>
-                )}
-                {availableBalance < minWithdrawal && (
-                  <p className="flex items-center justify-center space-x-2">
-                    <AlertCircle className="w-4 h-4 text-orange-500" />
-                    <span>
-                      Minimum balance required: {formatCurrency(minWithdrawal)}
-                    </span>
-                  </p>
-                )}
-              </div>
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  <strong>Current Balance:</strong>{" "}
+              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                {paymentStatus.message}
+              </p>
+
+              {/* Current Balance Display */}
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Current Balance</p>
+                <p className="text-2xl font-bold text-gray-900">
                   {formatCurrency(availableBalance)}
                 </p>
-                <p className="text-sm text-blue-600 mt-1">
-                  Keep earning to reach the minimum withdrawal amount!
-                </p>
+                {paymentStatus.type === "insufficient_balance" && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    Need: {formatCurrency(minWithdrawal - availableBalance)}{" "}
+                    more
+                  </div>
+                )}
+              </div>
+
+              {/* Action Hint */}
+              {paymentStatus.actionHint && (
+                <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-xs text-blue-700 italic">
+                    💡 {paymentStatus.actionHint}
+                  </p>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex space-x-3">
+                <button
+                  onClick={handleClose}
+                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Close
+                </button>
+                {paymentStatus.actionText && (
+                  <button
+                    onClick={handleActionClick}
+                    className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    {paymentStatus.actionText}
+                  </button>
+                )}
               </div>
             </div>
           ) : step === 1 ? (
-            // Step 1: Form
+            // Step 1: Form (same as before but simplified)
             <div className="space-y-6">
               {/* Balance Info */}
               <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
@@ -233,9 +396,7 @@ const WithdrawalComponent = ({
                     name="amount"
                     value={formData.amount}
                     onChange={handleInputChange}
-                    placeholder={`Min. ${minWithdrawal}`}
-                    min={minWithdrawal}
-                    max={maxWithdrawal}
+                    placeholder="Enter amount"
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
                       errors.amount ? "border-red-300" : "border-gray-300"
                     }`}
@@ -262,12 +423,12 @@ const WithdrawalComponent = ({
                     onClick={() =>
                       setFormData((prev) => ({
                         ...prev,
-                        amount: maxWithdrawal.toString(),
+                        amount: availableBalance.toString(),
                       }))
                     }
                     className="text-xs text-green-600 hover:text-green-700"
                   >
-                    Max ({formatCurrency(maxWithdrawal)})
+                    Max ({formatCurrency(availableBalance)})
                   </button>
                 </div>
               </div>
@@ -323,8 +484,8 @@ const WithdrawalComponent = ({
                       Processing Time
                     </p>
                     <p className="text-sm text-yellow-700">
-                      Withdrawals are processed within 24-48 hours after admin
-                      verification.
+                      Withdrawals are reviewed within 3 hours and processed
+                      within 24-48 hours.
                     </p>
                   </div>
                 </div>
@@ -348,7 +509,7 @@ const WithdrawalComponent = ({
               </div>
             </div>
           ) : step === 2 ? (
-            // Step 2: Confirmation
+            // Step 2: Confirmation (same as before)
             <div className="space-y-6">
               <div className="text-center">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -392,15 +553,6 @@ const WithdrawalComponent = ({
                 </div>
               </div>
 
-              {errors.submit && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="flex items-center space-x-2">
-                    <AlertCircle className="w-5 h-5 text-red-600" />
-                    <p className="text-red-700 text-sm">{errors.submit}</p>
-                  </div>
-                </div>
-              )}
-
               {/* Actions */}
               <div className="flex space-x-3">
                 <button
@@ -430,7 +582,7 @@ const WithdrawalComponent = ({
               </div>
             </div>
           ) : (
-            // Step 3: Success
+            // Step 3: Success (same as before)
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-600" />
@@ -451,9 +603,9 @@ const WithdrawalComponent = ({
                       What happens next?
                     </p>
                     <ul className="text-sm text-blue-700 mt-1 space-y-1">
-                      <li>• Admin team reviews your request</li>
+                      <li>• Admin team reviews your request within 3 hours</li>
                       <li>• You'll receive email updates</li>
-                      <li>• Processing time: 24-48 hours</li>
+                      <li>• Processing time: 24-48 hours after approval</li>
                       <li>• Money sent to your M-Pesa</li>
                     </ul>
                   </div>
