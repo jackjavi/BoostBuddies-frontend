@@ -20,11 +20,93 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
   const [step, setStep] = useState(1); // 1: Instructions, 2: Payment Code Entry, 3: Success
   const [submitError, setSubmitError] = useState("");
   const [paymentId, setPaymentId] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const tillNumber = "5872036";
 
+  const validatePaymentCode = (code) => {
+    const errors = {};
+    const trimmedCode = code.trim().toUpperCase();
+
+    if (!trimmedCode) {
+      errors.paymentCode = "Payment code is required";
+    } else if (trimmedCode.length !== 10) {
+      errors.paymentCode = "Payment code must be exactly 10 characters";
+    } else if (!/^[A-Z0-9]{10}$/.test(trimmedCode)) {
+      errors.paymentCode = "Payment code must contain only letters and numbers";
+    }
+
+    return errors;
+  };
+
+  const validatePhoneNumber = (phone) => {
+    const errors = {};
+    const phoneDigits = phone.replace(/\D/g, ""); // Remove non-digits
+
+    if (!phone) {
+      errors.phoneNumber = "Phone number is required";
+    } else if (phoneDigits.length !== 9) {
+      errors.phoneNumber = "Phone number must be exactly 9 digits after +254";
+    } else if (!/^[17]\d{8}$/.test(phoneDigits)) {
+      errors.phoneNumber =
+        "Phone number must start with 7 or 1 (e.g., 708312804)";
+    }
+
+    return errors;
+  };
+
+  const handlePaymentCodeChange = (e) => {
+    let value = e.target.value;
+    // Remove any non-alphanumeric characters and convert to uppercase
+    value = value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+    // Limit to 10 characters
+    if (value.length <= 10) {
+      setPaymentCode(value);
+
+      // Clear validation error when user starts typing correctly
+      if (validationErrors.paymentCode) {
+        const errors = validatePaymentCode(value);
+        if (!errors.paymentCode) {
+          setValidationErrors((prev) => ({ ...prev, paymentCode: null }));
+        }
+      }
+    }
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    let value = e.target.value;
+    // Remove any non-digits
+    const digits = value.replace(/\D/g, "");
+
+    // Limit to 9 digits and format with +254 prefix
+    if (digits.length <= 9) {
+      setPhoneNumber(digits);
+
+      // Clear validation error when user starts typing correctly
+      if (validationErrors.phoneNumber) {
+        const errors = validatePhoneNumber(digits);
+        if (!errors.phoneNumber) {
+          setValidationErrors((prev) => ({ ...prev, phoneNumber: null }));
+        }
+      }
+    }
+  };
+
+  const validateForm = () => {
+    const paymentCodeErrors = validatePaymentCode(paymentCode);
+    const phoneNumberErrors = validatePhoneNumber(phoneNumber);
+
+    const allErrors = { ...paymentCodeErrors, ...phoneNumberErrors };
+    setValidationErrors(allErrors);
+
+    return Object.keys(allErrors).length === 0;
+  };
+
   const handlePaymentSubmit = async () => {
-    if (!paymentCode.trim() || !phoneNumber.trim()) return;
+    // Validate form before submission
+    if (!validateForm()) {
+      return;
+    }
 
     setIsSubmitting(true);
     setSubmitError("");
@@ -33,7 +115,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
       const result = await onPaymentSubmit({
         packageId: packageInfo.id,
         paymentCode: paymentCode.trim().toUpperCase(),
-        phoneNumber: phoneNumber.trim(),
+        phoneNumber: `+254${phoneNumber.trim()}`, // Add +254 prefix
         tillNumber: tillNumber,
       });
 
@@ -55,7 +137,16 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
     setPhoneNumber("");
     setSubmitError("");
     setPaymentId(null);
+    setValidationErrors({});
     onClose();
+  };
+
+  const isFormValid = () => {
+    return (
+      paymentCode.trim().length === 10 &&
+      phoneNumber.length === 9 &&
+      Object.keys(validationErrors).length === 0
+    );
   };
 
   if (!isOpen) return null;
@@ -71,7 +162,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
             </h2>
             <button
               onClick={handleClose}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -160,14 +251,36 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Your Phone Number
                   </label>
-                  <input
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="0712345678"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500 text-sm font-medium">
+                        +254
+                      </span>
+                    </div>
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="708312804"
+                      className={`w-full border pl-12 pr-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+                        validationErrors.phoneNumber
+                          ? "border-red-300 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-blue-500"
+                      }`}
+                      maxLength="9"
+                      pattern="[0-9]*"
+                      inputMode="numeric"
+                    />
+                  </div>
+                  {validationErrors.phoneNumber && (
+                    <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <AlertCircle className="w-4 h-4 mr-1" />
+                      {validationErrors.phoneNumber}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    Enter your 9-digit phone number (e.g., 708312804)
+                  </p>
                 </div>
 
                 <div>
@@ -177,14 +290,36 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                   <input
                     type="text"
                     value={paymentCode}
-                    onChange={(e) => setPaymentCode(e.target.value)}
-                    placeholder="e.g., TGS0WJVOZS"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-                    required
+                    onChange={handlePaymentCodeChange}
+                    placeholder="TGS0WJVOZS"
+                    className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 font-mono transition-colors ${
+                      validationErrors.paymentCode
+                        ? "border-red-300 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-blue-500"
+                    }`}
+                    maxLength="10"
+                    style={{ textTransform: "uppercase" }}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Enter the payment code from your M-Pesa confirmation SMS
-                  </p>
+                  {validationErrors.paymentCode && (
+                    <p className="mt-1 text-sm text-red-600 flex items-center">
+                      <AlertCircle className="w-4 h-4 mr-1" />
+                      {validationErrors.paymentCode}
+                    </p>
+                  )}
+                  <div className="flex justify-between items-center mt-1">
+                    <p className="text-xs text-gray-500">
+                      Enter the 10-character payment code from your M-Pesa SMS
+                    </p>
+                    <span
+                      className={`text-xs font-mono ${
+                        paymentCode.length === 10
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      {paymentCode.length}/10
+                    </span>
+                  </div>
                 </div>
 
                 {submitError && (
@@ -218,9 +353,7 @@ const CheckoutModal = ({ isOpen, onClose, packageInfo, onPaymentSubmit }) => {
                   </button>
                   <button
                     onClick={handlePaymentSubmit}
-                    disabled={
-                      isSubmitting || !paymentCode.trim() || !phoneNumber.trim()
-                    }
+                    disabled={isSubmitting || !isFormValid()}
                     className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Payment"}
