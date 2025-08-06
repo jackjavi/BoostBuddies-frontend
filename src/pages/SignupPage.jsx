@@ -363,7 +363,7 @@ function SignupPage() {
         onVerificationSuccess={handleEmailVerificationSuccess}
       />
 
-      <main className="min-h-[calc(100vh-4rem)] flex pt-24 max-w-7xl mx-auto relative overflow-scroll">
+      <main className=" flex h-screen items-center justify-center pt-24 max-w-7xl mx-auto relative overflow-scroll">
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>

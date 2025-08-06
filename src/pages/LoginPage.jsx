@@ -154,7 +154,7 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="h-[calc(100vh-4rem)] flex pt-32 max-w-7xl mx-auto relative overflow-hidden">
+    <main className="h-screen  flex items-center justify-center pt-24 md:py-28 max-w-7xl mx-auto relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -171,22 +171,22 @@ function LoginPage() {
           <div className="absolute top-1/2 left-10 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full">
+        <div className="relative z-10 flex flex-col justify-center items-center text-white p-4 w-full">
           {/* Logo/Brand */}
           <div className="mb-12 text-center">
-            <div className="flex-shrink-0 flex items-center justify-center mb-4">
+            <div className="flex-shrink-0 flex items-center justify-center mb-2">
               <BoostBuddiesLogo size="small" hideText={true} />
             </div>
             {/*<h1 className="text-4xl font-lilita mb-4">BoostBuddies</h1>*/}
-            <p className="text-xl text-indigo-100 max-w-md mx-auto leading-relaxed">
+            <p className="text-lg text-indigo-100 max-w-md mx-auto leading-relaxed">
               Where every view, every referral, and every interaction turns into
               real earnings
             </p>
           </div>
 
           {/* Feature Highlights */}
-          <div className="grid grid-cols-1 gap-6 max-w-md w-full">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+          <div className="grid grid-cols-1 gap-4 max-w-md w-full">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center">
                   <Coins className="w-6 h-6 text-green-300" />
@@ -200,7 +200,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-blue-400/20 rounded-lg flex items-center justify-center">
                   <Users className="w-6 h-6 text-blue-300" />
@@ -214,7 +214,7 @@ function LoginPage() {
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-purple-400/20 rounded-lg flex items-center justify-center">
                   <Award className="w-6 h-6 text-purple-300" />
@@ -230,7 +230,7 @@ function LoginPage() {
           </div>
 
           {/* Stats */}
-          <div className="mt-12 grid grid-cols-3 gap-8 text-center">
+          <div className="mt-12 grid grid-cols-3 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold">1000+</div>
               <div className="text-sm text-indigo-200">Active Members</div>
