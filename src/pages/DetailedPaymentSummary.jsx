@@ -257,10 +257,10 @@ const DetailedPaymentSummary = () => {
   ].filter((item) => item.value > 0);
 
   return (
-    <div className="min-h-screenoverflow-x-hidden py-24">
-      <div className="max-w-7xl mx-auto px-4 ">
+    <div>
+      <div>
         {/* Header Section */}
-        <div className="mb-8">
+        <div>
           <div className="flex flex-col md:flex-row items-center md:justify-between px-4 md:px-8">
             <div className="">
               <h1 className="text-3xl font-lilita text-gray-900 mb-2 text-center">
