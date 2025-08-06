@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Eye,
   EyeOff,
@@ -15,11 +15,10 @@ import {
   AlertCircle,
   Check,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
 import EmailVerificationModal from "../components/EmailVerificationModal";
-import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -40,8 +39,7 @@ function SignupPage() {
     password: { isValid: false, errors: [] },
   });
   const navigate = useNavigate();
-
-  // Email verification modal state
+  const location = useLocation();
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
 
@@ -160,6 +158,18 @@ function SignupPage() {
       errors,
     };
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const refCode = urlParams.get("ref");
+
+    if (refCode) {
+      setFormData((prevData) => ({
+        ...prevData,
+        referredBy: refCode.toUpperCase(),
+      }));
+    }
+  }, [location.search]);
 
   const handleChange = (event) => {
     const value = event.currentTarget.value;
@@ -791,6 +801,12 @@ function SignupPage() {
                   <p className="text-xs text-gray-500 mt-1">
                     Have a referral code? Enter it to get bonus rewards!
                   </p>
+                  {referredBy && (
+                    <p className="text-xs text-green-600 mt-1 flex items-center space-x-1">
+                      <Check className="h-3 w-3" />
+                      <span>Referral code applied!</span>
+                    </p>
+                  )}
                 </div>
 
                 {/* Error Message */}

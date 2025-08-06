@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContextWrapper";
+import { useNavigate } from "react-router-dom";
 import {
   fetchDetailedPaymentSummary,
   submitWithdrawalRequest,
@@ -40,6 +41,7 @@ import {
 import Spinner from "../components/Spinner";
 
 const DetailedPaymentSummary = () => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [paymentData, setPaymentData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -871,7 +873,10 @@ const DetailedPaymentSummary = () => {
             Quick Actions
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="flex items-center justify-between p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+            <button
+              onClick={() => navigate("/make-payment")}
+              className="flex items-center justify-between p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+            >
               <div className="flex items-center space-x-3">
                 <DollarSign className="w-5 h-5 text-indigo-600" />
                 <span className="font-medium text-indigo-900">
@@ -891,7 +896,10 @@ const DetailedPaymentSummary = () => {
               <ChevronRight className="w-5 h-5 text-green-600" />
             </button>
 
-            <button className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+            <button
+              onClick={() => navigate("/view-products")}
+              className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors"
+            >
               <div className="flex items-center space-x-3">
                 <Eye className="w-5 h-5 text-yellow-600" />
                 <span className="font-medium text-yellow-900">

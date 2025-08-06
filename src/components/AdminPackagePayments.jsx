@@ -51,7 +51,7 @@ function AdminPackagePayments() {
   return (
     <>
       <div>
-        <h1 className="text-2xl font-bold text-indigo-800">
+        <h1 className="text-2xl font-lilita font-bold text-indigo-800">
           Manage User Payments
         </h1>
       </div>

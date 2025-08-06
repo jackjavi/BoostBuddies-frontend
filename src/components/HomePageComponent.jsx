@@ -18,16 +18,137 @@ const HomePageComponent = ({ user, paymentSummary }) => {
   };
 
   const handleShareLink = () => {
-    const url = `${window.location.origin}/register?ref=${user.referralCode}`;
+    const url = `${window.location.origin}/signup?ref=${user.referralCode}`;
+    const title = "Join BoostBuddies!";
+    const text = "Sign up and earn together 🚀";
+
+    // Check if Web Share API is supported
     if (navigator.share) {
-      navigator.share({
-        title: "Join BoostBuddies!",
-        text: "Sign up and earn together 🚀",
-        url,
-      });
+      navigator
+        .share({
+          title: title,
+          text: text,
+          url: url,
+        })
+        .catch((error) => {
+          console.log("Error sharing:", error);
+          // Fallback to manual sharing if Web Share API fails
+          fallbackShare(url, title, text);
+        });
     } else {
-      alert("Sharing not supported in this browser.");
+      // Fallback for browsers that don't support Web Share API
+      fallbackShare(url, title, text);
     }
+  };
+
+  const fallbackShare = (url, title, text) => {
+    // Create a share modal/menu
+    const shareOptions = [
+      {
+        name: "WhatsApp",
+        url: `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`,
+        color: "#25D366",
+      },
+      {
+        name: "Telegram",
+        url: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+        color: "#0088cc",
+      },
+      {
+        name: "Facebook",
+        url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`,
+        color: "#1877f2",
+      },
+      {
+        name: "Twitter",
+        url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+        color: "#1da1f2",
+      },
+      {
+        name: "LinkedIn",
+        url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+        color: "#0077b5",
+      },
+      {
+        name: "Copy Link",
+        action: () => {
+          navigator.clipboard.writeText(url).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+          });
+        },
+        color: "#6b7280",
+      },
+    ];
+
+    // Create and show share modal
+    showShareModal(shareOptions);
+  };
+
+  const showShareModal = (shareOptions) => {
+    // Create modal overlay
+    const modalOverlay = document.createElement("div");
+    modalOverlay.className =
+      "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
+    modalOverlay.onclick = () => document.body.removeChild(modalOverlay);
+
+    // Create modal content
+    const modalContent = document.createElement("div");
+    modalContent.className = "bg-white rounded-xl p-6 m-4 max-w-sm w-full";
+    modalContent.onclick = (e) => e.stopPropagation();
+
+    // Modal header
+    const header = document.createElement("h3");
+    header.className = "text-lg font-semibold text-gray-900 mb-4 text-center";
+    header.textContent = "Share Your Referral Link";
+
+    // Share options container
+    const optionsContainer = document.createElement("div");
+    optionsContainer.className = "grid grid-cols-2 gap-3";
+
+    shareOptions.forEach((option) => {
+      const button = document.createElement("button");
+      button.className =
+        "flex flex-col items-center p-3 rounded-lg border hover:bg-gray-50 transition-colors";
+      button.style.borderColor = option.color;
+
+      const icon = document.createElement("div");
+      icon.className =
+        "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold mb-2";
+      icon.style.backgroundColor = option.color;
+      icon.textContent = option.name.charAt(0);
+
+      const label = document.createElement("span");
+      label.className = "text-sm font-medium text-gray-700";
+      label.textContent = option.name;
+
+      button.appendChild(icon);
+      button.appendChild(label);
+
+      button.onclick = () => {
+        if (option.action) {
+          option.action();
+        } else {
+          window.open(option.url, "_blank", "width=600,height=400");
+        }
+        document.body.removeChild(modalOverlay);
+      };
+
+      optionsContainer.appendChild(button);
+    });
+
+    // Close button
+    const closeButton = document.createElement("button");
+    closeButton.className =
+      "w-full mt-4 py-2 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors";
+    closeButton.textContent = "Cancel";
+    closeButton.onclick = () => document.body.removeChild(modalOverlay);
+
+    modalContent.appendChild(header);
+    modalContent.appendChild(optionsContainer);
+    modalContent.appendChild(closeButton);
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
   };
 
   useEffect(() => {
@@ -181,7 +302,8 @@ const HomePageComponent = ({ user, paymentSummary }) => {
               </div>
 
               <p className="text-sm text-gray-600 mt-3">
-                Earn 150 KSH for each friend who signs up using your link!
+                Earn up to 40% bonus share for each friend who signs up using
+                your link!
               </p>
             </div>
 
