@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense } from "react";
 import AuthContextWrapper from "./context/AuthContextWrapper";
 import UsersContextWrapper from "./context/UsersContextWrapper";
 import IsLoggedIn from "./components/Routing/isLoggedIn";
@@ -21,73 +22,199 @@ import Packages from "./pages/Packages";
 import PackageDetails from "./pages/PackageDetails";
 import AdminPaymentVerificationPage from "./pages/Admin/AdminPaymentVerification";
 import Payments from "./pages/Payments";
+import Spinner from "./components/Spinner";
+
+// Page wrapper component for consistent loading experience
+const PageWrapper = ({ children, loadingMessage = "Loading page..." }) => {
+  return (
+    <Suspense fallback={<Spinner fullScreen={true} message={loadingMessage} />}>
+      {children}
+    </Suspense>
+  );
+};
 
 function App() {
   return (
-    <>
-      <AuthContextWrapper>
-        <UsersContextWrapper>
-          <BrowserRouter>
+    <AuthContextWrapper>
+      <UsersContextWrapper>
+        <BrowserRouter>
+          <Suspense
+            fallback={
+              <Spinner fullScreen={true} message="Loading application..." />
+            }
+          >
             <Header />
             <Routes>
               {/* Public routes (logged out users) */}
               <Route path="/login" element={<IsLoggedOut />}>
-                <Route index element={<LoginPage />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading login page...">
+                      <LoginPage />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/signup" element={<IsLoggedOut />}>
-                <Route index element={<SignupPage />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading signup page...">
+                      <SignupPage />
+                    </PageWrapper>
+                  }
+                />
               </Route>
 
               {/* Protected routes (logged in users) */}
               <Route path="/profile/add" element={<IsLoggedIn />}>
-                <Route index element={<MemberUpload />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading profile setup...">
+                      <MemberUpload />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/" element={<IsLoggedIn />}>
-                <Route index element={<Dashboard />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading dashboard...">
+                      <Dashboard />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/profile" element={<IsLoggedIn />}>
-                <Route index element={<Profile />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading profile...">
+                      <Profile />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/profile/edit" element={<IsLoggedIn />}>
-                <Route index element={<EditProfile />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading profile editor...">
+                      <EditProfile />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/packages" element={<IsLoggedIn />}>
-                <Route index element={<Packages />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading packages...">
+                      <Packages />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/packages/:packageId" element={<IsLoggedIn />}>
-                <Route index element={<PackageDetails />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading package details...">
+                      <PackageDetails />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/profile/change-password" element={<IsLoggedIn />}>
-                <Route index element={<ChangePassword />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading password change...">
+                      <ChangePassword />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/products" element={<IsLoggedIn />}>
-                <Route index element={<Products />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading products...">
+                      <Products />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/payments" element={<IsLoggedIn />}>
-                <Route index element={<Payments />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading payments...">
+                      <Payments />
+                    </PageWrapper>
+                  }
+                />
               </Route>
 
               {/* Admin-only routes */}
               <Route path="/admin" element={<IsAdmin />}>
-                <Route index element={<AdminDashboard />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading admin dashboard...">
+                      <AdminDashboard />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/admin/manage-users" element={<IsAdmin />}>
-                <Route index element={<AdminUsersTable />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading user management...">
+                      <AdminUsersTable />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/admin/payment/verification" element={<IsAdmin />}>
-                <Route index element={<AdminPaymentVerificationPage />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading payment verification...">
+                      <AdminPaymentVerificationPage />
+                    </PageWrapper>
+                  }
+                />
               </Route>
               <Route path="/admin/manage-payments" element={<IsAdmin />}>
-                <Route index element={<AdminManagePayments />} />
+                <Route
+                  index
+                  element={
+                    <PageWrapper loadingMessage="Loading payment management...">
+                      <AdminManagePayments />
+                    </PageWrapper>
+                  }
+                />
               </Route>
 
               {/* 404 route */}
-              <Route path="*" element={<NotFound />} />
+              <Route
+                path="*"
+                element={
+                  <PageWrapper loadingMessage="Loading page...">
+                    <NotFound />
+                  </PageWrapper>
+                }
+              />
             </Routes>
-          </BrowserRouter>
-        </UsersContextWrapper>
-      </AuthContextWrapper>
-    </>
+          </Suspense>
+        </BrowserRouter>
+      </UsersContextWrapper>
+    </AuthContextWrapper>
   );
 }
 

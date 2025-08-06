@@ -8,7 +8,7 @@ function IsLoggedIn() {
   const location = useLocation();
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner fullScreen={true} message="Authenticating..." />;
   }
 
   if (!user) {
@@ -16,7 +16,6 @@ function IsLoggedIn() {
       pathname: location.pathname,
       search: location.search,
     };
-
     return <Navigate to="/login" state={{ from }} replace />;
   }
 

@@ -8,7 +8,7 @@ function IsLoggedOut() {
   const location = useLocation();
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner fullScreen={true} message="Loading..." />;
   }
 
   if (user) {

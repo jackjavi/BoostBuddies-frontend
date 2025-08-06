@@ -11,7 +11,6 @@ function AuthContextWrapper({ children }) {
 
   const storeToken = (token) => localStorage.setItem("authToken", token);
   const removeToken = () => localStorage.removeItem("authToken");
-
   const storeUserData = (userData) =>
     localStorage.setItem("userData", JSON.stringify(userData));
   const removeUserData = () => localStorage.removeItem("userData");
@@ -31,27 +30,49 @@ function AuthContextWrapper({ children }) {
       }
 
       setIsLoading(true);
-      const userData = JSON.parse(localStorage.getItem("userData"));
 
-      if (userData) {
-        setUser(userData);
-        setIsLoggedIn(true);
-        setIsAdmin(checkAdminStatus(userData));
-      } else {
-        throw new Error("User data not found");
+      // Try to get cached user data first for faster initial load
+      const cachedUserData = localStorage.getItem("userData");
+      if (cachedUserData) {
+        try {
+          const userData = JSON.parse(cachedUserData);
+          setUser(userData);
+          setIsLoggedIn(true);
+          setIsAdmin(checkAdminStatus(userData));
+        } catch (error) {
+          console.error("Error parsing cached user data:", error);
+          removeUserData();
+        }
       }
 
-      const freshUserData = await fetchUserData();
-      if (freshUserData) {
-        setUser(freshUserData);
-        setIsAdmin(checkAdminStatus(freshUserData));
-        storeUserData(freshUserData);
+      // Always try to fetch fresh user data
+      try {
+        const freshUserData = await fetchUserData();
+        if (freshUserData) {
+          setUser(freshUserData);
+          setIsAdmin(checkAdminStatus(freshUserData));
+          storeUserData(freshUserData);
+          setIsLoggedIn(true);
+        } else {
+          throw new Error("No user data received");
+        }
+      } catch (fetchError) {
+        console.error("Error fetching fresh user data:", fetchError);
+
+        // If we have cached data and fetch fails, continue with cached data
+        if (!cachedUserData) {
+          throw fetchError;
+        }
+        // Otherwise, we already set the cached data above
       }
 
       setIsLoading(false);
-      setIsLoggedIn(true);
     } catch (error) {
       console.error("Error during authentication:", error);
+
+      // Clear everything on authentication error
+      removeToken();
+      removeUserData();
       setUser(null);
       setIsLoading(false);
       setIsLoggedIn(false);

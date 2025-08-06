@@ -6,13 +6,10 @@ import Spinner from "../Spinner";
 function IsAdmin() {
   const { user, isLoading, isLoggedIn, isAdmin } = useContext(AuthContext);
   const location = useLocation();
-  // const [showAccessDenied, setShowAccessDenied] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     if (!isLoading && isLoggedIn && user && !isAdmin) {
-      // setShowAccessDenied(true);
-
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -22,13 +19,12 @@ function IsAdmin() {
           return prev - 1;
         });
       }, 1000);
-
       return () => clearInterval(timer);
     }
   }, [isLoading, isLoggedIn, user, isAdmin]);
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner fullScreen={true} message="Verifying admin access..." />;
   }
 
   // If not logged in, redirect to login
