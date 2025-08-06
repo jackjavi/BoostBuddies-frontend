@@ -70,11 +70,11 @@ const Dashboard = () => {
     : null;
 
   return (
-    <div className="min-h-screen overflow-x-hidden py-24 bg-indigo-50">
+    <div className="min-h-screen overflow-x-hidden py-24 md:pt-28 bg-indigo-50">
       <div className="max-w-7xl mx-auto flex">
         <Aside activeTab="dashboard" />
 
-        <main className="flex-1 p-4">
+        <main className="flex-1 px-4">
           <div className="flex-1 flex-col">
             <div className="flex flex-col lg:flex-row gap-6 mb-4 mx-auto">
               {/* Welcome Card */}

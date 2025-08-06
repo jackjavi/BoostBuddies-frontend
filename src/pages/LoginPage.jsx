@@ -154,7 +154,7 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="min-h-screen flex py-24 max-w-7xl mx-auto relative overflow-hidden">
+    <main className="h-[calc(100vh-4rem)] flex pt-32 max-w-7xl mx-auto relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -386,7 +386,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full py-3 px-4 rounded-xl font-lilita text-lg transition-all duration-200 transform ${
+                className={`w-full py-3 px-4 rounded-xl font-lilita text-md transition-all duration-200 transform ${
                   isLoading
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl"

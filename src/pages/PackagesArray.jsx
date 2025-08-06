@@ -1,7 +1,6 @@
 import React from "react";
 import MobileNavBottom from "../components/MobileNavBottomPackages";
 import packagesData from "../lib/packagesData";
-import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
 import { Link } from "react-router-dom";
 import {
   Trophy,
@@ -14,7 +13,7 @@ import {
 
 const PackagesArray = () => {
   return (
-    <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+    <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -22,11 +21,10 @@ const PackagesArray = () => {
         <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full opacity-15 animate-bounce"></div>
       </div>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4 py-12">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 py-4">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-12">
-          <BoostBuddiesLogo size="small" />
-          <h1 className="text-xl md:text-3xl font-lilita text-gray-900 my-4">
+          <h1 className="text-2xl md:text-3xl font-lilita text-gray-900 my-4">
             Choose Your Package
           </h1>
           <p className="text-md md:text-xl text-gray-600 max-w-[75vw] mx-auto leading-relaxed">
@@ -227,7 +225,7 @@ const PackagesArray = () => {
                   />
                 ))}
               </div>
-              <blockquote className="text-xl md:text-2xl font-medium mb-6 leading-relaxed">
+              <blockquote className="text-md md:text-lg font-medium mb-6 leading-relaxed">
                 "BoostBuddies has completely changed my financial situation. I'm
                 earning consistently every day and my referral network keeps
                 growing."

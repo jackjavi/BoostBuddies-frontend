@@ -9,8 +9,8 @@ const Header = () => {
   const { user, isLoggedIn } = useContext(AuthContext);
 
   return (
-    <header className="fixed w-full bg-white/95 backdrop-blur-sm text-indigo-800 z-50 shadow-lg border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between h-16">
+    <header className="fixed w-full bg-white/95 backdrop-blur-sm text-indigo-800   z-50 shadow-lg border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center h-20 justify-between">
         {/* Logo - now takes full left space on mobile */}
         <div className="flex-shrink-0">
           <Link to="/" className="block">

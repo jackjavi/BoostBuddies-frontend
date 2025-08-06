@@ -3,10 +3,6 @@ import { Zap, Coins } from "lucide-react";
 
 const BoostBuddiesLogo = ({ size = "normal", hideText = false }) => {
   const isSmall = size === "small";
-  console.log(
-    "Rendering BoostBuddiesLogo with size:",
-    hideText ? "hidden text" : "visible text"
-  );
 
   return (
     <div className="flex items-center space-x-2">

@@ -363,7 +363,7 @@ function SignupPage() {
         onVerificationSuccess={handleEmailVerificationSuccess}
       />
 
-      <main className="min-h-screen flex py-24 max-w-7xl mx-auto relative overflow-hidden">
+      <main className="min-h-[calc(100vh-4rem)] flex pt-24 max-w-7xl mx-auto relative overflow-scroll">
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -372,7 +372,7 @@ function SignupPage() {
         </div>
 
         {/* Left Side - Illustration & Branding (Hidden on mobile) */}
-        <div className="hidden md:flex md:w-1/2 lg:w-3/5 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
+        <div className="hidden md:flex md:w-1/2 lg:w-3/5 md:py-8 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
           {/* Decorative Elements */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
@@ -461,33 +461,33 @@ function SignupPage() {
         </div>
 
         {/* Right Side - Signup Form */}
-        <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-6 md:p-12 relative z-10">
+        <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-6 relative z-10">
           <div className="w-full max-w-md">
             {/* Mobile Header */}
-            <div className="md:hidden text-center mb-8">
+            <div className="md:hidden text-center mb-2">
               <div className="flex-shrink-0 flex items-center justify-center mb-4">
                 <BoostBuddiesLogo className="w-12 h-12" />
               </div>
               <p className="text-gray-600 max-w-[75vw] mx-auto text-md">
                 Join thousands earning KSH daily through our platform
               </p>
-              <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2 font-lilita">
+              {/* <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2 font-lilita">
                 Start Earning Today!
-              </h1>
+              </h1> */}
             </div>
 
             {/* Desktop Header */}
-            <div className="hidden md:block text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2 font-lilita">
+            <div className="hidden md:block text-center mb-2">
+              <h1 className="text-xl font-bold text-gray-900 mb-2 font-lilita">
                 Create Your Account
               </h1>
-              <p className="text-gray-600 max-w-[75%] text-center mx-auto">
+              <p className="text-gray-600 text-md max-w-[75%] text-center mx-auto">
                 Start your earning journey with BoostBuddies
               </p>
             </div>
 
             {/* Quick Benefits for Mobile */}
-            <div className="md:hidden grid grid-cols-3 gap-3 mb-8">
+            <div className="md:hidden grid grid-cols-3 gap-3 mb-4">
               <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/20 shadow-sm text-center">
                 <Coins className="w-5 h-5 text-green-500 mx-auto mb-1" />
                 <div className="text-xs text-gray-600">Earn</div>
@@ -510,9 +510,9 @@ function SignupPage() {
             {/* Signup Form */}
             <form
               onSubmit={handleSubmit}
-              className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20"
+              className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-white/20"
             >
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Username Field */}
                 <div>
                   <label
@@ -526,7 +526,7 @@ function SignupPage() {
                       <User className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-10 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-10 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.username
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.username.isValid && username
@@ -581,7 +581,7 @@ function SignupPage() {
                       <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-10 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-10 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.email
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.email.isValid && email
@@ -623,7 +623,7 @@ function SignupPage() {
                       <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-12 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-12 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.password
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.password.isValid && password
@@ -737,7 +737,7 @@ function SignupPage() {
                       <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-12 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-12 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.confirmPassword
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : confirmPassword && confirmPassword === password
@@ -792,7 +792,7 @@ function SignupPage() {
                       <Gift className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                       type="text"
                       id="referredBy"
                       placeholder="Enter referral code (optional)"
@@ -840,7 +840,7 @@ function SignupPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-3 px-4 rounded-xl font-bold text-lg transition-all duration-200 transform ${
+                  className={`w-full py-2 px-4 rounded-xl font-bold text-lg transition-all duration-200 transform ${
                     isLoading
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] shadow-lg hover:shadow-xl"
@@ -852,7 +852,9 @@ function SignupPage() {
                       <span>Creating Account...</span>
                     </div>
                   ) : (
-                    "Create Account & Start Earning"
+                    <span className="text-md font-lilita">
+                      Create Account & Start Earning
+                    </span>
                   )}
                 </button>
 
