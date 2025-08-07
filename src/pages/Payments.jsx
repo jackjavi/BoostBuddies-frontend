@@ -7,7 +7,7 @@ const Payments = () => {
       <div className="max-w-7xl mx-auto flex">
         <Aside activeTab="payments" />
 
-        <main className="flex-1 p-4">
+        <main className="flex-1">
           <DetailedPaymentSummary />
         </main>
       </div>

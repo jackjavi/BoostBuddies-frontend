@@ -138,8 +138,8 @@ export default function ProductsComponent() {
   };
 
   return (
-    <div className="min-h-screen rounded-xl">
-      <main className="max-w-5xl mx-auto px-4">
+    <div className="">
+      <main className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-3xl mx-auto p-8">
         <div className="mb-8">
           <h1 className="text-3xl text-center font-lilita text-gray-900 mb-2">
             Products

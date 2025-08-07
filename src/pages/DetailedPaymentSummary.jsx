@@ -254,15 +254,15 @@ const DetailedPaymentSummary = () => {
 
   return (
     <div>
-      <div>
+      <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-3xl mx-auto p-8">
         {/* Header Section */}
         <div>
-          <div className="flex flex-col md:flex-row items-center md:justify-between px-4 md:px-8">
+          <div className="flex flex-col md:flex-row items-center md:justify-between px-2">
             <div className="">
-              <h1 className="text-3xl font-lilita text-gray-900 mb-2 text-center">
+              <h1 className="text-3xl font-lilita text-gray-900 mb-2 ">
                 Payment Summary
               </h1>
-              <p className="text-gray-600 mt-1 text-center">
+              <p className="text-gray-600 mt-1 ">
                 Detailed breakdown of your earnings and transactions
               </p>
             </div>
