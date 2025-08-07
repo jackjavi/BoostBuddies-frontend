@@ -21,7 +21,7 @@ const PackagesArray = () => {
         <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full opacity-15 animate-bounce"></div>
       </div>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 pb-8">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-12">
           <h1 className="text-2xl md:text-3xl font-lilita text-gray-900 my-4">
@@ -52,7 +52,7 @@ const PackagesArray = () => {
         </div>
 
         {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-8 mb-16">
           {packagesData.map((pkg, index) => (
             <div
               key={pkg.id}
@@ -80,7 +80,7 @@ const PackagesArray = () => {
 
               {/* Content */}
               <div
-                className={`relative z-10 p-8 ${pkg.popular ? "pt-16" : "pt-8"}`}
+                className={`relative z-10 p-8 ${pkg.popular ? "py-16" : "pt-8"}`}
               >
                 {/* Package Header */}
                 <div className="text-center mb-6">
