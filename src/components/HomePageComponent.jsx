@@ -158,7 +158,7 @@ const HomePageComponent = ({ user, paymentSummary }) => {
   }, [user?.id]);
 
   return (
-    <div className="min-h-screen">
+    <div className="">
       {/* Main Content */}
       <main className=" mx-auto ">
         <div className="pt-6">

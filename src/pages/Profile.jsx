@@ -64,7 +64,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 overflow-x-hidden min-h-screen py-24 md:pt-28">
+      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 overflow-x-hidden min-h-screen py-24 md:py-28">
         <div className=" max-w-7xl flex md:gap-8 mx-auto">
           <Aside activeTab="profile" />
 

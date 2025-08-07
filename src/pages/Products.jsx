@@ -11,7 +11,7 @@ const Dashboard = () => {
   }, [fetchUsers]);
 
   return (
-    <div className="bg-indigo-50 min-h-screen overflow-x-hidden pt-24 md:pt-28">
+    <div className="bg-indigo-50 min-h-screen overflow-x-hidden py-24 md:py-28">
       <div className="max-w-7xl mx-auto flex">
         <Aside activeTab="products" />
 
