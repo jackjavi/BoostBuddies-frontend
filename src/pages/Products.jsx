@@ -15,7 +15,7 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto flex">
         <Aside activeTab="products" />
 
-        <main className="flex-1 p-4">
+        <main className="flex-1 px-4">
           <ProductsComponent />
         </main>
       </div>
