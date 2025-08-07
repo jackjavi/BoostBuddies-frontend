@@ -144,12 +144,12 @@ const Aside = ({ activeTab = "" }) => {
             <p className="text-xs opacity-90 mb-3">
               Track your daily progress and referral earnings
             </p>
-            <a
-              href="/payments"
+            <Link
+              to="/payments"
               className="inline-block bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-xs font-medium transition-colors duration-200"
             >
               View Details
-            </a>
+            </Link>
           </div>
         </div>
       </aside>

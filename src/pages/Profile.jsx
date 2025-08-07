@@ -16,6 +16,7 @@ import { AuthContext } from "../context/AuthContextWrapper";
 import MobileNavBottom from "../components/MobileNavBottomProfile";
 import Aside from "../components/AsideComponent";
 import LogoutConfirmationModal from "../components/LogoutConfirmationModal";
+import Spinner from "../components/Spinner";
 
 const Profile = () => {
   const { user, isLoading, disconnect } = useContext(AuthContext);
@@ -35,16 +36,7 @@ const Profile = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-lg font-medium text-gray-500">
-            Loading profile...
-          </p>
-        </div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!user) {
