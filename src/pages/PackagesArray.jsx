@@ -193,8 +193,8 @@ const PackagesArray = () => {
                 Build Network
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Grow your referral network and earn KSH 150 for each friend who
-                joins through your unique link
+                Grow your referral network and earn up to 40% bonus share for
+                each friend who joins through your unique link
               </p>
             </div>
 
