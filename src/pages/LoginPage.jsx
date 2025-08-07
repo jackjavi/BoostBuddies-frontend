@@ -154,7 +154,7 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="min-h-screen  flex items-center justify-center py-24 md:py-28 max-w-7xl mx-auto relative overflow-hidden">
+    <main className="min-h-screen  flex items-center justify-center pt-24 md:py-28 max-w-7xl mx-auto relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
