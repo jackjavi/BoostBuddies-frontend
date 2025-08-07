@@ -21,7 +21,7 @@ const PackagesArray = () => {
         <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full opacity-15 animate-bounce"></div>
       </div>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4 py-4">
+      <main className="relative z-10 max-w-7xl mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-12">
           <h1 className="text-2xl md:text-3xl font-lilita text-gray-900 my-4">
