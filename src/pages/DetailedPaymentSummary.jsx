@@ -38,7 +38,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/PageSpinner";
 
 const DetailedPaymentSummary = () => {
   const navigate = useNavigate();
