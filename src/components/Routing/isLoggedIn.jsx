@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContextWrapper";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import Spinner from "../Spinner";
+import Spinner from "../PageSpinner";
 
 function IsLoggedIn() {
   const { user, isLoading } = useContext(AuthContext);

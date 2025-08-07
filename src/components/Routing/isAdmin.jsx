@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContextWrapper";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import Spinner from "../Spinner";
+import Spinner from "../PageSpinner";
 
 function IsAdmin() {
   const { user, isLoading, isLoggedIn, isAdmin } = useContext(AuthContext);

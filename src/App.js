@@ -22,7 +22,7 @@ import Packages from "./pages/Packages";
 import PackageDetails from "./pages/PackageDetails";
 import AdminPaymentVerificationPage from "./pages/Admin/AdminPaymentVerification";
 import Payments from "./pages/Payments";
-import Spinner from "./components/Spinner";
+import Spinner from "./components/PageSpinner";
 
 // Page wrapper component for consistent loading experience
 const PageWrapper = ({ children, loadingMessage = "Loading page..." }) => {

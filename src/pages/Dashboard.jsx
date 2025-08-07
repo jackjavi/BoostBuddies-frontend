@@ -4,7 +4,7 @@ import { UsersContext } from "../context/UsersContextWrapper";
 import { User, Trophy, Star, Crown } from "lucide-react";
 import HomePageComponent from "../components/HomePageComponent";
 import { fetchUserPaymentSummary } from "../api/api2";
-// import Spinner from "../components/Spinner";
+import Spinner from "../components/Spinner";
 import Aside from "../components/AsideComponent";
 
 const Dashboard = () => {
@@ -137,9 +137,7 @@ const Dashboard = () => {
                       {paymentSummary ? (
                         `#${paymentSummary.globalRank}`
                       ) : (
-                        <p className="text-sm text-white text-opacity-80">
-                          Loading your status...
-                        </p>
+                        <Spinner />
                       )}
                     </h2>
                     {paymentSummary && paymentSummary.globalRank <= 50 && (
@@ -151,7 +149,7 @@ const Dashboard = () => {
                     )}
                   </div>
                   <p className="text-sm text-white text-opacity-80">
-                    {rankInfo ? rankInfo.description : "Loading your status..."}
+                    {rankInfo ? rankInfo.description : ""}
                   </p>
                 </div>
               </div>
