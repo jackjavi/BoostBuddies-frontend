@@ -1,0 +1,161 @@
+<svg
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <!-- Gradient for main background -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color: #6366f1; stop-opacity: 1" />
+      <stop offset="100%" style="stop-color: #9333ea; stop-opacity: 1" />
+    </linearGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3" />
+    </filter>
+
+    <!-- Glow effect for animated elements -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Animation for coins -->
+    <animateTransform
+      id="bounce"
+      attributeName="transform"
+      type="translate"
+      values="0,0; 0,-3; 0,0"
+      dur="1.5s"
+      repeatCount="indefinite"
+      begin="0.5s"
+    />
+
+    <!-- Pulse animation for dots -->
+    <animate
+      id="pulse1"
+      attributeName="opacity"
+      values="1;0.3;1"
+      dur="1.5s"
+      repeatCount="indefinite"
+    />
+    <animate
+      id="pulse2"
+      attributeName="opacity"
+      values="1;0.3;1"
+      dur="1.5s"
+      repeatCount="indefinite"
+      begin="0.2s"
+    />
+    <animate
+      id="pulse3"
+      attributeName="opacity"
+      values="1;0.3;1"
+      dur="1.5s"
+      repeatCount="indefinite"
+      begin="0.4s"
+    />
+  </defs>
+
+  <!-- Main logo container with rounded background -->
+  <rect
+    x="4"
+    y="4"
+    width="40"
+    height="40"
+    rx="6"
+    ry="6"
+    fill="url(#mainGradient)"
+    filter="url(#dropShadow)"
+  />
+
+  <!-- Lightning bolt (Zap icon) -->
+  <g transform="translate(24,24)" fill="#fde047" stroke="none">
+    <path d="M-6,-8 L2,-2 L-2,-1 L6,8 L-2,2 L2,1 Z" fill="#fde047" />
+  </g>
+
+  <!-- Floating coins (top-right) -->
+  <g transform="translate(38,6)" fill="#eab308" filter="url(#glow)">
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="38,6; 38,3; 38,6"
+      dur="1.5s"
+      repeatCount="indefinite"
+      begin="0.5s"
+    />
+    <!-- Coin circles -->
+    <circle cx="0" cy="0" r="4" fill="#eab308" opacity="0.8" />
+    <circle cx="2" cy="2" r="3" fill="#facc15" opacity="0.9" />
+    <!-- Coin details -->
+    <circle
+      cx="0"
+      cy="0"
+      r="2.5"
+      fill="none"
+      stroke="#f59e0b"
+      stroke-width="0.5"
+    />
+    <rect x="-1" y="-1" width="2" height="2" fill="#f59e0b" opacity="0.7" />
+  </g>
+
+  <!-- Connecting dots (bottom-left) -->
+  <g transform="translate(6,40)">
+    <!-- Green dot -->
+    <circle cx="0" cy="0" r="2" fill="#4ade80">
+      <animate
+        attributeName="opacity"
+        values="1;0.3;1"
+        dur="1.5s"
+        repeatCount="indefinite"
+      />
+    </circle>
+
+    <!-- Blue dot -->
+    <circle cx="4" cy="0" r="2" fill="#60a5fa">
+      <animate
+        attributeName="opacity"
+        values="1;0.3;1"
+        dur="1.5s"
+        repeatCount="indefinite"
+        begin="0.2s"
+      />
+    </circle>
+
+    <!-- Purple dot -->
+    <circle cx="8" cy="0" r="2" fill="#c084fc">
+      <animate
+        attributeName="opacity"
+        values="1;0.3;1"
+        dur="1.5s"
+        repeatCount="indefinite"
+        begin="0.4s"
+      />
+    </circle>
+  </g>
+
+  <!-- Additional professional touches -->
+  <!-- Subtle highlight on main container -->
+  <rect
+    x="4"
+    y="4"
+    width="40"
+    height="20"
+    rx="6"
+    ry="6"
+    fill="url(#highlight)"
+    opacity="0.2"
+  />
+
+  <defs>
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color: #ffffff; stop-opacity: 0.4" />
+      <stop offset="100%" style="stop-color: #ffffff; stop-opacity: 0" />
+    </linearGradient>
+  </defs>
+</svg>
