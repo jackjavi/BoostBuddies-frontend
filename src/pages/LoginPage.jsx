@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
+import GoogleSignInButton from "../components/Google/GoogleSignInButton";
+import Splitter from "../components/Google/Splitter";
 import {
   Eye,
   EyeOff,
@@ -41,9 +43,23 @@ function LoginPage() {
   const [resetPassError, setResetPassError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+
+  const handleGoogleLogin = async () => {
+    setIsLoadingGoogle(true);
+    try {
+      // window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google`;
+      alert(
+        "Google login is not implemented yet. This is a placeholder action."
+      );
+    } catch (err) {
+      console.error("Error with Google login:", err);
+    } finally {
+      setIsLoadingGoogle(false);
+    }
+  };
 
   function handleChange(event) {
     const { id, value } = event.currentTarget;
@@ -154,7 +170,7 @@ function LoginPage() {
   const { email, password } = formData;
 
   return (
-    <main className="min-h-screen  flex items-center justify-center pt-24 md:py-28 max-w-7xl mx-auto relative overflow-hidden">
+    <main className="min-h-screen  flex items-center justify-center pt-20 md:pt-20 max-w-7xl mx-auto relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -163,7 +179,7 @@ function LoginPage() {
       </div>
 
       {/* Left Side - Illustration & Branding (Hidden on mobile) */}
-      <div className="hidden md:flex md:w-1/2 lg:w-3/5 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
+      <div className="hidden md:flex w-1/2 md:max-w-[75%] h-screen mx-auto ml-4 px-4 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
@@ -292,10 +308,21 @@ function LoginPage() {
             </div>
           </div>
 
+          {/* Google Sign Up Button */}
+          <div className="w-full mx-auto px-8">
+            <GoogleSignInButton
+              onClick={handleGoogleLogin}
+              isLoading={isLoadingGoogle}
+            />
+          </div>
+
+          {/* Splitter */}
+          <Splitter />
+
           {/* Login Form */}
           <form
             onSubmit={handleSubmit}
-            className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20"
+            className="bg-white/90 backdrop-blur-sm  md:rounded-none rounded-3xl p-8 shadow-xl border border-white/20"
           >
             <div className="space-y-6">
               {/* Email Field */}

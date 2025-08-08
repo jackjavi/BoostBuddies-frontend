@@ -15,10 +15,13 @@ import {
   AlertCircle,
   Check,
 } from "lucide-react";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
 import EmailVerificationModal from "../components/EmailVerificationModal";
+import GoogleSignUpButton from "../components/Google/GoogleSignUpButton";
+import Splitter from "../components/Google/Splitter";
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -42,6 +45,21 @@ function SignupPage() {
   const location = useLocation();
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+
+  const handleGoogleSignUp = async () => {
+    setIsLoadingGoogle(true);
+    try {
+      // window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google`;
+      alert(
+        "Google signup is not implemented yet. This is a placeholder action."
+      );
+    } catch (err) {
+      console.error("Error with Google login:", err);
+    } finally {
+      setIsLoadingGoogle(false);
+    }
+  };
 
   const validateEmail = (email) => {
     const emailRegex =
@@ -363,7 +381,7 @@ function SignupPage() {
         onVerificationSuccess={handleEmailVerificationSuccess}
       />
 
-      <main className=" flex min-h-screen items-center justify-center pt-24 md:py-28 max-w-7xl mx-auto relative overflow-hidden">
+      <main className=" flex min-h-screen items-center justify-center pt-20 md:pt-20 max-w-7xl mx-auto relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full opacity-20 animate-pulse"></div>
@@ -372,13 +390,13 @@ function SignupPage() {
         </div>
 
         {/* Left Side - Illustration & Branding (Hidden on mobile) */}
-        <div className="hidden md:flex md:w-1/2 lg:w-3/5 md:py-8 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
+        <div className="hidden md:flex w-1/2 md:max-w-[75%] h-screen mx-auto ml-4 px-4 bg-gradient-to-br from-indigo-600 to-purple-700 relative overflow-hidden">
           {/* Decorative Elements */}
-          <div className="absolute inset-0">
+          {/* <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-40 h-40 bg-white/10 rounded-full blur-xl"></div>
             <div className="absolute bottom-32 right-16 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
             <div className="absolute top-1/2 left-10 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
-          </div>
+          </div> */}
 
           <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full">
             {/* Logo/Brand */}
@@ -461,14 +479,14 @@ function SignupPage() {
         </div>
 
         {/* Right Side - Signup Form */}
-        <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-6 relative z-10">
-          <div className="w-full max-w-md">
+        <div className="w-full md:w-1/2 flex items-center justify-center md:py-6 relative z-10 px-4 md:px-0">
+          <div className="w-full md:max-w-[75%] px-4 md:px-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-3xl md:rounded-none mx-auto py-4">
             {/* Mobile Header */}
             <div className="md:hidden text-center mb-2">
               <div className="flex-shrink-0 flex items-center justify-center mb-4">
                 <BoostBuddiesLogo className="w-12 h-12" />
               </div>
-              <p className="text-gray-600 max-w-[75vw] mx-auto text-md">
+              <p className="text-gray-600 max-w-[75%] mx-auto text-md">
                 Join thousands earning KSH daily through our platform
               </p>
               {/* <h1 className="text-xl md:text-3xl font-bold text-gray-900 my-2 font-lilita">
@@ -507,12 +525,23 @@ function SignupPage() {
               </div>
             </div>
 
+            {/* Google Sign Up Button */}
+            <div className="w-full mx-auto px-4 pt-4">
+              <GoogleSignUpButton
+                onClick={handleGoogleSignUp}
+                isLoading={isLoadingGoogle}
+              />
+            </div>
+
+            {/* Splitter */}
+            <Splitter />
+
             {/* Signup Form */}
             <form
               onSubmit={handleSubmit}
-              className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-white/20"
+              className="bg-white/90 backdrop-blur-sm rounded-2xl md:rounded-none shadow-xl border border-white/20 p-4"
             >
-              <div className="space-y-4">
+              <div className="space-y-4 ">
                 {/* Username Field */}
                 <div>
                   <label
@@ -526,7 +555,7 @@ function SignupPage() {
                       <User className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-10 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-10 py-3  border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.username
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.username.isValid && username
@@ -581,7 +610,7 @@ function SignupPage() {
                       <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-10 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-10 py-3  border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.email
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.email.isValid && email
@@ -623,7 +652,7 @@ function SignupPage() {
                       <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-12 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-12 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.password
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : validationState.password.isValid && password
@@ -737,7 +766,7 @@ function SignupPage() {
                       <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className={`w-full pl-10 pr-12 py-2 text-sm border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                      className={`w-full pl-10 pr-12 py-3  border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
                         fieldErrors.confirmPassword
                           ? "border-red-300 focus:ring-red-500 focus:border-transparent"
                           : confirmPassword && confirmPassword === password
@@ -792,7 +821,7 @@ function SignupPage() {
                       <Gift className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                       type="text"
                       id="referredBy"
                       placeholder="Enter referral code (optional)"
@@ -859,7 +888,7 @@ function SignupPage() {
                 </button>
 
                 {/* Login Link */}
-                <div className="text-center pt-4 border-t border-gray-100">
+                <div className="text-center py-4 border-t border-gray-100">
                   <p className="text-gray-600">
                     Already have an account?{" "}
                     <Link
