@@ -21,6 +21,8 @@ import Spinner from "../components/Spinner";
 import BoostBuddiesLogo from "../components/BoostBuddiesLogo";
 import EmailVerificationModal from "../components/EmailVerificationModal";
 import GoogleSignUpButton from "../components/Google/GoogleSignUpButton";
+import GoogleAuthHandler from "../components/Google/GoogleAuthHandler";
+import { handleGoogleAuth } from "../api/api2";
 import Splitter from "../components/Google/Splitter";
 
 function SignupPage() {
@@ -50,12 +52,10 @@ function SignupPage() {
   const handleGoogleSignUp = async () => {
     setIsLoadingGoogle(true);
     try {
-      // window.location.href = `${process.env.REACT_APP_BACKEND_URL}/auth/google`;
-      alert(
-        "Google signup is not implemented yet. This is a placeholder action."
-      );
+      handleGoogleAuth();
     } catch (err) {
       console.error("Error with Google login:", err);
+      setErrorMessage("Error with Google login. Please try again.");
     } finally {
       setIsLoadingGoogle(false);
     }
@@ -355,7 +355,7 @@ function SignupPage() {
   const handleCloseEmailVerification = () => {
     setShowEmailVerification(false);
     // Optionally redirect to login even without verification
-    // navigate("/login");
+    navigate("/login");
   };
 
   const getFieldValidationIcon = (fieldName) => {
@@ -380,6 +380,8 @@ function SignupPage() {
         email={registeredEmail}
         onVerificationSuccess={handleEmailVerificationSuccess}
       />
+      {/* Google Authentication Handler */}
+      <GoogleAuthHandler />
 
       <main className=" flex min-h-screen items-center justify-center pt-20 md:pt-20 max-w-7xl mx-auto relative overflow-hidden">
         {/* Background Elements */}

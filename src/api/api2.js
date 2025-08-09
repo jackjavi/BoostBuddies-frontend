@@ -258,6 +258,10 @@ export const trackProductClick = (productId, userId) => {
   window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/click/${productId}?userId=${userId}`;
 };
 
+export const handleGoogleAuth = () => {
+  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/googleAuth/google`;
+};
+
 export async function fetchUserInteractions(userId) {
   try {
     const response = await api.get(`/api/v1/users/${userId}/interactions`);
