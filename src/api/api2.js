@@ -262,6 +262,10 @@ export const handleGoogleAuth = () => {
   window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/googleAuth/google`;
 };
 
+export const handleGoogleLoginAuth = () => {
+  window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/v1/googleAuthLogin/google`;
+};
+
 export async function fetchUserInteractions(userId) {
   try {
     const response = await api.get(`/api/v1/users/${userId}/interactions`);
