@@ -59,7 +59,8 @@ const GoogleAuthLoginHandler = () => {
     async (token, userParam) => {
       try {
         // Parse user data
-        const userData = JSON.parse(decodeURIComponent(userParam));
+        const userData = decodeURIComponent(userParam);
+        console.log(`User Data googled, ${userData}`);
 
         // Store authentication data
         storeToken(token);
