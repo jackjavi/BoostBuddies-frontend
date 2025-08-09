@@ -79,7 +79,7 @@ const GoogleAuthLoginHandler = () => {
         // Auto redirect after showing success
         setTimeout(() => {
           setShowModal(false);
-          const from = location.state?.from?.pathname || "/dashboard";
+          const from = location.state?.from?.pathname || "/";
           navigate(from, { replace: true });
         }, 2000);
       } catch (error) {
